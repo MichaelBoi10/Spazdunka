@@ -50,8 +50,11 @@ Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
 		dc.l ErrorTrap,	ErrorTrap, ErrorTrap, ErrorTrap
 	dc.b 'SEGA MEGA DRIVE ' ; Hardware system ID
 Date:			dc.b '(C)KVW  2025.FEB'									; Official Development Month
-Title_Local:	dc.b 'Sonic Spazdunka                                 ' ; Domestic name
-Title_Int:		dc.b 'Sonic Spazdunka                                 ' ; Domestic name
+; Change ts when you're about to release the game
+;Title_Local:	dc.b 'Sonic Spazdunka                                 ' ; Domestic name
+;Title_Int:		dc.b 'Sonic Spazdunka                                 ' ; International name
+Title_Local:	dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
+Title_Int:		dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
 Serial:		dc.b 'GM 00001051-01'   ; Serial/version number
 Checksum:	dc.w 0
 		dc.b 'J               ' ; I/O support
