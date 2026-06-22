@@ -4,7 +4,7 @@
 	dc.l Obj01, ObjNull, ObjNull, ObjNull
 	dc.l SpinDash_dust, ObjNull, ObjNull, ObjNull
 	dc.l Obj09, Obj0A, Obj0B, Obj0C
-	dc.l Obj0D, Obj0E, Obj0F, Obj10
+	dc.l Obj0D, Obj0E, ObjNull, Obj10
 	dc.l Obj11, Obj12, Obj13, Obj14
 	dc.l Obj15, Obj16, Obj17, Obj18
 	dc.l Obj19, Obj1A, Obj1B, Obj1C

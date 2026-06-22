@@ -3164,7 +3164,7 @@ Title_LoadText:
 		move.b	#$8A,d0		; play title screen music
 		bsr.w	PlaySound_Special
 		move.b	#0,($FFFFFFFA).w ; disable debug mode
-		move.w	#$218,($FFFFF614).w ; run title	screen for $218	frames (used to be $178 frames)
+		move.w	#999*60,($FFFFF614).w ; run title	screen for $218	frames (used to be $178 frames)
 		lea	($FFFFD080).w,a1
 		moveq	#0,d0
 		move.w	#$F,d1
@@ -13676,11 +13676,11 @@ Obj0E_Index:	dc.w Obj0E_Main-Obj0E_Index
 Obj0E_Main:				; XREF: Obj0E_Index
 		addq.b	#2,routine(a0)
 		move.w	#$F8,8(a0)
-		move.w	#$DE,$A(a0)
+		move.w	#$FE,$A(a0)
 		move.l	#Map_obj0E,mappings(a0)
 		move.w	#$2300,art_tile(a0)
 		move.b	#1,priority(a0)
-		move.b	#29,$1F(a0)	; set time delay to 0.5	seconds
+		move.b	#2*40,$1F(a0)	; set time delay to 0.5	seconds
 		lea	(Ani_obj0E).l,a1
 		bsr.w	AnimateSprite
 
@@ -13697,7 +13697,7 @@ Obj0E_Wait:				; XREF: Obj0E_Delay
 
 Obj0E_Move:				; XREF: Obj0E_Index
 		subq.w	#8,$A(a0)
-		cmpi.w	#$96,$A(a0)
+		cmpi.w	#$F6,$A(a0)
 		bne.s	Obj0E_Display
 		addq.b	#2,routine(a0)
 
@@ -13714,51 +13714,10 @@ Obj0E_Animate:				; XREF: Obj0E_Index
 ; ===========================================================================
 		rts	
 ; ===========================================================================
-; ---------------------------------------------------------------------------
-; Object 0F - "PRESS START BUTTON" and "TM" from title screen
-; ---------------------------------------------------------------------------
-
-Obj0F:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	$24(a0),d0
-		move.w	Obj0F_Index(pc,d0.w),d1
-		jsr	Obj0F_Index(pc,d1.w)
-		bra.w	DisplaySprite
-; ===========================================================================
-Obj0F_Index:	dc.w Obj0F_Main-Obj0F_Index
-		dc.w Obj0F_PrsStart-Obj0F_Index
-		dc.w locret_A6F8-Obj0F_Index
-; ===========================================================================
-
-Obj0F_Main:				; XREF: Obj0F_Index
-		addq.b	#2,routine(a0)
-		move.w	#$D8,8(a0)
-		move.w	#$130,$A(a0)
-		move.l	#Map_obj0F,mappings(a0)
-		move.w	#$200,art_tile(a0)
-		cmpi.b	#2,mapping_frame(a0)	; is object "PRESS START"?
-		bcs.s	Obj0F_PrsStart	; if yes, branch
-		addq.b	#2,routine(a0)
-		cmpi.b	#3,mapping_frame(a0)	; is the object	"TM"?
-		bne.s	locret_A6F8	; if not, branch
-		move.w	#$2510,art_tile(a0)	; "TM" specific	code
-		move.w	#$178,8(a0)
-		move.w	#$F8,$A(a0)
-
-locret_A6F8:				; XREF: Obj0F_Index
-		rts	
-; ===========================================================================
-
-Obj0F_PrsStart:				; XREF: Obj0F_Index
-		lea	(Ani_obj0F).l,a1
-		bra.w	AnimateSprite
-; ===========================================================================
 Ani_obj0E:
 	include "_anim\obj0E_son.asm"
 Ani_obj0E_a:
 	include "_anim\obj0E.asm"
-Ani_obj0F:
-	include "_anim\obj0F.asm"
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	animate	a sprite using an animation script
