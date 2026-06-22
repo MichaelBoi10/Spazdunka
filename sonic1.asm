@@ -21,7 +21,7 @@ align:	macro
 	dcb.b (\1-(*%\1))%\1,\2
 	endc
 	endm
-	
+	FactoryLight: = 1
 	SoundTrack: = 1
 	AntiCheat: = 0
 	Spindash: = 1
@@ -3026,11 +3026,10 @@ Sega_WaitPallet:
 		bsr.w	PalCycle_Sega
 		bne.s	Sega_WaitPallet
 
-		move.b	#$E1,d0
-		bsr.w	PlaySound_Special ; play "SEGA"	sound
+		MPCM_play #dacRecording.id
 		move.b	#$14,($FFFFF62A).w
 		bsr.w	DelayProgram
-		move.w	#$1E+2*60,($FFFFF614).w			; was $1E
+		move.w	#50*60,($FFFFF614).w			; was $1E
 
 Sega_WaitEnd:
 		move.b	#2,($FFFFF62A).w
@@ -3050,6 +3049,7 @@ Sega_GotoTitle:
 ; ---------------------------------------------------------------------------
 
 TitleScreen:				; XREF: GameModeArray
+		MPCM_Stop #dacRecording.id
 		move.b	#$E4,d0
 		bsr.w	PlaySound_Special ; stop music
 		bsr.w	ClearPLC
@@ -3362,7 +3362,14 @@ LevSel_Level:				; XREF: LevSel_Level_SS
 		move.w	d0,($FFFFFE10).w ; set level number
 
 PlayLevel:				; XREF: ROM:00003246j ...
+		if	FactoryLight = 0
 		move.b	#$18,($FFFFF600).w ; set	screen mode to $0C (level)
+		move.w	#0,($FFFFFE10).w ; set level to	GHZ (00)
+		endif
+		if	FactoryLight = 1
+		move.w	#star_light_act_1,($FFFFFE10).w ; set level to	GHZ (00)
+		move.b	#$0C,($FFFFF600).w ; set	screen mode to $0C (level)
+		endif
 		move.b	#3,($FFFFFE12).w ; set lives to	3
 		move.w	d0,($FFFFFE20).w ; clear rings
 		move.l	d0,($FFFFFE22).w ; clear time
@@ -3385,13 +3392,26 @@ LSelectPointers:
 ; ---------------------------------------------------------------------------
 ; Level	select codes
 ; ---------------------------------------------------------------------------
+	if FactoryLight = 0
+	
 LevelSelectCode_J:
-		incbin	misc\ls_jcode.bin
+		incbin	misc\ls_ucode.bin
 		even
 
 LevelSelectCode_US:
 		incbin	misc\ls_ucode.bin
 		even
+	endif
+	
+	if FactoryLight = 1
+	
+LevelSelectCode_J:
+		even
+
+LevelSelectCode_US:
+		even
+		
+	endif
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
@@ -16179,8 +16199,48 @@ Obj3A_Display2:				; XREF: Obj3A_NextLevel, Obj3A_ChkSS
 ; ---------------------------------------------------------------------------
 ; Level	order array
 ; ---------------------------------------------------------------------------
+	if FactoryLight = 0
+	
 LevelOrder:	incbin	misc\lvl_ord.bin
 		even
+		
+	endif
+	
+	if FactoryLight = 1
+	
+LevelOrder:
+        dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+
+        dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+
+		dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+
+        dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+
+        dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+
+        dc.w    star_light_act_2    ; SLZ1
+        dc.w    star_light_act_3    ; SLZ1
+        dc.w    lvlord_sega        ; GHZ4
+        dc.w    lvlord_sega        ; GHZ4
+        even
+		
+	endif
 ; ===========================================================================
 
 Obj3A_ChkPos2:				; XREF: Obj3A_Index
@@ -36077,9 +36137,16 @@ Obj3E_FindObj28:
 		beq.s	Obj3E_Obj28Found ; if yes, branch
 		adda.w	d2,a1		; next object RAM
 		dbf	d0,Obj3E_FindObj28 ; repeat $3E	times
-
-		jsr	GotThroughAct
+		if FactoryLight = 1
+		move.b	#$1C,($FFFFF600).w ; set screen	mode to	$1C (Credits)
+		move.b	#$91,d0
+		jmp	PlaySound_Special ; play credits music
+		endif
+		
+		if FactoryLight = 0
+		jmp GotThroughAct
 		jmp	DeleteObject
+		endif
 ; ===========================================================================
 
 Obj3E_Obj28Found:

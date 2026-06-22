@@ -74,7 +74,7 @@ SampleTable:
 	dcSample	TYPE_PCM, MetalCrashS3D, 9687			; $D6	- Intro Kick
 	dcSample	TYPE_PCM, EchoedClapHitS3, 8492			; $D7	- Echoed Clap Hit (S3)
 	dcSample	TYPE_PCM, EchoedClapHitS3, 6490			; $D8	- Lower Echoed Clap Hit(S3)	; Clownacy | Good golly, we're close to reaching Mega PCM's limit...
-	dcSample	TYPE_PCM, SegaPCM,	0, FLAGS_SFX		; $D9	NOTE: sample rate is auto-detected from WAV file
+dacRecording:	dcSample	TYPE_PCM, recording,	15000		; $D9	NOTE: sample rate is auto-detected from WAV file
 	dc.w	-1	; end marker
 
 ; ---------------------------------------------------------------
@@ -128,5 +128,5 @@ SampleTable:
 	incdac	MetalCrashS3D, "sound/dac/MetalCrashS3D.pcm"
 	incdac	IntroKickS3D, "sound/dac/IntroKickS3D.pcm"
 	incdac	EchoedClapHitS3, "sound/dac/EchoedClapHitS3.pcm"
-	incdac	SegaPCM, "sound/dac/sega.wav"
+	incdac	recording, "sound/dac/recording.wav"
 	even
