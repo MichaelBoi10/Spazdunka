@@ -50,7 +50,7 @@ Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
 		dc.l ErrorTrap,	ErrorTrap, ErrorTrap, ErrorTrap
 	dc.b 'SEGA MEGA DRIVE ' ; Hardware system ID
 Date:			dc.b '(C)KVW  2025.FEB'									; Official Development Month
-; Change ts when you're about to release the game
+; Change ts when you're about to release the game 
 ;Title_Local:	dc.b 'Sonic Spazdunka                                 ' ; Domestic name
 ;Title_Int:		dc.b 'Sonic Spazdunka                                 ' ; International name
 Title_Local:	dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
@@ -16526,24 +16526,40 @@ byte_C9FE:		dc.b 12	; POLLUTED HILL
 		dc.b $F8, $01, $00, $20, $3C	; I
 		dc.b $F8, $05, $00, $26, $44	; L
 		dc.b $F8, $05, $00, $26, $54	; L
-byte_CA2C:	dc.b 9			; LABYRINTH
-		dc.b $F8, 5, 0,	$26, $BC
-		dc.b $F8, 5, 0,	0, $CC
-		dc.b $F8, 5, 0,	4, $DC
-		dc.b $F8, 5, 0,	$4A, $EC
-		dc.b $F8, 5, 0,	$3A, $FC
-		dc.b $F8, 1, 0,	$20, $C
-		dc.b $F8, 5, 0,	$2E, $14
-		dc.b $F8, 5, 0,	$42, $24
-		dc.b $F8, 5, 0,	$1C, $34
-byte_CA5A:	dc.b 6			; MARBLE
-		dc.b $F8, 5, 0,	$2A, $CF
-		dc.b $F8, 5, 0,	0, $E0
-		dc.b $F8, 5, 0,	$3A, $F0
-		dc.b $F8, 5, 0,	4, 0
-		dc.b $F8, 5, 0,	$26, $10
-		dc.b $F8, 5, 0,	$10, $20
-		dc.b 0
+byte_CA2C:	dc.b 14	; CONTRARY GROTTO
+		dc.b $F8, $05, $00, $08, $88	; C
+		dc.b $F8, $05, $00, $32, $98	; O
+		dc.b $F8, $05, $00, $2E, $A8	; N
+		dc.b $F8, $05, $00, $42, $B8	; T
+		dc.b $F8, $05, $00, $3A, $C8	; R
+		dc.b $F8, $05, $00, $00, $D8	; A
+		dc.b $F8, $05, $00, $3A, $E8	; R
+		dc.b $F8, $05, $00, $4A, $F8	; Y
+						; space
+		dc.b $F8, $05, $00, $18, $18	; G
+		dc.b $F8, $05, $00, $3A, $28	; R
+		dc.b $F8, $05, $00, $32, $38	; O
+		dc.b $F8, $05, $00, $42, $48	; T
+		dc.b $F8, $05, $00, $42, $58	; T
+		dc.b $F8, $05, $00, $32, $68	; O
+		even
+byte_CA5A:	dc.b 14	; NETHERED MARBLE
+		dc.b $F8, $05, $00, $2E, $87	; N
+		dc.b $F8, $05, $00, $10, $97	; E
+		dc.b $F8, $05, $00, $42, $A7	; T
+		dc.b $F8, $05, $00, $1C, $B7	; H
+		dc.b $F8, $05, $00, $10, $C7	; E
+		dc.b $F8, $05, $00, $3A, $D7	; R
+		dc.b $F8, $05, $00, $10, $E7	; E
+		dc.b $F8, $05, $00, $0C, $F7	; D
+						; space
+		dc.b $F8, $05, $00, $2A, $17	; M
+		dc.b $F8, $05, $00, $00, $28	; A
+		dc.b $F8, $05, $00, $3A, $38	; R
+		dc.b $F8, $05, $00, $04, $48	; B
+		dc.b $F8, $05, $00, $26, $58	; L
+		dc.b $F8, $05, $00, $10, $68	; E
+		even
 byte_CA7A:	dc.b 9			; STAR	LIGHT
 		dc.b $F8, 5, 0,	$3E, $B4
 		dc.b $F8, 5, 0,	$42, $C4
@@ -20126,7 +20142,7 @@ loc_F9FE:
 
 loc_FA12:
 		move.w	d4,d2
-		bsr.w	MvSonicOnPtfm
+		jmp	MvSonicOnPtfm
 		moveq	#0,d4
 		rts	
 ; ===========================================================================
