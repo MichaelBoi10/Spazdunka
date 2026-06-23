@@ -42,3 +42,7 @@ Music95:	incbin	sound\music95.bin
 		even
 Music96:	incbin	sound\music96.bin
 		even
+Music97:	incbin	sound\music97.bin
+		even
+Music98:	incbin	sound\music98.bin
+		even

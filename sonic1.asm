@@ -21,7 +21,7 @@ align:	macro
 	dcb.b (\1-(*%\1))%\1,\2
 	endc
 	endm
-	FactoryLight: = 1
+	FactoryLight: = 0
 	SoundTrack: = 1
 	AntiCheat: = 0
 	Spindash: = 1
@@ -2604,20 +2604,30 @@ loc_2006:				; XREF: Pal_AddColor2
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-PalCycle_Sega:				; XREF: SegaScreen
-		tst.b	($FFFFF635).w
-		bne.s	loc_206A
-		lea	($FFFFFB20).w,a1
-		lea	(Pal_Sega1).l,a0
-		moveq	#5,d1
-		move.w	($FFFFF632).w,d0
+PalCycle_SEGA:                               ; CODE XREF: 00002532?p
+                 subq.w  #1,($FFFFF634).w
+                 bpl.s   locret_1A68
+                 move.w  #3,($FFFFF634).w
+                 move.w  ($FFFFF632).w,d0
+                 bmi.s   locret_1A68
+                 subq.w  #2,($FFFFF632).w
+                 lea     (word_1A6A).l,a0
+                 lea     ($FFFFFB04).w,a1
+                 adda.w  d0,a0
+                 move.l  (a0)+,(a1)+
+                 move.l  (a0)+,(a1)+
+                 move.l  (a0)+,(a1)+
+                 move.l  (a0)+,(a1)+
+                 move.l  (a0)+,(a1)+
+                 move.w  (a0)+,(a1)+
 
-loc_2020:
-		bpl.s	loc_202A
-		addq.w	#2,a0
-		subq.w	#1,d1
-		addq.w	#2,d0
-		bra.s	loc_2020
+locret_1A68:                            ; CODE XREF: sub_1A3A+4?j
+			rts								; sub_1A3A+10?j
+; End of function PalCycle_SEGA	
+
+word_1A6A:     	dc.w $0EEE,$0EEE,$0CCC,$0CCC,$0CCC,$0AAA,$0888,$0666,$0444,$0222,$0222,$0000,$0000,$0AAA,$0CCC,$0EEE,$0CCC,$0AAA,$0888,$0666
+				dc.w $0444,$0000,$0CCC,$0AAA,$0888,$0666,$0444,$0EEE
+					 
 ; ===========================================================================
 
 loc_202A:				; XREF: PalCycle_Sega
@@ -2789,7 +2799,11 @@ PalPointers:
 ; ---------------------------------------------------------------------------
 ; Pallet data
 ; ---------------------------------------------------------------------------
-Pal_SegaBG:	incbin	pallet\sega_bg.bin
+Pal_SegaBG:     dc.w 0, $EEE, $EC0, $EA0, $E80, $E60, $E40, $E20, $E00
+                dc.w $C00, $A00, $800, $600, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                dc.w 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                dc.w 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                dc.w 0, 0, 0, 0, 0, 0, 0, 0    
 Pal_Title:	incbin	pallet\titleson.bin
 Pal_TitleDuo:	incbin	pallet\titleboth.bin
 Pal_LevelSel:	incbin	pallet\levelsel.bin
@@ -2975,73 +2989,68 @@ Angle_Data:	incbin	misc\angles.bin
 ; Sega screen
 ; ---------------------------------------------------------------------------
 
-SegaScreen:				; XREF: GameModeArray
-		move.b	#$E4,d0
-		bsr.w	PlaySound_Special ; stop music
-		bsr.w	ClearPLC
-		bsr.w	Pal_FadeFrom
-		lea	($C00004).l,a6
-		move.w	#$8004,(a6)
-		move.w	#$8230,(a6)
-		move.w	#$8407,(a6)
-		move.w	#$8700,(a6)
-		move.w	#$8B00,(a6)
-		clr.b	($FFFFF64E).w
-		move	#$2700,sr
-		move.w	($FFFFF60C).w,d0
-		andi.b	#$BF,d0
-		move.w	d0,($C00004).l
-		bsr.w	ClearScreen
-		move.l	#$40000000,($C00004).l
-		lea	(Nem_SegaLogo).l,a0 ; load Sega	logo patterns
-		bsr.w	NemDec
-		lea	($FF0000).l,a1
-		lea	(Eni_SegaLogo).l,a0 ; load Sega	logo mappings
-		move.w	#0,d0
-		bsr.w	EniDec
-		lea	($FF0000).l,a1
-		move.l	#$65100003,d0
-		moveq	#$17,d1
-		moveq	#7,d2
-		bsr.w	ShowVDPGraphics
-		lea	($FF0180).l,a1
-		move.l	#$40000003,d0
-		moveq	#$27,d1
-		moveq	#$1B,d2
-		bsr.w	ShowVDPGraphics
-		moveq	#0,d0
-		bsr.w	PalLoad2	; load Sega logo pallet
-		move.w	#-$A,($FFFFF632).w
-		move.w	#0,($FFFFF634).w
-		move.w	#0,($FFFFF662).w
-		move.w	#0,($FFFFF660).w
-		move.b	#0,($FFFFFFD0).w
-		move.w	($FFFFF60C).w,d0
-		ori.b	#$40,d0
-		move.w	d0,($C00004).l
+; ---------------------------------------------------------------------------
+; Sega screen
+; ---------------------------------------------------------------------------
 
-Sega_WaitPallet:
-		move.b	#2,($FFFFF62A).w
-		bsr.w	DelayProgram
-		bsr.w	PalCycle_Sega
-		bne.s	Sega_WaitPallet
+SegaScreen:                                  ; CODE XREF: loc_39C?j
+				move.b  #$E0,d0
+				bsr.w   PlaySound_Special
+                bsr.w   ClearPLC
+                bsr.w   Pal_FadeFrom
+                lea     ($C00004).l,a6
+                move.w  #$8004,(a6)
+                move.w  #$8230,(a6)
+                move.w  #$8407,(a6)
+                move.w  #$8700,(a6)
+                move.w  #$8B00,(a6)
+                move.w  ($FFFFF60C).w,d0
+                andi.b  #$BF,d0
+                move.w  d0,($C00004).l
 
-		MPCM_play #dacRecording.id
-		move.b	#$14,($FFFFF62A).w
-		bsr.w	DelayProgram
-		move.w	#50*60,($FFFFF614).w			; was $1E
+loc_24BC:
+				bsr.w	ClearScreen
+                move.l  #$40000000,($C00004).l
+                lea     (byte_18720).l,a0
+                bsr.w   NemDec
+				lea	($FF0000).l,a1		; load destination, where to decompress mapping
+                lea     (byte_18A56).l,a0
+                move.w  #0,d0
+                bsr.w   EniDec
+				lea	($FF0000).l,a1		; load destination, where to decompress mapping
+                move.l  #$461C0003,d0
+                moveq   #$B,d1
+                moveq   #3,d2
+                bsr.w   ShowVDPGraphics
+                moveq   #0,d0
+                bsr.w   PalLoad2
+                move.w  #$28,($FFFFF632).w
+                move.w  #0,($FFFFF662).w
+                move.w  #0,($FFFFF660).w
+                move.w  #$B4,($FFFFF614).w
+                move.w  ($FFFFF60C).w,d0
+                ori.b   #$40,d0
+                move.w  d0,($C00004).l
+				move.b  #$97,d0
+				bsr.w   PlaySound
 
-Sega_WaitEnd:
-		move.b	#2,($FFFFF62A).w
-		bsr.w	DelayProgram
-		tst.w	($FFFFF614).w
-		beq.s	Sega_GotoTitle
-		andi.b	#$80,($FFFFF605).w ; is	Start button pressed?
-		beq.s	Sega_WaitEnd	; if not, branch
+Loc_2528:                               ; CODE XREF: 00002542?j
+				move.b	#2,($FFFFF62A).w
+				bsr.w	DelayProgram	
+                bsr.w   PalCycle_SEGA
+                tst.w   ($FFFFF614).w
+                beq.s   loc_2544
+				andi.b	#$80,($FFFFF605).w ; is	Start button pressed?
+                beq.s   loc_2528
 
-Sega_GotoTitle:
-		move.b	#4,($FFFFF600).w ; go to title screen
-		rts	
+loc_2544:                               ; CODE XREF: 0000253A?j
+				move.b	#4,($FFFFF600).w	; go to Title Screen
+                rts
+
+byte_18720:  incbin   artnem\segaart.bin
+		even
+
+byte_18A56:     dc.b 6, 0, 0, 1, 0, 0, $29, 3, $CF, $F, $F8, 0	
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
@@ -3050,7 +3059,7 @@ Sega_GotoTitle:
 
 TitleScreen:				; XREF: GameModeArray
 		MPCM_Stop #dacRecording.id
-		move.b	#$E4,d0
+		move.b	#$E0,d0
 		bsr.w	PlaySound_Special ; stop music
 		bsr.w	ClearPLC
 		bsr.w	Pal_FadeFrom
@@ -13035,7 +13044,7 @@ Obj37_MakeRings:			; XREF: Obj37_CountRings
 		tst.w	d4
 		bmi.s	loc_9D62
 		move.w	d4,d0
-		bsr.w	CalcSine
+		jsr	(CalcSine).l
 		move.w	d4,d2
 		lsr.w	#8,d2
 		asl.w	d2,d0
@@ -36427,19 +36436,19 @@ HurtSonic:
 		bne.s	Hurt_Shield
 		move.b	#$37,0(a1)	; load bouncing	multi rings object
 		move.w	8(a0),8(a1)
-		move.w	$C(a0),y_pos(a1)
+		move.w	$C(a0),$C(a1)
 
 Hurt_Shield:
 		move.b	#0,($FFFFFE2C).w ; remove shield
-		move.b	#4,routine(a0)
+		move.b	#4,$24(a0)
 		bsr.w	Sonic_ResetOnFloor
-		bset	#1,status(a0)
-		move.w	#-$400,y_vel(a0)	; make Sonic bounce away from the object
-		move.w	#-$200,x_vel(a0)
-		btst	#6,status(a0)
+		bset	#1,$22(a0)
+		move.w	#-$400,$12(a0)	; make Sonic bounce away from the object
+		move.w	#-$200,$10(a0)
+		btst	#6,$22(a0)
 		beq.s	Hurt_Reverse
-		move.w	#-$200,y_vel(a0)
-		move.w	#-$100,x_vel(a0)
+		move.w	#-$200,$12(a0)
+		move.w	#-$100,$10(a0)
 
 Hurt_Reverse:
 		move.w	8(a0),d0
@@ -36448,9 +36457,9 @@ Hurt_Reverse:
 		neg.w	$10(a0)		; if Sonic is right of the object, reverse
 
 Hurt_ChkSpikes:
-		move.b	#0,$39(a0)	; clear Spin Dash flag
+		move.b	#0,$39(a0)	; clear spindash flag
 		move.w	#0,$14(a0)
-		move.b	#$1A,anim(a0)
+		move.b	#$1A,$1C(a0)
 		move.w	#$78,$30(a0)
 		move.w	#$A3,d0		; load normal damage sound
 		cmpi.b	#$36,(a2)	; was damage caused by spikes?
@@ -40105,6 +40114,7 @@ MusicIndex:
 		dc.l Music91, Music92
 		dc.l Music93, Music94
 		dc.l Music95, Music96
+		dc.l Music97, Music98
 ; ---------------------------------------------------------------------------
 ; Type of sound	being played ($90 = music; $70 = normal	sound effect)
 ; ---------------------------------------------------------------------------

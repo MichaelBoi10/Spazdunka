@@ -40,3 +40,9 @@ Music94:	incbin	sound\ogspazdunka\music87.bin
 		even
 Music95:	incbin	sound\ogspazdunka\music88.bin
 		even
+Music96:	incbin	sound\ogspazdunka\music8D.bin
+		even
+Music97:	incbin	sound\music97.bin
+		even
+Music98:	incbin	sound\music98.bin
+		even
