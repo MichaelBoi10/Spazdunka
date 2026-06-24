@@ -21,7 +21,7 @@ align:	macro
 	dcb.b (\1-(*%\1))%\1,\2
 	endc
 	endm
-	FactoryLight: = 1
+	FactoryLight: = 0
 	SoundTrack: = 1
 	AntiCheat: = 0
 	Spindash: = 1
