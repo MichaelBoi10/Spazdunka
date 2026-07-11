@@ -3,7 +3,7 @@
 SampleTable:
 	;			type			pointer		Hz
 	dcSample	TYPE_DPCM, 		Kick, 		8000				; $81
-	dcSample	TYPE_PCM,		Snare,		17000				; $82
+	dcSample	TYPE_PCM,		Snare,		12000				; $82
 	dcSample	TYPE_DPCM, 		Timpani, 	7250				; $83
 	dcSample	TYPE_DPCM, 		Kick, 		8000				; $84
 	dcSample	TYPE_PCM,		Snare,		17000				; $85

@@ -3,12 +3,12 @@
 SampleTable:
 	;			type			pointer		Hz
 ;	dcSample
-	dcSample	TYPE_PCM, KickS3, 13360				; $92	- Snare (S3)
-	dcSample	TYPE_PCM, SnareS3, 13360					; $97	- Kick (S3)
-	dcSample	TYPE_PCM, TomS3, 9050					; $94	- Mid-Tom (S3)
+	dcSample	TYPE_PCM, KickS3, 10360				; $92	- Snare (S3)
+	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
+	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, TomS3, 7599					; $95	- Low Tom (S3)
 	dcSample	TYPE_PCM, TomS3, 6490					; $96	- Floor-Tom (S3)
-	dcSample	TYPE_PCM, KickS3, 19090					; $97	- Kick (S3)
+	dcSample	TYPE_PCM, KickS3, 10090					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, MuffledSnare, 19090			; $98	- Muffled Snare
 	dcSample	TYPE_PCM, CrashCymbal, 16766			; $99	- Crash Cymbal
 	dcSample	TYPE_PCM, RideCymbal, 13482				; $9A	- Ride Cymbal
@@ -75,6 +75,8 @@ SampleTable:
 	dcSample	TYPE_PCM, EchoedClapHitS3, 8492			; $D7	- Echoed Clap Hit (S3)
 	dcSample	TYPE_PCM, EchoedClapHitS3, 6490			; $D8	- Lower Echoed Clap Hit(S3)	; Clownacy | Good golly, we're close to reaching Mega PCM's limit...
 dacRecording:	dcSample	TYPE_PCM, recording,	15000		; $D9	NOTE: sample rate is auto-detected from WAV file
+dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
+
 	dc.w	-1	; end marker
 
 ; ---------------------------------------------------------------
@@ -129,4 +131,5 @@ dacRecording:	dcSample	TYPE_PCM, recording,	15000		; $D9	NOTE: sample rate is au
 	incdac	IntroKickS3D, "sound/dac/IntroKickS3D.pcm"
 	incdac	EchoedClapHitS3, "sound/dac/EchoedClapHitS3.pcm"
 	incdac	recording, "sound/dac/recording.wav"
+	incdac	TakingTLong, "sound/dac/youre-taking-too-long.wav"
 	even

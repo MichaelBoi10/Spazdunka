@@ -51,11 +51,12 @@ Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
 	dc.b 'SEGA MEGA DRIVE ' ; Hardware system ID
 Date:			dc.b '(C)KVW  2025.FEB'									; Official Development Month
 ; Change ts when you're about to release the game 
-;Title_Local:	dc.b 'Sonic Spazdunka                                 ' ; Domestic name
-;Title_Int:		dc.b 'Sonic Spazdunka                                 ' ; International name
-Title_Local:	dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
-Title_Int:		dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
-Serial:		dc.b 'GM 00001051-01'   ; Serial/version number
+; NVM Change it back
+Title_Local:	dc.b 'Sonic Spazdunka REMASTER                        ' ; Domestic name
+Title_Int:		dc.b 'Sonic Spazdunka REMASTER                        ' ; International name
+;Title_Local:	dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
+;Title_Int:		dc.b 'KVW can you buy me therapy?                     ' ; Domestic name
+Serial:		dc.b 'GM 00002025-02'   ; Serial/version number
 Checksum:	dc.w 0
 		dc.b 'J               ' ; I/O support
 RomStartLoc:	dc.l StartOfRom		; ROM start
@@ -261,8 +262,6 @@ GameModeArray:
 		bra.w	EndingSequence	; End of game sequence ($18)
 ; ===========================================================================
 		bra.w	Credits		; Credits ($1C)
-; ===========================================================================
-		bra.w	RealEndingSequence		; Credits ($20)
 ; ===========================================================================
 		rts	
 ; ===========================================================================
@@ -1874,7 +1873,7 @@ PalCycle:	dc.w PalCycle_GHZ-PalCycle
 		dc.w PalCycle_SLZ-PalCycle
 		dc.w PalCycle_SYZ-PalCycle
 		dc.w PalCycle_SBZ-PalCycle
-		dc.w PalCycle_GHZ-PalCycle
+		dc.w PalCycle_Ending-PalCycle
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -2109,6 +2108,23 @@ locret_1B64:
 		rts	
 ; End of function PalCycle_SBZ
 
+PalCycle_Ending:				; XREF: PalCycle
+		lea	(Pal_EndingCyc).l,a0
+
+loc_69420:				; XREF: PalCycle_Title
+		subq.w	#1,($FFFFF634).w
+		bpl.s	locret_1991
+		move.w	#5,($FFFFF634).w
+		move.w	($FFFFF632).w,d0
+		addq.w	#1,($FFFFF632).w
+		andi.w	#3,d0
+		lsl.w	#3,d0
+		lea	($FFFFFB50).w,a1
+		move.l	(a0,d0.w),(a1)+
+		move.l	4(a0,d0.w),(a1)
+
+locret_1991:
+		rts	
 ; ===========================================================================
 Pal_TitleCyc:	incbin	pallet\c_title.bin
 Pal_GHZCyc:	incbin	pallet\c_ghz.bin
@@ -2136,6 +2152,7 @@ Pal_SBZCyc7:	incbin	pallet\c_sbz_7.bin
 Pal_SBZCyc8:	incbin	pallet\c_sbz_8.bin
 Pal_SBZCyc9:	incbin	pallet\c_sbz_9.bin
 Pal_SBZCyc10:	incbin	pallet\c_sbz_10.bin
+Pal_EndingCyc:	incbin	pallet\c_end.bin
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	Put Super Sonic's palettes
@@ -2828,7 +2845,7 @@ Pal_SBZ3SonWat:	incbin	pallet\son_sbzu.bin	; Sonic (underwater in SBZ act 3) pal
 Pal_SpeResult:	incbin	pallet\ssresult.bin	; special stage results screen pallets
 Pal_SpeContinue:incbin	pallet\sscontin.bin	; special stage results screen continue pallet
 Pal_Ending:	incbin	pallet\ending.bin	; ending sequence pallets
-
+Pal_KVW:	incbin	pallet\kvw.bin
 ; ---------------------------------------------------------------------------
 ; Subroutine to	delay the program by ($FFFFF62A) frames
 ; ---------------------------------------------------------------------------
@@ -3051,7 +3068,6 @@ byte_18720:  incbin   artnem\segaart.bin
 		even
 
 byte_18A56:     dc.b 6, 0, 0, 1, 0, 0, $29, 3, $CF, $F, $F8, 0	
-; ===========================================================================
 
 ; ---------------------------------------------------------------------------
 ; Title	screen
@@ -3105,7 +3121,7 @@ Title_ClrPallet:
 		move.l	d0,(a1)+
 		dbf	d1,Title_ClrPallet ; fill pallet with 0	(black)
 
-		moveq	#3,d0		; load Sonic's pallet
+		moveq	#22,d0		; load Sonic's pallet
 		bsr.w	PalLoad1
 		move.b	#$8A,($FFFFD080).w ; load "SONIC TEAM PRESENTS"	object
 		move.b	#0,($FFFFFFD0).w
@@ -3371,14 +3387,8 @@ LevSel_Level:				; XREF: LevSel_Level_SS
 		move.w	d0,($FFFFFE10).w ; set level number
 
 PlayLevel:				; XREF: ROM:00003246j ...
-		if	FactoryLight = 0
 		move.b	#$18,($FFFFF600).w ; set	screen mode to $0C (level)
 		move.w	#0,($FFFFFE10).w ; set level to	GHZ (00)
-		endif
-		if	FactoryLight = 1
-		move.w	#star_light_act_1,($FFFFFE10).w ; set level to	GHZ (00)
-		move.b	#$0C,($FFFFF600).w ; set	screen mode to $0C (level)
-		endif
 		move.b	#3,($FFFFFE12).w ; set lives to	3
 		move.w	d0,($FFFFFE20).w ; clear rings
 		move.l	d0,($FFFFFE22).w ; clear time
@@ -4952,7 +4962,7 @@ SS_NormalExit:
 ; ===========================================================================
 
 SS_ToSegaScreen:
-		move.b	#0,($FFFFF600).w ; set screen mode to 00 (Sega screen)
+		move.b	#$20,($FFFFF600).w ; set screen mode to 00 (Sega screen)
 		rts
 
 ; ---------------------------------------------------------------------------
@@ -5322,9 +5332,12 @@ loc_4DF2:
 		tst.w	($FFFFF614).w
 		bne.w	Cont_MainLoop
 		bsr.w	ILLEGALCONTINUE
+		
+
+		
 ILLEGALCONTINUE:
-		ILLEGAL
-		jmp	ILLEGALCONTINUE
+		MPCM_play #dacTakingToLong.id
+		RaiseError "YOUR TAKING TOO LONG"
 		rts	
 ; ===========================================================================
 
@@ -6403,238 +6416,7 @@ Demo_EndSBZ2:	incbin	demodata\e_sbz2.bin
 		even
 Demo_EndGHZ2:	incbin	demodata\e_ghz2.bin
 		even
-; ===========================================================================
-; ---------------------------------------------------------------------------
-; RealEnding sequence in Green Hill	Zone
-; ---------------------------------------------------------------------------
 
-RealEndingSequence:				; XREF: GameModeArray
-		move.b	#$E1,d0
-		bsr.w	PlaySound_Special ; stop music
-		bsr.w	Pal_FadeFrom
-		lea	($FFFFD000).w,a1
-		moveq	#0,d0
-		move.w	#$7FF,d1
-
-RealEnd_ClrObjRam:
-		move.l	d0,(a1)+
-		dbf	d1,RealEnd_ClrObjRam ; clear object	RAM
-
-		lea	($FFFFF628).w,a1
-		moveq	#0,d0
-		move.w	#$15,d1
-
-RealEnd_ClrRam:
-		move.l	d0,(a1)+
-		dbf	d1,RealEnd_ClrRam	; clear	variables
-
-		lea	($FFFFF700).w,a1
-		moveq	#0,d0
-		move.w	#$3F,d1
-
-RealEnd_ClrRam2:
-		move.l	d0,(a1)+
-		dbf	d1,RealEnd_ClrRam2	; clear	variables
-
-		lea	($FFFFFE60).w,a1
-		moveq	#0,d0
-		move.w	#$47,d1
-
-RealEnd_ClrRam3:
-		move.l	d0,(a1)+
-		dbf	d1,RealEnd_ClrRam3	; clear	variables
-
-		move	#$2700,sr
-		move.w	($FFFFF60C).w,d0
-		andi.b	#$BF,d0
-		move.w	d0,($C00004).l
-		bsr.w	ClearScreen
-		lea	($C00004).l,a6
-		move.w	#$8B03,(a6)
-		move.w	#$8230,(a6)
-		move.w	#$8407,(a6)
-		move.w	#$857C,(a6)
-		move.w	#$9001,(a6)
-		move.w	#$8004,(a6)
-		move.w	#$8720,(a6)
-		move.w	#$8ADF,($FFFFF624).w
-		move.w	($FFFFF624).w,(a6)
-		clr.w	($FFFFC800).w
-		move.l	#$FFFFC800,($FFFFC8FC).w
-		move.w	#$1E,($FFFFFE14).w
-		move.w	#$600,($FFFFFE10).w ; set level	number to 0600 (extra flowers)
-		cmpi.b	#6,($FFFFFE57).w ; do you have all 6 emeralds?
-		beq.s	RealEnd_LoadData	; if yes, branch
-		move.w	#$601,($FFFFFE10).w ; set level	number to 0601 (no flowers)
-
-RealEnd_LoadData:
-		moveq	#$1C,d0
-		bsr.w	RunPLC_ROM	; load RealEnding sequence patterns
-		bsr.w	LevelSizeLoad
-		bsr.w	DeformBgLayer
-		bset	#2,($FFFFF754).w
-		bsr.w	MainLoadBlockLoad
-		bsr.w	LoadTilesFromStart
-		move.l	#Col_GHZ,($FFFFF796).w ; load collision	index
-		move	#$2300,sr
-		lea	(Kos_EndFlowers).l,a0 ;	load extra flower patterns
-		lea	($FFFF9400).w,a1 ; RAM address to buffer the patterns
-		bsr.w	KosDec
-		moveq	#3,d0
-		bsr.w	PalLoad1	; load Sonic's pallet
-		move.w	#$8B,d0
-		bsr.w	PlaySound	; play RealEnding sequence music
-		btst	#6,($FFFFF604).w ; is button A pressed?
-		beq.s	RealEnd_LoadSonic	; if not, branch
-		move.b	#1,($FFFFFFFA).w ; enable debug	mode
-
-RealEnd_LoadSonic:
-		move.b	#1,($FFFFD000).w ; load	Sonic object
-		bset	#0,($FFFFD022).w ; make	Sonic face left
-		move.b	#1,($FFFFF7CC).w ; lock	controls
-		move.w	#$400,($FFFFF602).w ; move Sonic to the	left
-		move.w	#$F800,($FFFFD014).w ; set Sonic's speed
-		move.b	#$21,($FFFFD040).w ; load HUD object
-		jsr	ObjPosLoad
-		jsr	ObjectsLoad
-		jsr	BuildSprites
-		moveq	#0,d0
-		move.w	d0,($FFFFFE20).w
-		move.l	d0,($FFFFFE22).w
-		move.b	d0,($FFFFFE1B).w
-		move.b	d0,($FFFFFE2C).w
-		move.b	d0,($FFFFFE2D).w
-		move.b	d0,($FFFFFE2E).w
-		move.b	d0,($FFFFFE2F).w
-		move.w	d0,($FFFFFE08).w
-		move.w	d0,($FFFFFE02).w
-		move.w	d0,($FFFFFE04).w
-		bsr.w	OscillateNumInit
-		move.b	#1,($FFFFFE1F).w
-		move.b	#1,($FFFFFE1D).w
-		move.b	#0,($FFFFFE1E).w
-		move.w	#1800,($FFFFF614).w
-		move.b	#$18,($FFFFF62A).w
-		bsr.w	DelayProgram
-		move.w	($FFFFF60C).w,d0
-		ori.b	#$40,d0
-		move.w	d0,($C00004).l
-		move.w	#$3F,($FFFFF626).w
-		bsr.w	Pal_FadeTo
-
-; ---------------------------------------------------------------------------
-; Main RealEnding sequence loop
-; ---------------------------------------------------------------------------
-
-RealEnd_MainLoop:
-		bsr.w	PauseGame
-		move.b	#$18,($FFFFF62A).w
-		bsr.w	DelayProgram
-		addq.w	#1,($FFFFFE04).w
-		bsr.w	RealEnd_MoveSonic
-		jsr	ObjectsLoad
-		bsr.w	DeformBgLayer
-		jsr	BuildSprites
-		jsr	ObjPosLoad
-		bsr.w	PalCycle_Load
-		bsr.w	OscillateNumDo
-		bsr.w	ChangeRingFrame
-		cmpi.b	#$18,($FFFFF600).w ; is	scene number $18 (RealEnding)?
-		beq.s	loc_52DB	; if yes, branch
-		move.b	#$1C,($FFFFF600).w ; set scene to $1C (credits)
-		move.b	#$91,d0
-		bsr.w	PlaySound_Special ; play credits music
-		move.w	#0,($FFFFFFF4).w ; set credits index number to 0
-		rts	
-; ===========================================================================
-
-loc_52DB:
-		tst.w	($FFFFFE02).w	; is level set to restart?
-		beq.w	RealEnd_MainLoop	; if not, branch
-
-		clr.w	($FFFFFE02).w
-		move.w	#$3F,($FFFFF626).w
-		clr.w	($FFFFF794).w
-
-RealEnd_AllEmlds:				; XREF: loc_5334
-		bsr.w	PauseGame
-		move.b	#$18,($FFFFF62A).w
-		bsr.w	DelayProgram
-		addq.w	#1,($FFFFFE04).w
-		bsr.w	RealEnd_MoveSonic
-		jsr	ObjectsLoad
-		bsr.w	DeformBgLayer
-		jsr	BuildSprites
-		jsr	ObjPosLoad
-		bsr.w	OscillateNumDo
-		bsr.w	ChangeRingFrame
-		subq.w	#1,($FFFFF794).w
-		bpl.s	loc_5336
-		move.w	#2,($FFFFF794).w
-		bsr.w	Pal_ToWhite
-
-loc_5336:
-		tst.w	($FFFFFE02).w
-		beq.w	RealEnd_AllEmlds
-		clr.w	($FFFFFE02).w
-		move.w	#$2E2F,($FFFFA480).w ; modify level layout
-		lea	($C00004).l,a5
-		lea	($C00000).l,a6
-		lea	($FFFFF700).w,a3
-		lea	($FFFFA400).w,a4
-		move.w	#$4000,d2
-		bsr.w	LoadTilesFromStart2
-		moveq	#$13,d0
-		bsr.w	PalLoad1	; load RealEnding pallet
-		bsr.w	Pal_MakeWhite
-		bra.w	RealEnd_MainLoop
-
-; ---------------------------------------------------------------------------
-; Subroutine controlling Sonic on the RealEnding sequence
-; ---------------------------------------------------------------------------
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-RealEnd_MoveSonic:				; XREF: RealEnd_MainLoop
-		move.b	($FFFFF7D7).w,d0
-		bne.s	RealEnd_MoveSonic2
-		cmpi.w	#$90,($FFFFD008).w ; has Sonic passed $90 on y-axis?
-		bcc.s	RealEnd_MoveSonExit	; if not, branch
-		addq.b	#2,($FFFFF7D7).w
-		move.b	#1,($FFFFF7CC).w ; lock	player's controls
-		move.w	#$800,($FFFFF602).w ; move Sonic to the	right
-		rts	
-; ===========================================================================
-
-RealEnd_MoveSonic2:				; XREF: RealEnd_MoveSonic
-		subq.b	#2,d0
-		bne.s	RealEnd_MoveSonic3
-		cmpi.w	#$A0,($FFFFD008).w ; has Sonic passed $A0 on y-axis?
-		bcs.s	RealEnd_MoveSonExit	; if not, branch
-		addq.b	#2,($FFFFF7D7).w
-		moveq	#0,d0
-		move.b	d0,($FFFFF7CC).w
-		move.w	d0,($FFFFF602).w ; stop	Sonic moving
-		move.w	d0,($FFFFD014).w
-		move.b	#$81,($FFFFF7C8).w
-		move.b	#3,($FFFFD01A).w
-		move.w	#$505,($FFFFD01C).w ; use "standing" animation
-		move.b	#3,($FFFFD01E).w
-		rts	
-; ===========================================================================
-
-RealEnd_MoveSonic3:				; XREF: RealEnd_MoveSonic
-		subq.b	#2,d0
-		bne.s	RealEnd_MoveSonExit
-		addq.b	#2,($FFFFF7D7).w
-		move.w	#$A0,($FFFFD008).w
-		move.b	#$87,($FFFFD000).w ; load Sonic	RealEnding sequence	object
-		clr.w	($FFFFD024).w
-
-RealEnd_MoveSonExit:
-		rts	
-; RealEnd of function RealEnd_MoveSonic
 ; ---------------------------------------------------------------------------
 ; Subroutine to	load level boundaries and start	locations
 ; ---------------------------------------------------------------------------
@@ -16208,48 +15990,10 @@ Obj3A_Display2:				; XREF: Obj3A_NextLevel, Obj3A_ChkSS
 ; ---------------------------------------------------------------------------
 ; Level	order array
 ; ---------------------------------------------------------------------------
-	if FactoryLight = 0
 	
 LevelOrder:	incbin	misc\lvl_ord.bin
 		even
 		
-	endif
-	
-	if FactoryLight = 1
-	
-LevelOrder:
-        dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-
-        dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-
-		dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-
-        dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-
-        dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-
-        dc.w    star_light_act_2    ; SLZ1
-        dc.w    star_light_act_3    ; SLZ1
-        dc.w    lvlord_sega        ; GHZ4
-        dc.w    lvlord_sega        ; GHZ4
-        even
-		
-	endif
 ; ===========================================================================
 
 Obj3A_ChkPos2:				; XREF: Obj3A_Index
@@ -24690,139 +24434,147 @@ byte_1DF58:	dc.b   3,$11,$12,$13,$14,$FC; 0	; DATA XREF: h+6FC4?o
 ; -------------------------------------------------------------------------------
 ; Unknown Sprite Mappings
 ; -------------------------------------------------------------------------------
-MapUnc_1DF5E:
-	dc word_1DF8A-MapUnc_1DF5E; 0
-	dc word_1DF8C-MapUnc_1DF5E; 1
-	dc word_1DF96-MapUnc_1DF5E; 2
-	dc word_1DFA0-MapUnc_1DF5E; 3
-	dc word_1DFAA-MapUnc_1DF5E; 4
-	dc word_1DFB4-MapUnc_1DF5E; 5
-	dc word_1DFBE-MapUnc_1DF5E; 6
-	dc word_1DFC8-MapUnc_1DF5E; 7
-	dc word_1DFD2-MapUnc_1DF5E; 8
-	dc word_1DFDC-MapUnc_1DF5E; 9
-	dc word_1DFE6-MapUnc_1DF5E; 10
-	dc word_1DFF0-MapUnc_1DF5E; 11
-	dc word_1DFFA-MapUnc_1DF5E; 12
-	dc word_1E004-MapUnc_1DF5E; 13
-	dc word_1E016-MapUnc_1DF5E; 14
-	dc word_1E028-MapUnc_1DF5E; 15
-	dc word_1E03A-MapUnc_1DF5E; 16
-	dc word_1E04C-MapUnc_1DF5E; 17
-	dc word_1E056-MapUnc_1DF5E; 18
-	dc word_1E060-MapUnc_1DF5E; 19
-	dc word_1E06A-MapUnc_1DF5E; 20
-	dc word_1DF8A-MapUnc_1DF5E; 21
+;MapUnc_1DF5E:
+; ---------------------------------------------------------------------------
+; Sprite mappings - Spindash Dust
+; ---------------------------------------------------------------------------
+MapUnc_1DF5E:	dc.w word_1DF8A-MapUnc_1DF5E	; 0
+		dc.w word_1DF8C-MapUnc_1DF5E	; 1
+		dc.w word_1DF96-MapUnc_1DF5E	; 2
+		dc.w word_1DFA0-MapUnc_1DF5E	; 3
+		dc.w word_1DFAA-MapUnc_1DF5E	; 4
+		dc.w word_1DFB4-MapUnc_1DF5E	; 5
+		dc.w word_1DFBE-MapUnc_1DF5E	; 6
+		dc.w word_1DFC8-MapUnc_1DF5E	; 7
+		dc.w word_1DFD2-MapUnc_1DF5E	; 8
+		dc.w word_1DFDC-MapUnc_1DF5E	; 9
+		dc.w word_1DFE6-MapUnc_1DF5E	; A
+		dc.w word_1DFF0-MapUnc_1DF5E	; B
+		dc.w word_1DFFA-MapUnc_1DF5E	; C
+		dc.w word_1E004-MapUnc_1DF5E	; D
+		dc.w word_1E016-MapUnc_1DF5E	; E
+		dc.w word_1E028-MapUnc_1DF5E	; F
+		dc.w word_1E03A-MapUnc_1DF5E	; 10
+		dc.w word_1E04C-MapUnc_1DF5E	; 11
+		dc.w word_1E056-MapUnc_1DF5E	; 12
+		dc.w word_1E060-MapUnc_1DF5E	; 13
+		dc.w word_1E06A-MapUnc_1DF5E	; 14
+		dc.w word_1DF8A-MapUnc_1DF5E	; 15
 word_1DF8A:	dc.b 0
 word_1DF8C:	dc.b 1
-	dc.b $F2, $0D, $0, 0,$F0; 0
+		dc.b $F2, $0D, $0, 0,$F0
 word_1DF96:	dc.b 1
-	dc.b $E2, $0F, $0, 0,$F0; 0
+		dc.b $E2, $0F, $0, 0,$F0
 word_1DFA0:	dc.b 1
-	dc.b $E2, $0F, $0, 0,$F0; 0
+		dc.b $E2, $0F, $0, 0,$F0
 word_1DFAA:	dc.b 1
-	dc.b $E2, $0F, $0, 0,$F0; 0
+		dc.b $E2, $0F, $0, 0,$F0
 word_1DFB4:	dc.b 1
-	dc.b $E2, $0F, $0, 0,$F0; 0
+		dc.b $E2, $0F, $0, 0,$F0
 word_1DFBE:	dc.b 1
-	dc.b $E2, $0F, $0, 0,$F0; 0
+		dc.b $E2, $0F, $0, 0,$F0
 word_1DFC8:	dc.b 1
-	dc.b $F2, $0D, $0, 0,$F0; 0
+		dc.b $F2, $0D, $0, 0,$F0
 word_1DFD2:	dc.b 1
-	dc.b $F2, $0D, $0, 0,$F0; 0
+		dc.b $F2, $0D, $0, 0,$F0
 word_1DFDC:	dc.b 1
-	dc.b $F2, $0D, $0, 0,$F0; 0
+		dc.b $F2, $0D, $0, 0,$F0
 word_1DFE6:	dc.b 1
-	dc.b $4, $0D, $0, 0,$E0; 0
+		dc.b $4, $0D, $0, 0,$E0
 word_1DFF0:	dc.b 1
-	dc.b $4, $0D, $0, 0,$E0; 0
+		dc.b $4, $0D, $0, 0,$E0
 word_1DFFA:	dc.b 1
-	dc.b $4, $0D, $0, 0,$E0; 0
+		dc.b $4, $0D, $0, 0,$E0
 word_1E004:	dc.b 2
-	dc.b $F4, $01, $0, 0,$E8; 0
-	dc.b $4, $0D, $0, 2,$E0; 4
+		dc.b $F4, $01, $0, 0,$E8
+		dc.b $4, $0D, $0, 2,$E0
 word_1E016:	dc.b 2
-	dc.b $F4, $05, $0, 0,$E8; 0
-	dc.b $4, $0D, $0, 4,$E0; 4
+		dc.b $F4, $05, $0, 0,$E8
+		dc.b $4, $0D, $0, 4,$E0
 word_1E028:	dc.b 2
-	dc.b $F4, $09, $0, 0,$E0; 0
-	dc.b $4, $0D, $0, 6,$E0; 4
+		dc.b $F4, $09, $0, 0,$E0
+		dc.b $4, $0D, $0, 6,$E0
 word_1E03A:	dc.b 2
-	dc.b $F4, $09, $0, 0,$E0; 0
-	dc.b $4, $0D, $0, 6,$E0; 4
+		dc.b $F4, $09, $0, 0,$E0
+		dc.b $4, $0D, $0, 6,$E0
 word_1E04C:	dc.b 1
-	dc.b $F8, $05, $0, 0,$F8; 0
+		dc.b $F8, $05, $0, 0,$F8
 word_1E056:	dc.b 1
-	dc.b $F8, $05, $0, 4,$F8; 0
+		dc.b $F8, $05, $0, 4,$F8
 word_1E060:	dc.b 1
-	dc.b $F8, $05, $0, 8,$F8; 0
+		dc.b $F8, $05, $0, 8,$F8
 word_1E06A:	dc.b 1
-	dc.b $F8, $05, $0, $C,$F8; 0
-	dc.b 0
-off_1E074:	dc word_1E0A0-off_1E074; 0
-	dc word_1E0A2-off_1E074; 1
-	dc word_1E0A6-off_1E074; 2
-	dc word_1E0AA-off_1E074; 3
-	dc word_1E0AE-off_1E074; 4
-	dc word_1E0B2-off_1E074; 5
-	dc word_1E0B6-off_1E074; 6
-	dc word_1E0BA-off_1E074; 7
-	dc word_1E0BE-off_1E074; 8
-	dc word_1E0C2-off_1E074; 9
-	dc word_1E0C6-off_1E074; 10
-	dc word_1E0CA-off_1E074; 11
-	dc word_1E0CE-off_1E074; 12
-	dc word_1E0D2-off_1E074; 13
-	dc word_1E0D8-off_1E074; 14
-	dc word_1E0DE-off_1E074; 15
-	dc word_1E0E4-off_1E074; 16
-	dc word_1E0EA-off_1E074; 17
-	dc word_1E0EA-off_1E074; 18
-	dc word_1E0EA-off_1E074; 19
-	dc word_1E0EA-off_1E074; 20
-	dc word_1E0EC-off_1E074; 21
+		dc.b $F8, $05, $0, $C,$F8
+		dc.b 0
+		even
+
+; --------------------------------------------------------------------------------
+; Dynamic Pattern Loading Cues - Spindash Dust
+; --------------------------------------------------------------------------------
+off_1E074:	dc word_1E0A0-off_1E074	; 0
+		dc word_1E0A2-off_1E074	; 1
+		dc word_1E0A6-off_1E074	; 2
+		dc word_1E0AA-off_1E074	; 3
+		dc word_1E0AE-off_1E074	; 4
+		dc word_1E0B2-off_1E074	; 5
+		dc word_1E0B6-off_1E074	; 6
+		dc word_1E0BA-off_1E074	; 7
+		dc word_1E0BE-off_1E074	; 8
+		dc word_1E0C2-off_1E074	; 9
+		dc word_1E0C6-off_1E074	; A
+		dc word_1E0CA-off_1E074	; B
+		dc word_1E0CE-off_1E074	; C
+		dc word_1E0D2-off_1E074	; D
+		dc word_1E0D8-off_1E074	; E
+		dc word_1E0DE-off_1E074	; F
+		dc word_1E0E4-off_1E074	; 10
+		dc word_1E0EA-off_1E074	; 11
+		dc word_1E0EA-off_1E074	; 12
+		dc word_1E0EA-off_1E074	; 13
+		dc word_1E0EA-off_1E074	; 14
+		dc word_1E0EC-off_1E074	; 15
 word_1E0A0:	dc 0
 word_1E0A2:	dc 1
-	dc $7000
+		dc $7000
 word_1E0A6:	dc 1
-	dc $F008
+		dc $F008
 word_1E0AA:	dc 1
-	dc $F018
+		dc $F018
 word_1E0AE:	dc 1
-	dc $F028
+		dc $F028
 word_1E0B2:	dc 1
-	dc $F038
+		dc $F038
 word_1E0B6:	dc 1
-	dc $F048
+		dc $F048
 word_1E0BA:	dc 1
-	dc $7058
+		dc $7058
 word_1E0BE:	dc 1
-	dc $7060
+		dc $7060
 word_1E0C2:	dc 1
-	dc $7068
+		dc $7068
 word_1E0C6:	dc 1
-	dc $7070
+		dc $7070
 word_1E0CA:	dc 1
-	dc $7078
+		dc $7078
 word_1E0CE:	dc 1
-	dc $7080
+		dc $7080
 word_1E0D2:	dc 2
-	dc $1088
-	dc $708A
+		dc $1088
+		dc $708A
 word_1E0D8:	dc 2
-	dc $3092
-	dc $7096
+		dc $3092
+		dc $7096
 word_1E0DE:	dc 2
-	dc $509E
-	dc $70A4
+		dc $509E
+		dc $70A4
 word_1E0E4:	dc 2
-	dc $50AC
-	dc $70B2
+		dc $50AC
+		dc $70B2
 word_1E0EA:	dc 0
 word_1E0EC:	dc 1
-	dc $F0BA
-	even
-
+		dc $F0BA
+		even
+;off_1E074
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 01 - Sonic
@@ -26813,7 +26565,8 @@ SAnim_Do2:
 		moveq	#0,d1
 		move.b	$1B(a0),d1	; load current frame number
 		move.b	1(a1,d1.w),d0	; read sprite number from script
-		bmi.s	SAnim_End_FF	; if animation is complete, branch
+		cmp.b	#$FD,d0					; MJ: is it a flag from FD to FF?
+		bhs	SAnim_End_FF				; MJ: if so, branch to flag routines
 
 SAnim_Next:
 		move.b	d0,$1A(a0)	; load sprite number
@@ -31470,7 +31223,7 @@ loc_17772:
 		move.w	8(a0),$30(a0)
 		move.w	$C(a0),$38(a0)
 		move.b	#$F,collision_flags(a0)
-		move.b	#15,collision_property(a0)	; set number of	hits to	8
+		move.b	#16,collision_property(a0)	; set number of	hits to	8
 
 Obj3D_ShipMain:				; XREF: Obj3D_Index
 		moveq	#0,d0
@@ -31518,7 +31271,7 @@ loc_177E6:
 		bne.s	locret_1784A
 		tst.b	$3E(a0)
 		bne.s	Obj3D_ShipFlash
-		move.b	#$1C,$3E(a0)	; set number of	times for ship to flash
+		move.b	#$38,$3E(a0)	; set number of	times for ship to flash
 		move.w	#$AC,d0
 		jsr	(PlaySound_Special).l ;	play boss damage sound
 
@@ -32089,14 +31842,14 @@ loc_17F1E:				; XREF: Obj77_ShipIndex
 		move.w	8(a1),d0
 		cmpi.w	#$1DA0,d0
 		bcs.s	loc_17F38
-		move.w	#-$180,y_vel(a0)
-		move.w	#$60,x_vel(a0)
+		move.w	#-$280,y_vel(a0)
+		move.w	#$90,x_vel(a0)
 		addq.b	#2,routine_secondary(a0)
 
 loc_17F38:
 		bsr.w	BossMove
-		move.w	$38(a0),y_pos(a0)
-		move.w	$30(a0),8(a0)
+		move.w	$48(a0),y_pos(a0)
+		move.w	$40(a0),8(a0)
 
 loc_17F48:
 		tst.b	$3D(a0)
@@ -32433,7 +32186,7 @@ Obj73_Main:				; XREF: Obj73_Index
 		move.w	8(a0),$30(a0)
 		move.w	$C(a0),$38(a0)
 		move.b	#$F,collision_flags(a0)
-		move.b	#8,collision_property(a0)	; set number of	hits to	8
+		move.b	#16,collision_property(a0)	; set number of	hits to	8
 		lea	Obj73_ObjData(pc),a2
 		movea.l	a0,a1
 		moveq	#3,d1
@@ -32486,7 +32239,7 @@ loc_18302:				; XREF: Obj73_ShipIndex
 		jsr	(CalcSine).l
 		asr.w	#2,d0
 		move.w	d0,y_vel(a0)
-		move.w	#-$100,x_vel(a0)
+		move.w	#-$200,x_vel(a0)
 		bsr.w	BossMove
 		cmpi.w	#$1910,$30(a0)
 		bne.s	loc_18334
@@ -32509,7 +32262,7 @@ loc_1833E:
 		bne.s	locret_18390
 		tst.b	$3E(a0)
 		bne.s	loc_18374
-		move.b	#$28,$3E(a0)
+		move.b	#$38,$3E(a0)
 		move.w	#$AC,d0
 		jsr	(PlaySound_Special).l ;	play boss damage sound
 
@@ -32568,8 +32321,8 @@ loc_183DE:
 ; ===========================================================================
 
 loc_183E6:
-		move.w	#$200,x_vel(a0)
-		move.w	#$100,y_vel(a0)
+		move.w	#$300,x_vel(a0)
+		move.w	#$300,y_vel(a0)
 		btst	#0,status(a0)
 		bne.s	loc_183FE
 		neg.w	$10(a0)
@@ -32581,20 +32334,6 @@ loc_183FE:
 		subq.w	#4,y_vel(a0)
 
 Obj73_MakeLava:
-		subq.b	#1,$34(a0)
-		bcc.s	loc_1845C
-		jsr	SingleObjLoad
-		bne.s	loc_1844A
-		move.b	#$14,0(a1)	; load lava ball object
-		move.w	#$2E8,y_pos(a1)	; set Y	position
-		jsr	(RandomNumber).l
-		andi.l	#$FFFF,d0
-		divu.w	#$50,d0
-		swap	d0
-		addi.w	#$1878,d0
-		move.w	d0,8(a1)
-		lsr.b	#7,d1
-		move.w	#$FF,subtype(a1)
 
 loc_1844A:
 		jsr	(RandomNumber).l
@@ -32646,7 +32385,6 @@ Obj73_MakeLava2:			; XREF: off_183C2
 		move.w	$30(a0),8(a1)
 		move.w	$38(a0),y_pos(a1)
 		addi.w	#$18,y_pos(a1)
-		move.b	#$74,(a1)	; load lava ball object
 		move.b	#1,subtype(a1)
 
 loc_184EA:
@@ -32721,7 +32459,7 @@ loc_1857A:
 ; ===========================================================================
 
 loc_18582:				; XREF: Obj73_ShipIndex
-		move.w	#$500,x_vel(a0)
+		move.w	#$600,x_vel(a0)
 		move.w	#-$40,y_vel(a0)
 		cmpi.w	#$1960,($FFFFF72A).w
 		bcc.s	loc_1859C
@@ -39710,6 +39448,10 @@ Nem_Squirrel:	incbin	artnem\squirrel.bin	; squirrel
 ; ---------------------------------------------------------------------------
 ; Compressed graphics - primary patterns and block mappings
 ; ---------------------------------------------------------------------------
+Nem_Ending_1st:	incbin	artnem\8x8end.bin	; GHZ primary patterns
+		even
+Nem_Ending_2nd:	incbin	artnem\8x8end2.bin	; GHZ secondary patterns
+		even
 Blk16_GHZ:	incbin	map16\ghz.bin
 		even
 Nem_GHZ_1st:	incbin	artnem\8x8ghz1.bin	; GHZ primary patterns
@@ -42496,12 +42238,13 @@ SoundD3:	incbin	sound\Peelout_Release.bin
 
 Art_Dust	incbin	artunc\spindust.bin
 
+		
 	include	"s2levelsel_data/s2_menu.asm"	; Sonic 2 level select
 ; ==============================================================
 ; --------------------------------------------------------------
 ; Debugging modules
 ; --------------------------------------------------------------
-
+   include   "SampleDebugger.asm"
    include   "ErrorHandler.asm"
 
 ; --------------------------------------------------------------

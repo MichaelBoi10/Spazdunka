@@ -26,37 +26,37 @@ _eh_default:	equ	0
 ; ---------------------------------------------------------------
 
 BusError:
-	__ErrorMessage "BUS ERROR", _eh_default|_eh_address_error
+	__ErrorMessage "BUS ERROR CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default|_eh_address_error
 
 AddressError:
-	__ErrorMessage "ADDRESS ERROR", _eh_default|_eh_address_error
+	__ErrorMessage "ADDRESS ERROR CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default|_eh_address_error
 
 IllegalInstr:
-	__ErrorMessage "YOU DUMBASS", _eh_default
+	__ErrorMessage "ILLEGAL INSTRUCTION CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 ZeroDivide:
-	__ErrorMessage "ZERO DIVIDE", _eh_default
+	__ErrorMessage "ZERO DIVIDE CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 ChkInstr:
-	__ErrorMessage "CHK INSTRUCTION", _eh_default
+	__ErrorMessage "CHK INSTRUCTION CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 TrapvInstr:
-	__ErrorMessage "TRAPV INSTRUCTION", _eh_default
+	__ErrorMessage "TRAPV INSTRUCTION CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 PrivilegeViol:
-	__ErrorMessage "PRIVILEGE VIOLATION", _eh_default
+	__ErrorMessage "PRIVILEGE VIOLATION CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 Trace:
-	__ErrorMessage "TRACE", _eh_default
+	__ErrorMessage "TRACE CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 Line1010Emu:
-	__ErrorMessage "LINE 1010 EMULATOR", _eh_default
+	__ErrorMessage "LINE 1010 EMULATOR CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 Line1111Emu:
-	__ErrorMessage "LINE 1111 EMULATOR", _eh_default
+	__ErrorMessage "LINE 1111 EMULATOR CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 ErrorExcept:
-	__ErrorMessage "ERROR EXCEPTION", _eh_default
+	__ErrorMessage "ERROR EXCEPTION CONTACT @baldguy99 ON DISCORD TO MAKE A BUG REPORT", _eh_default
 
 
 ; ---------------------------------------------------------------

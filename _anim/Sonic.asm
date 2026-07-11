@@ -45,7 +45,7 @@ SonAni_LookUp:	dc.b $3F, 5, $FF, 0
 SonAni_Duck:	dc.b $3F, $39, $FF, 0
 SonAni_SpinDash:	dc.b 0, $58, $59, $58, $5A, $58, $5B, $58, $5C, $58, $5D, $FF
 SonAni_Warp2:	dc.b $3F, $34, $FF, 0
-SonAni_Warp3:	dc.b $3F, $35, $FF, 0
+SonAni_Warp3:	dc.b 5, $76, $FD, 0
 SonAni_Warp4:	dc.b $3F, $36, $FF, 0
 SonAni_Stop:	dc.b 7,	$37, $38, $FF
 SonAni_Float1:	dc.b 7,	$3C, $3F, $FF

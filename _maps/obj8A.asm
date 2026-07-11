@@ -286,64 +286,135 @@ byte_17634:	dc.b 27	; PRESENTED / BY / HYPERCMICHAEL / KUW
 		dc.b $18, $05, $00, $32, $F6	; U
 		dc.b $18, $09, $18, $08, $02	; W (unsupported, this is a rotated M as workaround)
 		even
-byte_17680:	dc.b 14	; GET OUT OF MY / FACE
-		dc.b $F0, $05, $00, $00, $97	; G
-		dc.b $F0, $05, $00, $0E, $A7	; E
-		dc.b $F0, $05, $00, $3E, $B6	; T
+byte_17680:	dc.b 65	; NOT SATISFIED / WITH THIS CREDITS / SCREEN / THEN CHECK THE / CREDITS ON THE / SSRG PAGE
+		dc.b $C8, $05, $00, $1A, $A3	; N
+		dc.b $C8, $05, $00, $26, $B2	; O
+		dc.b $C8, $05, $00, $3E, $C2	; T
 						; space
-		dc.b $F0, $05, $00, $26, $D6	; O
-		dc.b $F0, $05, $00, $32, $E6	; U
-		dc.b $F0, $05, $00, $3E, $F6	; T
-						; space
-		dc.b $F0, $05, $00, $26, $16	; O
-		dc.b $F0, $05, $00, $5C, $26	; F
-						; space
-		dc.b $F0, $09, $00, $08, $45	; M
-		dc.b $F0, $05, $00, $2A, $59	; Y
+		dc.b $C8, $05, $00, $2E, $E2	; S
+		dc.b $C8, $05, $00, $04, $F0	; A
+		dc.b $C8, $05, $00, $3E, $00	; T
+		dc.b $C8, $01, $00, $46, $10	; I
+		dc.b $C8, $05, $00, $2E, $18	; S
+		dc.b $C8, $05, $00, $5C, $26	; F
+		dc.b $C8, $01, $00, $46, $35	; I
+		dc.b $C8, $05, $00, $0E, $3D	; E
+		dc.b $C8, $05, $00, $42, $4C	; D
 
-		dc.b $00, $05, $00, $5C, $E1	; F
-		dc.b $00, $05, $00, $04, $F0	; A
-		dc.b $00, $05, $00, $1E, $00	; C
-		dc.b $00, $05, $00, $0E, $10	; E
+		dc.b $D8, $09, $18, $08, $80	; W (unsupported, this is a rotated M as workaround)
+		dc.b $D8, $01, $00, $46, $98	; I
+		dc.b $D8, $05, $00, $3E, $A0	; T
+		dc.b $D8, $05, $00, $3A, $B0	; H
+						; space
+		dc.b $D8, $05, $00, $3E, $D0	; T
+		dc.b $D8, $05, $00, $3A, $E0	; H
+		dc.b $D8, $01, $00, $46, $F0	; I
+		dc.b $D8, $05, $00, $2E, $F8	; S
+						; space
+		dc.b $D8, $05, $00, $1E, $16	; C
+		dc.b $D8, $05, $00, $22, $26	; R
+		dc.b $D8, $05, $00, $0E, $36	; E
+		dc.b $D8, $05, $00, $42, $45	; D
+		dc.b $D8, $01, $00, $46, $55	; I
+		dc.b $D8, $05, $00, $3E, $5D	; T
+		dc.b $D8, $05, $00, $2E, $6D	; S
+
+		dc.b $E8, $05, $00, $2E, $D2	; S
+		dc.b $E8, $05, $00, $1E, $E0	; C
+		dc.b $E8, $05, $00, $22, $F0	; R
+		dc.b $E8, $05, $00, $0E, $00	; E
+		dc.b $E8, $05, $00, $0E, $0F	; E
+		dc.b $E8, $05, $00, $1A, $1E	; N
+
+		dc.b $08, $05, $00, $3E, $92	; T
+		dc.b $08, $05, $00, $3A, $A2	; H
+		dc.b $08, $05, $00, $0E, $B2	; E
+		dc.b $08, $05, $00, $1A, $C1	; N
+						; space
+		dc.b $08, $05, $00, $1E, $E0	; C
+		dc.b $08, $05, $00, $3A, $F0	; H
+		dc.b $08, $05, $00, $0E, $00	; E
+		dc.b $08, $05, $00, $1E, $0F	; C
+		dc.b $08, $05, $00, $58, $1F	; K
+						; space
+		dc.b $08, $05, $00, $3E, $3F	; T
+		dc.b $08, $05, $00, $3A, $4F	; H
+		dc.b $08, $05, $00, $0E, $5F	; E
+
+		dc.b $18, $05, $00, $1E, $96	; C
+		dc.b $18, $05, $00, $22, $A6	; R
+		dc.b $18, $05, $00, $0E, $B6	; E
+		dc.b $18, $05, $00, $42, $C5	; D
+		dc.b $18, $01, $00, $46, $D5	; I
+		dc.b $18, $05, $00, $3E, $DD	; T
+		dc.b $18, $05, $00, $2E, $ED	; S
+						; space
+		dc.b $18, $05, $00, $26, $0B	; O
+		dc.b $18, $05, $00, $1A, $1B	; N
+						; space
+		dc.b $18, $05, $00, $3E, $3A	; T
+		dc.b $18, $05, $00, $3A, $4A	; H
+		dc.b $18, $05, $00, $0E, $5A	; E
+
+		dc.b $28, $05, $00, $2E, $BB	; S
+		dc.b $28, $05, $00, $2E, $C9	; S
+		dc.b $28, $05, $00, $22, $D7	; R
+		dc.b $28, $05, $00, $00, $E7	; G
+						; space
+		dc.b $28, $05, $00, $12, $07	; P
+		dc.b $28, $05, $00, $04, $16	; A
+		dc.b $28, $05, $00, $00, $26	; G
+		dc.b $28, $05, $00, $0E, $36	; E
 		even
-byte_176A9:	dc.b 34	; THE 2 BULLSHITERS / KUW / AND / HYPERCMICHAEL
-		dc.b $D8, $05, $00, $3E, $80	; T
-		dc.b $D8, $05, $00, $3A, $90	; H
-		dc.b $D8, $05, $00, $0E, $A0	; E
+byte_176A9:	dc.b 41	; HONOR TO KUW / WITHOUT HIM THIS / HACK WOULD NOT / EXIST
+		dc.b $C8, $05, $00, $3A, $9E	; H
+		dc.b $C8, $05, $00, $26, $AE	; O
+		dc.b $C8, $05, $00, $1A, $BE	; N
+		dc.b $C8, $05, $00, $26, $CD	; O
+		dc.b $C8, $05, $00, $22, $DD	; R
 						; space
-		dc.b $D8, $05, $00, $36, $BF	; 2
+		dc.b $C8, $05, $00, $3E, $FD	; T
+		dc.b $C8, $05, $00, $26, $0D	; O
 						; space
-		dc.b $D8, $05, $00, $48, $DE	; B
-		dc.b $D8, $05, $00, $32, $EE	; U
-		dc.b $D8, $05, $00, $16, $FE	; L
-		dc.b $D8, $05, $00, $16, $0D	; L
-		dc.b $D8, $05, $00, $2E, $1C	; S
-		dc.b $D8, $05, $00, $3A, $2A	; H
-		dc.b $D8, $01, $00, $46, $3A	; I
-		dc.b $D8, $05, $00, $3E, $42	; T
-		dc.b $D8, $05, $00, $0E, $52	; E
-		dc.b $D8, $05, $00, $22, $61	; R
-		dc.b $D8, $05, $00, $2E, $71	; S
+		dc.b $C8, $05, $00, $58, $2D	; K
+		dc.b $C8, $05, $00, $32, $3D	; U
+		dc.b $C8, $09, $18, $08, $49	; W (unsupported, this is a rotated M as workaround)
 
-		dc.b $F8, $05, $00, $58, $E6	; K
-		dc.b $F8, $05, $00, $32, $F6	; U
-		dc.b $F8, $09, $18, $08, $02	; W (unsupported, this is a rotated M as workaround)
+		dc.b $08, $09, $18, $08, $85	; W (unsupported, this is a rotated M as workaround)
+		dc.b $08, $01, $00, $46, $9D	; I
+		dc.b $08, $05, $00, $3E, $A5	; T
+		dc.b $08, $05, $00, $3A, $B5	; H
+		dc.b $08, $05, $00, $26, $C5	; O
+		dc.b $08, $05, $00, $32, $D5	; U
+		dc.b $08, $05, $00, $3E, $E5	; T
+						; space
+		dc.b $08, $05, $00, $3A, $05	; H
+		dc.b $08, $01, $00, $46, $15	; I
+		dc.b $08, $09, $00, $08, $1D	; M
+						; space
+		dc.b $08, $05, $00, $3E, $41	; T
+		dc.b $08, $05, $00, $3A, $51	; H
+		dc.b $08, $01, $00, $46, $61	; I
+		dc.b $08, $05, $00, $2E, $69	; S
 
-		dc.b $08, $05, $00, $04, $E8	; A
-		dc.b $08, $05, $00, $1A, $F8	; N
-		dc.b $08, $05, $00, $42, $07	; D
+		dc.b $18, $05, $00, $3A, $8F	; H
+		dc.b $18, $05, $00, $04, $9F	; A
+		dc.b $18, $05, $00, $1E, $AF	; C
+		dc.b $18, $05, $00, $58, $BF	; K
+						; space
+		dc.b $18, $09, $18, $08, $DB	; W (unsupported, this is a rotated M as workaround)
+		dc.b $18, $05, $00, $26, $F3	; O
+		dc.b $18, $05, $00, $32, $03	; U
+		dc.b $18, $05, $00, $16, $13	; L
+		dc.b $18, $05, $00, $42, $22	; D
+						; space
+		dc.b $18, $05, $00, $1A, $42	; N
+		dc.b $18, $05, $00, $26, $51	; O
+		dc.b $18, $05, $00, $3E, $61	; T
 
-		dc.b $18, $05, $00, $3A, $9C	; H
-		dc.b $18, $05, $00, $2A, $AC	; Y
-		dc.b $18, $05, $00, $12, $BC	; P
-		dc.b $18, $05, $00, $0E, $CB	; E
-		dc.b $18, $05, $00, $22, $DA	; R
-		dc.b $18, $05, $00, $1E, $EA	; C
-		dc.b $18, $09, $00, $08, $FA	; M
-		dc.b $18, $01, $00, $46, $0E	; I
-		dc.b $18, $05, $00, $1E, $16	; C
-		dc.b $18, $05, $00, $3A, $26	; H
-		dc.b $18, $05, $00, $04, $36	; A
-		dc.b $18, $05, $00, $0E, $46	; E
-		dc.b $18, $05, $00, $16, $55	; L
+		dc.b $28, $05, $00, $0E, $DD	; E
+		dc.b $28, $05, $00, $50, $EC	; X
+		dc.b $28, $01, $00, $46, $FC	; I
+		dc.b $28, $05, $00, $2E, $04	; S
+		dc.b $28, $05, $00, $3E, $12	; T
 		even

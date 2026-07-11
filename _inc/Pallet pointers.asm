@@ -67,3 +67,6 @@
 	dc.l Pal_TitleDuo
 	dc.w $FB00
 	dc.w $1F
+	dc.l Pal_KVW
+	dc.w $FB00
+	dc.w 7

@@ -443,9 +443,9 @@ PLC_SpeStResult:dc.w 1
 ; Pattern load cues - ending sequence
 ; ---------------------------------------------------------------------------
 PLC_Ending:	dc.w $E
-		dc.l Nem_GHZ_1st	; GHZ main patterns
+		dc.l Nem_Ending_1st	; GHZ main patterns
 		dc.w 0
-		dc.l Nem_GHZ_2nd	; GHZ secondary	patterns
+		dc.l Nem_Ending_2nd	; GHZ secondary	patterns
 		dc.w $39A0
 		dc.l Nem_Stalk		; flower stalk
 		dc.w $6B00

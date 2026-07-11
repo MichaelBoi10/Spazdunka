@@ -19,7 +19,7 @@
 	dc.l Obj3D, Obj3E, Obj3F, Obj40
 	dc.l Obj41, Obj42, Obj43, Obj44
 	dc.l Obj45, Obj46, Obj47, Obj48
-	dc.l Obj49, Obj4A, Obj4B, Obj4C
+	dc.l Obj49, Obj4A, ObjNull, Obj4C
 	dc.l Obj4D, Obj4E, Obj4F, Obj50
 	dc.l Obj51, Obj52, Obj53, Obj54
 	dc.l Obj55, Obj56, Obj57, Obj58
