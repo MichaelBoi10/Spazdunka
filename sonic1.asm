@@ -17512,10 +17512,10 @@ loc_D700:
 		btst	#5,d4
 		bne.s	loc_D71C
 		move.b	$1A(a0),d1
-		add.w	d1,d1					; changed from byte to word (we want more than 7F sprites)
-		adda.w	(a1,d1.w),a1
-		moveq	#$00,d1					; clear d1 (because of our byte to word change)
-		move.b	(a1)+,d1
+		add.w	d1,d1			; MJ: changed from byte to word (we want more than 7F sprites)
+		adda.w	(a1,d1.w),a1	; get mappings frame address
+		moveq	#0,d1			; MJ: clear d1 (because of our byte to word change)
+		move.b	(a1)+,d1	; number of sprite pieces
 		subq.b	#1,d1
 		bmi.s	loc_D720
 
@@ -25976,7 +25976,7 @@ Sonic_CheckGoSuper:
 	move.b	#$F,(Palette_frame_count).w
 	move.b	#1,(Super_Sonic_flag).w
 	move.b	#$81,obj_control(a0)
-	move.b	#$1F,anim(a0)			; use transformation animation
+	move.b	#$21,anim(a0)			; use transformation animation
 	move.w	#$A00,(Sonic_top_speed).w
 	move.w	#$30,(Sonic_acceleration).w
 	move.w	#$100,(Sonic_deceleration).w
@@ -26788,6 +26788,11 @@ locret_139C2:
 
 Sonic_Animate:				; XREF: Obj01_Control; et al
 		lea	(SonicAniData).l,a1
+		tst.b	(Super_Sonic_flag).w
+		beq.s	SAnim_NotSuper
+		lea	(SuperSonicAniData).l,a1
+
+SAnim_NotSuper:		
 		moveq	#0,d0
 		move.b	$1C(a0),d0
 		cmp.b	$1D(a0),d0	; is animation set to restart?
@@ -26813,7 +26818,8 @@ SAnim_Do2:
 		moveq	#0,d1
 		move.b	$1B(a0),d1	; load current frame number
 		move.b	1(a1,d1.w),d0	; read sprite number from script
-		bmi.s	SAnim_End_FF	; if animation is complete, branch
+		cmpi.b	#$FD,d0		; MJ: is it a flag from FD to FF?
+		bhs.s	SAnim_End_FF			; MJ: if so, branch to flag routines
 
 SAnim_Next:
 		move.b	d0,$1A(a0)	; load sprite number
@@ -26880,19 +26886,32 @@ loc_13A78:
 		neg.w	d2
 
 loc_13A9C:
+		tst.b	(Super_Sonic_flag).w
+		beq.s	Loc_NotSuper
+		lea	(SupSonAni_Run).l,a1 ; use	running	animation
+		cmpi.w	#$800,d2	; is Sonic at running speed?
+		bhs.s	SuperRun	; if yes, branch
+		lea	(SupSonAni_Walk).l,a1 ; use walking animation
+		bra.s	SuperWalk
+
+Loc_NotSuper:
 		lea	(SonAni_Peelout).l,a1 ; use	running	animation
 		cmpi.w	#$800,d2	; is Sonic at running speed?
-		bcc.s	loc_13AB4	; if yes, branch
+		bhs.s	loc_13AB4	; if yes, branch
 		lea	(SonAni_Run).l,a1 ; use	running	animation
 		cmpi.w	#$600,d2	; is Sonic at running speed?
-		bcc.s	loc_13AB4	; if yes, branch
+		bhs.s	loc_13AB4	; if yes, branch
 		lea	(SonAni_Walk).l,a1 ; use walking animation
+
+SuperWalk:
 		move.b	d0,d1
 		lsr.b	#1,d1
 		add.b	d1,d0
 
 loc_13AB4:
 		add.b	d0,d0
+
+SuperRun:
 		move.b	d0,d3
 		neg.w	d2
 		addi.w	#$800,d2
@@ -26954,6 +26973,11 @@ loc_13B26:
 		andi.b	#1,d1
 		andi.b	#$FC,1(a0)
 		or.b	d1,1(a0)
+		tst.b	(Super_Sonic_flag).w
+		beq.s	Loc_NotSuper2
+		lea	(SupSonAni_Push).l,a1 ; use	running	animation
+
+Loc_NotSuper2:
 		bra.w	SAnim_Do2
 ; End of function Sonic_Animate
 
