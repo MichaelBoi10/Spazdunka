@@ -2172,8 +2172,10 @@ PalCycle_SuperSonic:
 	cmpi.w	#$30,($FFFFF65C).w
 	bcs.s	loc_2185
 	move.b	#-1,(Super_Sonic_palette).w
-	move.b	#0,(MainCharacter+obj_control).w
-loc_2185	lea	(Normal_palette+4).w,a1
+	move.b	#0,($FFFFF7C8).w ; unlock controls
+	
+loc_2185:
+	lea	(Normal_palette+4).w,a1
 	move.l	(a0,d0.w),(a1)+
 	move.l	4(a0,d0.w),(a1)
 
@@ -13375,8 +13377,24 @@ Obj2E_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'
 		bne.s	Obj2E_ChkEnd
 		addi.w	#50,($FFFFFE20).w ; add	50 rings to the	number of rings	you have
-		ori.b	#1,($FFFFFE1D).w ; update the ring counter	
-		jsr	Sonic_ChkSuper_SMonitor
+		tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
+		bne.w	Obj2E_ChkEnd		; if yes, branch
+		tst.b	(Update_HUD_timer).w	; has Sonic reached the end of the act?
+		beq.w	Obj2E_ChkEnd		; if yes, branch
+		move.b	#1,(Super_Sonic_palette).w
+		move.b	#$F,(Palette_frame_count).w
+		move.b	#1,(Super_Sonic_flag).w
+		move.b	#1,($FFFFF7C8).w ; lock	controls
+		move.b	#$21,anim(a0)			; use transformation animation
+		move.w	#$A00,(Sonic_top_speed).w
+		move.w	#$30,(Sonic_acceleration).w
+		move.w	#$100,(Sonic_deceleration).w
+		move.w	#0,invincibility_time(a0)
+		move.b #1,($FFFFFE2D).w ; make Sonic invincible
+		move.w	#$D4,d0         ; 
+		jsr	(PlaySound_Special).l	; Play special ring sound effect.
+		move.w	#$87,d0
+		jmp	(PlaySound).l	; Play the super theme
 
 Obj2E_ChkEnd:
 		rts			; the Goggle monitor does nothing
@@ -25729,7 +25747,7 @@ Sonic_CheckGoSuper:
 	move.b	#1,(Super_Sonic_palette).w
 	move.b	#$F,(Palette_frame_count).w
 	move.b	#1,(Super_Sonic_flag).w
-	move.b	#$81,$FFFFF7C8(a0)
+	move.b	#1,($FFFFF7C8).w ; lock	controls
 	move.b	#$21,anim(a0)			; use transformation animation
 	move.w	#$A00,(Sonic_top_speed).w
 	move.w	#$30,(Sonic_acceleration).w
@@ -25744,37 +25762,6 @@ Sonic_CheckGoSuper:
 return_1ABA4:
 	rts
 ; End of subroutine Sonic_CheckGoSuper
-
-; ---------------------------------------------------------------------------
-; Subroutine called when sonic hits the S Monitor
-; (it's basically the same routine as Sonic_CheckGoSuper)
-; (but the emerald count check is removed)
-; ---------------------------------------------------------------------------
-
-; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
-
-Sonic_ChkSuper_SMonitor:
-	tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
-	bne.s	return2_1ABA4		; if yes, branch
-
-	move.b	#1,(Super_Sonic_palette).w
-	move.b	#$F,(Palette_frame_count).w
-	move.b	#1,(Super_Sonic_flag).w
-	move.b	#$81,obj_control(a0)
-	move.b	#$21,anim(a0)			; use transformation animation
-	move.w	#$A00,(Sonic_top_speed).w
-	move.w	#$30,(Sonic_acceleration).w
-	move.w	#$100,(Sonic_deceleration).w
-	move.w	#0,invincibility_time(a0)
-	move.b #1,($FFFFFE2D).w ; make Sonic invincible
-	move.w	#$D4,d0         ; 
-	jsr	(PlaySound_Special).l	; Play special ring sound effect.
-	move.w	#$87,d0
-	jmp	(PlaySound).l	; Play the super theme
-
-return2_1ABA4
-	rts
-; End of subroutine Sonic_ChkSuper_SMonitor
 
 ; ---------------------------------------------------------------------------
 ; Subroutine doing the extra logic for Super Sonic
