@@ -2642,8 +2642,7 @@ locret_1A68:                            ; CODE XREF: sub_1A3A+4?j
 			rts								; sub_1A3A+10?j
 ; End of function PalCycle_SEGA	
 
-word_1A6A:     	dc.w $0EEE,$0EEE,$0CCC,$0CCC,$0CCC,$0AAA,$0888,$0666,$0444,$0222,$0222,$0000,$0000,$0AAA,$0CCC,$0EEE,$0CCC,$0AAA,$0888,$0666
-				dc.w $0444,$0000,$0CCC,$0AAA,$0888,$0666,$0444,$0EEE
+word_1A6A:     	incbin   "pallet\Cycle - Sega.bin"
 					 
 ; ===========================================================================
 
