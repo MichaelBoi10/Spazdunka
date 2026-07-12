@@ -36,7 +36,7 @@ Music92:	incbin	sound\music92.bin
 		even
 Music93:	incbin	sound\music93.bin
 		even
-Music94:	incbin	sound\music94.bin
+Music94:	incbin	sound\music87.bin
 		even
 Music95:	incbin	sound\music95.bin
 		even

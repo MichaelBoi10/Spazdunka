@@ -13305,6 +13305,8 @@ ExtraLife:
 Obj2E_ChkShoes:
 		cmpi.b	#3,d0		; does monitor contain speed shoes?
 		bne.s	Obj2E_ChkShield
+		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+        beq Obj2E_NoMusic
 		move.b	#1,($FFFFFE2E).w ; speed up the	BG music
 		move.w	#$4B0,($FFFFD034).w ; time limit for the power-up
 		move.w	#$C00,($FFFFF760).w ; change Sonic's top speed
@@ -13328,6 +13330,8 @@ Obj2E_ChkShield:
 Obj2E_ChkInvinc:
 		cmpi.b	#5,d0		; does monitor contain invincibility?
 		bne.s	Obj2E_ChkRings
+		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+        beq Obj2E_NoMusic
 		move.b	#1,($FFFFFE2D).w ; make	Sonic invincible
 		move.w	#28*60,($FFFFD032).w ; time limit for the power-up
 		move.b	#$38,($FFFFD200).w ; load stars	object ($3801)
@@ -13342,8 +13346,6 @@ Obj2E_ChkInvinc:
 		bne.s	Obj2E_NoMusic	; if yes, branch
 		move.w	#$87,d0
 		jmp	(PlaySound).l	; play invincibility music
-		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
-        beq Obj2E_NoMusic
 ; ===========================================================================
 
 Obj2E_NoMusic:
@@ -13375,12 +13377,6 @@ Obj2E_ChkS:
 		addi.w	#50,($FFFFFE20).w ; add	50 rings to the	number of rings	you have
 		ori.b	#1,($FFFFFE1D).w ; update the ring counter	
 		jsr	Sonic_ChkSuper_SMonitor
-		cmpi.w	#100,($FFFFFE20).w ; check if you have 100 rings
-		bset	#1,($FFFFFE1B).w
-		beq.w	ExtraLife
-		cmpi.w	#200,($FFFFFE20).w ; check if you have 200 rings
-		bset	#2,($FFFFFE1B).w
-		beq.w	ExtraLife
 
 Obj2E_ChkEnd:
 		rts			; the Goggle monitor does nothing
@@ -25694,9 +25690,14 @@ loc_134AE:
 		move.w	d1,y_vel(a0)
 
 locret_134C2:
-		tst.b	y_vel(a0)		; is Sonic exactly at the height of his jump?
-		beq.s	Sonic_CheckGoSuper	; if yes, test for turning into Super Sonic
-		rts	
+		tst.b	($FFFFF7C8).w		; are controls locked?
+		bne.s	.no_super		; if yes, don't allow transformation
+		move.b	($FFFFF603).w,d0
+		andi.b	#$70,d0		; is A, B or C pressed (fresh press only)?
+		beq.s	.no_super		; if not, branch
+		bra.s	Sonic_CheckGoSuper
+.no_super:
+		rts
 ; ===========================================================================
 
 loc_134C4:
@@ -25718,26 +25719,27 @@ locret_134D2:
 ; loc_1AB38: test_set_SS:
 Sonic_CheckGoSuper:
 	tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
-	bne.s	return_1ABA4		; if yes, branch
+	bne.w	Sonic_RevertToNormal		; if yes, branch
 	cmpi.b	#6,(Emerald_count).w	; does Sonic have exactly 6 emeralds?
 	bne.s	return_1ABA4		; if not, branch
 	cmpi.w	#50,(Ring_count).w	; does Sonic have at least 50 rings?
 	bcs.s	return_1ABA4		; if not, branch
-
+	tst.b	(Update_HUD_timer).w	; has Sonic reached the end of the act?
+	beq.w	return_1ABA4		; if yes, branch
 	move.b	#1,(Super_Sonic_palette).w
 	move.b	#$F,(Palette_frame_count).w
 	move.b	#1,(Super_Sonic_flag).w
-	move.b	#$81,obj_control(a0)
-	move.b	#$1F,anim(a0)			; use transformation animation
+	move.b	#$81,$FFFFF7C8(a0)
+	move.b	#$21,anim(a0)			; use transformation animation
 	move.w	#$A00,(Sonic_top_speed).w
 	move.w	#$30,(Sonic_acceleration).w
 	move.w	#$100,(Sonic_deceleration).w
 	move.w	#0,invincibility_time(a0)
 	move.b #1,($FFFFFE2D).w ; make Sonic invincible
-	move.w	#$C3,d0         ; 
-	jsr	(PlaySound).l	; Play special ring sound effect.
-	move.w	#$94,d0
-	jmp	(PlaySound_Special).l	; Play the super theme
+	move.w	#$D4,d0         ; 
+	jsr	(PlaySound_Special).l	; Play special ring sound effect.
+	move.w	#$87,d0
+	jmp	(PlaySound).l	; Play the super theme
 ; ---------------------------------------------------------------------------
 return_1ABA4:
 	rts
@@ -25754,23 +25756,21 @@ return_1ABA4:
 Sonic_ChkSuper_SMonitor:
 	tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
 	bne.s	return2_1ABA4		; if yes, branch
-	cmpi.w	#50,(Ring_count).w	; does Sonic have at least 50 rings?
-	bcs.s	return2_1ABA4		; if not, branch
 
 	move.b	#1,(Super_Sonic_palette).w
 	move.b	#$F,(Palette_frame_count).w
 	move.b	#1,(Super_Sonic_flag).w
 	move.b	#$81,obj_control(a0)
-	move.b	#$1F,anim(a0)			; use transformation animation
+	move.b	#$21,anim(a0)			; use transformation animation
 	move.w	#$A00,(Sonic_top_speed).w
 	move.w	#$30,(Sonic_acceleration).w
 	move.w	#$100,(Sonic_deceleration).w
 	move.w	#0,invincibility_time(a0)
 	move.b #1,($FFFFFE2D).w ; make Sonic invincible
-	move.w	#$C3,d0         ; 
-	jsr	(PlaySound).l	; Play special ring sound effect.
-	move.w	#$94,d0
-	jmp	(PlaySound_Special).l	; Play the super theme
+	move.w	#$D4,d0         ; 
+	jsr	(PlaySound_Special).l	; Play special ring sound effect.
+	move.w	#$87,d0
+	jmp	(PlaySound).l	; Play the super theme
 
 return2_1ABA4
 	rts
@@ -26540,6 +26540,11 @@ locret_139C2:
 
 Sonic_Animate:				; XREF: Obj01_Control; et al
 		lea	(SonicAniData).l,a1
+		tst.b	(Super_Sonic_flag).w
+		beq.s	SAnim_NotSuper
+		lea	(SuperSonicAniData).l,a1
+
+SAnim_NotSuper:		
 		moveq	#0,d0
 		move.b	$1C(a0),d0
 		cmp.b	$1D(a0),d0	; is animation set to restart?
@@ -26565,8 +26570,8 @@ SAnim_Do2:
 		moveq	#0,d1
 		move.b	$1B(a0),d1	; load current frame number
 		move.b	1(a1,d1.w),d0	; read sprite number from script
-		cmp.b	#$FD,d0					; MJ: is it a flag from FD to FF?
-		bhs	SAnim_End_FF				; MJ: if so, branch to flag routines
+		cmpi.b	#$FD,d0		; MJ: is it a flag from FD to FF?
+		bhs.s	SAnim_End_FF			; MJ: if so, branch to flag routines
 
 SAnim_Next:
 		move.b	d0,$1A(a0)	; load sprite number
@@ -26633,19 +26638,32 @@ loc_13A78:
 		neg.w	d2
 
 loc_13A9C:
+		tst.b	(Super_Sonic_flag).w
+		beq.s	Loc_NotSuper
+		lea	(SupSonAni_Run).l,a1 ; use	running	animation
+		cmpi.w	#$800,d2	; is Sonic at running speed?
+		bhs.s	SuperRun	; if yes, branch
+		lea	(SupSonAni_Walk).l,a1 ; use walking animation
+		bra.s	SuperWalk
+
+Loc_NotSuper:
 		lea	(SonAni_Peelout).l,a1 ; use	running	animation
 		cmpi.w	#$800,d2	; is Sonic at running speed?
-		bcc.s	loc_13AB4	; if yes, branch
+		bhs.s	loc_13AB4	; if yes, branch
 		lea	(SonAni_Run).l,a1 ; use	running	animation
 		cmpi.w	#$600,d2	; is Sonic at running speed?
-		bcc.s	loc_13AB4	; if yes, branch
+		bhs.s	loc_13AB4	; if yes, branch
 		lea	(SonAni_Walk).l,a1 ; use walking animation
+
+SuperWalk:
 		move.b	d0,d1
 		lsr.b	#1,d1
 		add.b	d1,d0
 
 loc_13AB4:
 		add.b	d0,d0
+
+SuperRun:
 		move.b	d0,d3
 		neg.w	d2
 		addi.w	#$800,d2
@@ -26707,6 +26725,11 @@ loc_13B26:
 		andi.b	#1,d1
 		andi.b	#$FC,1(a0)
 		or.b	d1,1(a0)
+		tst.b	(Super_Sonic_flag).w
+		beq.s	Loc_NotSuper2
+		lea	(SupSonAni_Push).l,a1 ; use	running	animation
+
+Loc_NotSuper2:
 		bra.w	SAnim_Do2
 ; End of function Sonic_Animate
 
@@ -38769,13 +38792,13 @@ Hud_ClrBonusLoop:
 
 
 Hud_Lives:				; XREF: Hud_ChkLives
-		move.l	#$7BA00003,d0	; set VRAM address
+		move.l	#$7B800003,d0	; set VRAM address
 		moveq	#0,d1
 		move.b	($FFFFFE12).w,d1 ; load	number of lives
 		lea	(Hud_10).l,a2
 		moveq	#1,d6
 		moveq	#0,d4
-		lea	Art_LivesNums(pc),a1
+		lea    Art_Hud(pc),a1
 
 Hud_LivesLoop:
 		move.l	d0,mappings(a6)
@@ -38800,16 +38823,24 @@ loc_1CAA2:
 		beq.s	Hud_ClrLives
 
 loc_1CAA6:
-		lsl.w	#5,d2
-		lea	(a1,d2.w),a3
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
-		move.l	(a3)+,(a6)
+		lsl.w    #6,d2
+        lea    (a1,d2.w),a3
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
+        move.l    (a3)+,(a6)
 
 loc_1CABC:
 		addi.l	#$400000,d0
@@ -38821,7 +38852,7 @@ loc_1CABC:
 Hud_ClrLives:
 		tst.w	d6
 		beq.s	loc_1CAA6
-		moveq	#7,d5
+		moveq	#$F,d5
 
 Hud_ClrLivesLoop:
 		move.l	#0,(a6)
@@ -42130,6 +42161,7 @@ SoundIndex:	dc.l SoundA0, SoundA1, SoundA2
 		dc.l SoundCA, SoundCB, SoundCC
 		dc.l SoundCD, SoundCE, SoundCF
 		dc.l SoundD1, SoundD2, SoundD3
+		dc.l SoundD4
 SoundD0Index:	dc.l SoundD0
 SoundA0:	incbin	sound\soundA0.bin
 		even
@@ -42235,7 +42267,8 @@ SoundD2:	incbin	sound\soundD2.bin
 		even
 SoundD3:	incbin	sound\Peelout_Release.bin
 		even
-
+SoundD4:	incbin	sound\soundD4.bin
+		even
 Art_Dust	incbin	artunc\spindust.bin
 
 		

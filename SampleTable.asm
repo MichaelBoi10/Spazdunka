@@ -6,8 +6,8 @@ SampleTable:
 	dcSample	TYPE_PCM, KickS3, 10360				; $92	- Snare (S3)
 	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
-	dcSample	TYPE_PCM, TomS3, 7599					; $95	- Low Tom (S3)
-	dcSample	TYPE_PCM, TomS3, 6490					; $96	- Floor-Tom (S3)
+	dcSample	TYPE_PCM, MetalHit, 9050				; $9B	- Low-Metal Hit
+	dcSample	TYPE_PCM, MetalHit, 7357				; $9C	- Metal Hit
 	dcSample	TYPE_PCM, KickS3, 10090					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, MuffledSnare, 19090			; $98	- Muffled Snare
 	dcSample	TYPE_PCM, CrashCymbal, 16766			; $99	- Crash Cymbal
