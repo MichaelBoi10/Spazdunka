@@ -48,7 +48,7 @@ SonAni_SpinDash:	dc.b 0, $58, $59, $58, $5A, $58, $5B, $58, $5C, $58, $5D, $FF
 SonAni_Warp2:	dc.b $3F, $34, $FF, 0
 SonAni_Warp3:	dc.b $3F, $35, $FF, 0
 SonAni_Warp4:	dc.b $3F, $36, $FF, 0
-SonAni_Stop:	dc.b 7,	$37, $38, $FF
+SonAni_Stop:	dc.b 2, $43, $43, $44, $44, $37, $38, $38, $FD,   1
 SonAni_Float1:	dc.b 7,	$3C, $3F, $FF
 SonAni_Float2:	dc.b 7,	$3C, $3D, $53, $3E, $54, $FF, 0
 SonAni_Spring:	dc.b $2F, $40, $FD, 0
@@ -61,7 +61,7 @@ SonAni_Death1:	dc.b $20, $4B, $FF, 0
 SonAni_Drown:	dc.b $2F, $4C, $FF, 0
 SonAni_Death2:	dc.b 3,	$4D, $FF, 0
 SonAni_Shrink:	dc.b 3,	$4E, $4F, $50, $51, $52, 0, $FE, 1, 0
-SonAni_Hurt:	dc.b 3,	$55, $FF, 0
+SonAni_Hurt:	dc.b 5, $55, $57, $FF
 SonAni_LZSlide:	dc.b 7, $55, $57, $FF
 SonAni_Blank:	dc.b $77, 0, $FD, 0
 SonAni_Float3:	dc.b 3,	$3C, $3D, $53, $3E, $54, $FF, 0
