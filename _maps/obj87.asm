@@ -1,61 +1,38 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - Sonic on the ending	sequence
-; ---------------------------------------------------------------------------
-		dc.w byte_5690-Map_obj87, byte_569B-Map_obj87
-		dc.w byte_56AB-Map_obj87, byte_56B6-Map_obj87
-		dc.w byte_56C1-Map_obj87, byte_56CC-Map_obj87
-		dc.w byte_56DC-Map_obj87, byte_5700-Map_obj87
-byte_5690:	dc.b 2
-		dc.b $EC, $B, 0, 0, $F8	; holding emeralds
-		dc.b $C, $C, 0,	$C, $F0
-byte_569B:	dc.b 3
-		dc.b $FC, $D, 0, $10, $F0 ; holding emeralds (glowing)
-		dc.b $EC, $B, 0, 0, $F8
-		dc.b $C, $C, 0,	$C, $F0
-byte_56AB:	dc.b 2
-		dc.b $EC, 9, 0,	$18, $F8 ; looking up
-		dc.b $FC, $E, 0, $1E, $F0
-byte_56B6:	dc.b 2
-		dc.b $EC, 9, 0,	$2A, $F8 ; confused
-		dc.b $FC, $E, 0, $30, $F0
-byte_56C1:	dc.b 2
-		dc.b $EC, 9, 8,	$2A, $F0 ; confused #2
-		dc.b $FC, $E, 8, $30, $F0
-byte_56CC:	dc.b 3
-		dc.b $EC, 6, 0,	$3C, $F0 ; leaping
-		dc.b $EC, 6, 8,	$3C, 0
-		dc.b 4,	$D, 0, $42, $F0
-byte_56DC:	dc.b 7
-		dc.b $B2, $C, 0, $4A, $F8 ; leaping #2
-		dc.b $BA, $F, 0, $4E, $F0
-		dc.b $BA, 5, 0,	$5E, $10
-		dc.b $CA, 2, 0,	$62, $10
-		dc.b $DA, $C, 0, $65, $F0
-		dc.b $E2, 8, 0,	$69, $F8
-		dc.b $EA, 5, 0,	$6C, $F8
-byte_5700:	dc.b $18
-		dc.b $80, $F, 0, $70, $F8 ; leaping #3
-		dc.b $90, $B, 0, $80, $E0
-		dc.b $90, $B, 0, $8C, $18
-		dc.b $98, $B, 0, $98, $30
-		dc.b $A0, $F, 0, $A4, $58
-		dc.b $88, 0, 0,	$B4, $F0
-		dc.b $80, 5, 0,	$B5, $18
-		dc.b $A0, $F, 0, $B9, $F8
-		dc.b $B0, $B, 0, $C9, $E0
-		dc.b $B8, $F, 0, $D5, $38
-		dc.b $A8, 5, 0,	$E5, $48
-		dc.b $C0, 2, 0,	$E9, $58
-		dc.b $C0, $F, 0, $EC, $F8
-		dc.b $B8, $F, 0, $FC, $18
-		dc.b $B0, 8, 1,	$C, $18
-		dc.b $D8, $D, 1, $F, $30
-		dc.b $D8, 8, 1,	$17, $18
-		dc.b $D8, $F, 1, $1A, $D8
-		dc.b $E0, $D, 1, $2A, $F8
-		dc.b $E0, 0, 1,	$32, $28
-		dc.b $D0, 4, 1,	$33, $E0
-		dc.b $E8, 5, 1,	$35, $C8
-		dc.b $F8, $C, 1, $39, $C8
-		dc.b $F0, 6, 1,	$3D, $F8
-		even
+Map_EndSpaz:
+Map_EndSpaz_0: 	dc.w Map_EndSpaz_10-Map_EndSpaz
+Map_EndSpaz_2: 	dc.w Map_EndSpaz_1B-Map_EndSpaz
+Map_EndSpaz_4: 	dc.w Map_EndSpaz_2B-Map_EndSpaz
+Map_EndSpaz_6: 	dc.w Map_EndSpaz_36-Map_EndSpaz
+Map_EndSpaz_8: 	dc.w Map_EndSpaz_41-Map_EndSpaz
+Map_EndSpaz_A: 	dc.w Map_EndSpaz_4C-Map_EndSpaz
+Map_EndSpaz_C: 	dc.w Map_EndSpaz_5C-Map_EndSpaz
+Map_EndSpaz_E: 	dc.w Map_EndSpaz_6C-Map_EndSpaz
+Map_EndSpaz_10: 	dc.b $2
+	dc.b $EC, $B, $0, $0, $F8
+	dc.b $C, $C, $0, $C, $F0
+Map_EndSpaz_1B: 	dc.b $3
+	dc.b $FC, $D, $0, $10, $F0
+	dc.b $EC, $B, $0, $0, $F8
+	dc.b $C, $C, $0, $C, $F0
+Map_EndSpaz_2B: 	dc.b $2
+	dc.b $EC, $9, $0, $18, $F8
+	dc.b $FC, $E, $0, $1E, $F0
+Map_EndSpaz_36: 	dc.b $2
+	dc.b $EC, $9, $0, $2A, $F8
+	dc.b $FC, $E, $0, $30, $F0
+Map_EndSpaz_41: 	dc.b $2
+	dc.b $EC, $9, $8, $2A, $F0
+	dc.b $FC, $E, $8, $30, $F0
+Map_EndSpaz_4C: 	dc.b $3
+	dc.b $6, $C, $0, $3C, $EA
+	dc.b $EE, $A, $0, $40, $F2
+	dc.b $E, $C, $0, $49, $F2
+Map_EndSpaz_5C: 	dc.b $3
+	dc.b $7, $C, $0, $4D, $EA
+	dc.b $EF, $A, $0, $51, $F2
+	dc.b $F, $C, $0, $5A, $F2
+Map_EndSpaz_6C: 	dc.b $3
+	dc.b $6, $C, $0, $5E, $EA
+	dc.b $EE, $A, $0, $62, $F2
+	dc.b $E, $C, $0, $6B, $F2
+	even

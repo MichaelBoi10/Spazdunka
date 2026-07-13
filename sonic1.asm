@@ -23,7 +23,7 @@ align:	macro
 	endm
 	FactoryLight: = 0
 	SoundTrack: = 1
-	AntiCheat: = 0
+	AntiCheat: = 1
 	Spindash: = 1
 	OGSpazdunka: = 0
 	Michael: = 0
@@ -5756,7 +5756,7 @@ End_MoveSonic2:				; XREF: End_MoveSonic
 		move.b	d0,($FFFFF7CC).w
 		move.w	d0,($FFFFD014).w
 		move.b	#$81,($FFFFF7C8).w
-		move.b	#4,($FFFFD01A).w
+		move.b	#$AA,($FFFFD01A).w
 		move.b	#3,($FFFFD01E).w
 		rts	
 ; ===========================================================================
@@ -16004,7 +16004,43 @@ Obj3A_Display2:				; XREF: Obj3A_NextLevel, Obj3A_ChkSS
 ; Level	order array
 ; ---------------------------------------------------------------------------
 	
-LevelOrder:	incbin	misc\lvl_ord.bin
+LevelOrder:	
+		dc.w	green_hill_act_2	; GHZ1
+		dc.w	green_hill_act_3	; GHZ2
+		dc.w	marble_act_1		; GHZ3
+		dc.w	lvlord_sega		; GHZ4
+		
+		dc.w	marble_act_2		; MZ1
+		dc.w	marble_act_3		; MZ2
+		dc.w	spring_yard_act_1	; SYZ1
+		dc.w	lvlord_sega		; MZ4
+		
+		dc.w	spring_yard_act_2	; SYZ1
+		dc.w	spring_yard_act_3	; SYZ2
+		dc.w	labyrinth_act_1		; LZ1
+		dc.w	lvlord_sega		; SYZ4
+		
+		dc.w	labyrinth_act_2		; LZ1
+		dc.w	labyrinth_act_3		; LZ2
+		dc.w	star_light_act_1	; LZ3
+		dc.w	lvlord_sega		; GHZ4
+		
+		
+		dc.w	star_light_act_2	; SLZ1
+		dc.w	star_light_act_3	; SLZ2
+		dc.w	scrap_brain_act_1	; SBZ1
+		dc.w	lvlord_sega		; SLZ4
+		
+		
+		dc.w	scrap_brain_act_2	; SBZ1
+		dc.w	scrap_brain_act_3	; SBZ2
+		dc.w	lvlord_sega		; SBZ3 (FZ)
+		dc.w	lvlord_sega		; SBZ4
+
+		dc.w	lvlord_sega		; HPZ1
+		dc.w	lvlord_sega		; HPZ2
+		dc.w	lvlord_sega		; HPZ3
+		dc.w	lvlord_sega		; HPZ4
 		even
 		
 ; ===========================================================================
@@ -25736,7 +25772,7 @@ locret_134D2:
 ; loc_1AB38: test_set_SS:
 Sonic_CheckGoSuper:
 	tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
-	bne.w	Sonic_RevertToNormal		; if yes, branch
+	bne.w	return_1ABA4		; if yes, branch
 	cmpi.b	#6,(Emerald_count).w	; does Sonic have exactly 6 emeralds?
 	bne.s	return_1ABA4		; if not, branch
 	cmpi.w	#50,(Ring_count).w	; does Sonic have at least 50 rings?
