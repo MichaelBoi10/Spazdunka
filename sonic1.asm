@@ -13384,7 +13384,7 @@ Obj2E_ChkS:
 		move.b	#$F,(Palette_frame_count).w
 		move.b	#1,(Super_Sonic_flag).w
 		move.b	#1,($FFFFF7C8).w ; lock	controls
-		move.b	#$21,anim(a0)			; use transformation animation
+		move.b	#$21,$1C(a0)			; use transformation animation
 		move.w	#$A00,(Sonic_top_speed).w
 		move.w	#$30,(Sonic_acceleration).w
 		move.w	#$100,(Sonic_deceleration).w
@@ -16919,14 +16919,17 @@ Obj3C_Solid:				; XREF: Obj3C_Index
 		move.w	#$20,d3
 		move.w	8(a0),d4
 		bsr.w	SolidObject
-		btst	#5,status(a0)
-		bne.s	Obj3C_ChkRoll
+		bgt.s	Obj3C_ChkRoll
 
 locret_D180:
 		rts	
 ; ===========================================================================
 
 Obj3C_ChkRoll:				; XREF: Obj3C_Solid
+		tst.b	(Super_Sonic_flag).w
+		bne.s	Obj3C_SuperBreak
+		btst	#5,status(a0)
+		beq.s	locret_D180
 		cmpi.b	#2,anim(a1)	; is Sonic rolling?
 		bne.s	locret_D180	; if not, branch
 		move.w	$30(a0),d0
@@ -16936,6 +16939,8 @@ Obj3C_ChkRoll:				; XREF: Obj3C_Solid
 Obj3C_ChkSpeed:
 		cmpi.w	#$480,d0	; is Sonic's speed $480 or higher?
 		bcs.s	locret_D180	; if not, branch
+
+Obj3C_SuperBreak:
 		move.w	$30(a0),x_vel(a1)
 		addq.w	#4,8(a1)
 		lea	(Obj3C_FragSpd1).l,a4 ;	use fragments that move	right
@@ -25323,8 +25328,7 @@ Sonic_RollSpeed:			; XREF: Obj01_MdRoll
 		asl.w	#1,d6
 		move.w	($FFFFF762).w,d5
 		asr.w	#1,d5
-		move.w	($FFFFF764).w,d4
-		asr.w	#2,d4
+		move.w	#$20,d4
 		tst.b	($FFFFF7CA).w
 		bne.w	loc_131CC
 		tst.w	$3E(a0)
