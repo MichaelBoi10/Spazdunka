@@ -2238,7 +2238,7 @@ loc_21F6	lea	(Underwater_palette+4).w,a1
 ;----------------------------------------------------------------------------
 ;Palette for transformation to Super Sonic
 ;----------------------------------------------------------------------------
-Pal_2246:	incbin	"pallet/supersonic.bin"
+Pal_2246:	incbin	"pallet/Cycle - Super Sonic.bin"
 ;----------------------------------------------------------------------------
 ; ---------------------------------------------------------------------------
 ; Subroutine to	fade out and fade in
@@ -16010,27 +16010,25 @@ LevelOrder:
 		dc.w	marble_act_1		; GHZ3
 		dc.w	lvlord_sega		; GHZ4
 		
-		dc.w	marble_act_2		; MZ1
-		dc.w	marble_act_3		; MZ2
-		dc.w	spring_yard_act_1	; SYZ1
-		dc.w	lvlord_sega		; MZ4
-		
-		dc.w	spring_yard_act_2	; SYZ1
-		dc.w	spring_yard_act_3	; SYZ2
-		dc.w	labyrinth_act_1		; LZ1
-		dc.w	lvlord_sega		; SYZ4
-		
 		dc.w	labyrinth_act_2		; LZ1
 		dc.w	labyrinth_act_3		; LZ2
 		dc.w	star_light_act_1	; LZ3
 		dc.w	lvlord_sega		; GHZ4
 		
+		dc.w	marble_act_2		; MZ1
+		dc.w	marble_act_3		; MZ2
+		dc.w	spring_yard_act_1	; SYZ1
+		dc.w	lvlord_sega		; MZ4
 		
 		dc.w	star_light_act_2	; SLZ1
 		dc.w	star_light_act_3	; SLZ2
 		dc.w	scrap_brain_act_1	; SBZ1
 		dc.w	lvlord_sega		; SLZ4
 		
+		dc.w	spring_yard_act_2	; SYZ1
+		dc.w	spring_yard_act_3	; SYZ2
+		dc.w	labyrinth_act_1		; LZ1
+		dc.w	lvlord_sega		; SYZ4
 		
 		dc.w	scrap_brain_act_2	; SBZ1
 		dc.w	scrap_brain_act_3	; SBZ2
