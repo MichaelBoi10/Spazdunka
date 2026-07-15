@@ -31,21 +31,22 @@
 ; ---------------------------------------------------------------------------
  
 SCDPeelout_Launch:
+		move.b	#$23,anim(a0)
 		move.b	($FFFFF602).w,d0
 		btst	#0,d0
 		bne.w	SCDPeelout_Charge
 		bclr	#1,$39(a0)	; stop Dashing
-		cmpi.b	#$1E,$3A(a0)	; have we been charging long enough?
-		bne.s	SCDPeelout_Stop_Sound
+		cmpi.b	#$20,$1C(a0)	; launches here (peelout sprites)
+		beq.s	SCDPeelout_Stop_Sound
 		move.b	#0,$1C(a0)	; launches here (peelout sprites)
 		move.w	#1,$10(a0)	; force X speed to nonzero for camera lag's benefit
 		move.w	$14(a0),d0
-		subi.w	#$800,d0
+		subi.w	#$700,d0
 		add.w	d0,d0
-		andi.w	#$800,d0
+		andi.w	#$700,d0
 		neg.w	d0
-		addi.w	#$800,d0
-		;move.w	d0,(v_cameralag).w
+		addi.w	#$700,d0
+		move.w	d0,($FFFFC904).w	; move to $C904
 		btst	#0,$22(a0)
 		beq.s	@dontflip
 		neg.w	$14(a0)

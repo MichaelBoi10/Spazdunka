@@ -36,6 +36,8 @@
 		dc.w SonAni_Peelout-SonicAniData
 		dc.w SonAni_Transform-SuperSonicAniData
 		dc.w SonAni_WakeUp-SuperSonicAniData
+		dc.w SonAni_SuperPeelOut-SonicAniData
+		
 SonAni_Walk:	dc.b $FF, 8, 9,	$A, $B,	6, 7, $FF
 SonAni_Run:	dc.b $FF, $1E, $1F, $20, $21, $FF, $FF,	$FF
 SonAni_Roll:	dc.b $FE, $2E, $2F, $30, $31, $32, $FF,	$FF
@@ -71,6 +73,7 @@ SonAni_Balance2: dc.b $F, $62, $63, $64, $65, $FF
 SonAni_Peelout:	dc.b $FF, $66, $67, $68, $69, $FF, $FF, $FF
 SonAni_Transform: dc.b 2, $76, $76, $77, $77, $78, $79, $7A, $79, $7A, $79, $7A, $79, $7A, $FD, 0
 SonAni_WakeUp: dc.b 17, $AD, $FF
+SonAni_SuperPeelOut: dc.b 0, 8, 8, 8, 8, 9, 9, 9, 9, $A, $A, $A, $A, $B, $B, $B, 6, 6, 6, 7, 7, 7, 8, 9, $A, $B, 6, 7, $1E, $1F, $20, $21, $1E, $1F, $66, $67, $68, $69, $FE, 4
 		even
 
 SuperSonicAniData:
@@ -108,6 +111,9 @@ SuperSonicAniData:
 		dc.w SonAni_Balance2-SuperSonicAniData
 		dc.w SonAni_Peelout-SuperSonicAniData
 		dc.w SonAni_Transform-SuperSonicAniData
+		dc.w SonAni_WakeUp-SuperSonicAniData
+		dc.w SonAni_SuperPeelOut-SonicAniData
+		
 SupSonAni_Walk:	dc.b $FF, $80, $81, $82, $83, $7E, $7F, $FF
 SupSonAni_Run:	dc.b $FF, $96, $97, $FF, $FF, $FF, $FF,	$FF, $FF
 SupSonAni_Push:	dc.b $FD, $9E, $9F, $A0, $A1, $FF, $FF,	$FF
@@ -115,4 +121,5 @@ SupSonAni_Wait: dc.b 7, $7B, $7C, $7D, $7C, $FF
 SupSonAni_Balance: dc.b 9, $A3, $A4, $A5, $A4, $A6, $A7, $A8, $A7, $FF
 SupSonAni_Duck:	dc.b 5, $A2, $FF, 0
 SupSonAni_Balance2: dc.b 9, $A3, $A4, $A5, $A4, $A6, $A7, $A8, $A7, $FF
+;SupSonAni_SuperPeelOut: dc.b 0, $80, $80, $80, $80, $81, $81, $81, $81, $82, $82, $82, $83, $83, $83, $7E, $7E, $7F, $7F, $96, $97, $FE, 2
 		even

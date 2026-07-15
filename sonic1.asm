@@ -6453,6 +6453,7 @@ LevelSizeLoad:				; XREF: TitleScreen; Level; EndingSequence
 		move.w	#$1010,($FFFFF74A).w
 		move.w	(a0)+,d0
 		move.w	d0,($FFFFF73E).w
+		move.w  #160,($FFFFF7A0).w    ; reset the horizontal camera pan value to 160 pixels
 		bra.w	LevSz_ChkLamp
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -7334,78 +7335,65 @@ locret_65B0:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-ScrollHoriz2:				; XREF: ScrollHoriz
-		move.w	($FFFFC904).w,d1
-		beq.s	@cont1
-		sub.w	#$100,d1
-		move.w	d1,($FFFFC904).w
-		moveq	#0,d1
-		move.b	($FFFFC904).w,d1
-		lsl.b	#2,d1
-		addq.b	#4,d1
-		move.w	($FFFFF7A8).w,d0
-		sub.b	d1,d0
-		lea	($FFFFCB00).w,a1
-		move.w	(a1,d0.w),d0
-		and.w	#$3FFF,d0
-		bra.s	@cont2
-		
-@cont1:
-		move.w	($FFFFD008).w,d0
-		
-@cont2:
-		sub.w	($FFFFF700).w,d0
-		subi.w	#$90,d0
-		bcs.s	loc_65F6
-		subi.w	#$10,d0
-		bcc.s	loc_65CC
-		clr.w	($FFFFF73A).w
-		rts	
+ScrollHoriz2:
+        move.w    ($FFFFD008).w,d0
+        sub.w    ($FFFFF700).w,d0 ; Sonic's distance from left edge of screen
+        sub.w    ($FFFFF7A0).w,d0    ; Horizontal camera pan value
+        beq.s    SH_ProperlyFramed    ; if zero, branch
+        bcs.s    SH_BehindMid    ; if less than, branch
+        bra.s    SH_AheadOfMid    ; branch
 ; ===========================================================================
 
-loc_65CC:
-		cmpi.w	#$10,d0
-		bcs.s	loc_65D6
-		move.w	#$10,d0
-
-loc_65D6:
-		add.w	($FFFFF700).w,d0
-		cmp.w	($FFFFF72A).w,d0
-		blt.s	loc_65E4
-		move.w	($FFFFF72A).w,d0
-
-loc_65E4:
-		move.w	d0,d1
-		sub.w	($FFFFF700).w,d1
-		asl.w	#8,d1
-		move.w	d0,($FFFFF700).w
-		move.w	d1,($FFFFF73A).w
-		rts	
+SH_ProperlyFramed:
+        clr.w    ($FFFFF73A).w
+        rts 
 ; ===========================================================================
 
-loc_65F6:				; XREF: ScrollHoriz2
-		cmpi.w	#-$10,d0
-		bgt.s	@cont
-		move.w	#-$10,d0	
-		
-@cont:
-		add.w	($FFFFF700).w,d0
-		cmp.w	($FFFFF728).w,d0
-		bgt.s	loc_65E4
-		move.w	($FFFFF728).w,d0
-		bra.s	loc_65E4
-; End of function ScrollHoriz2
+SH_AheadOfMid:
+        cmpi.w    #16,d0        ; is Sonic within 16px of middle area?
+        blt.s    SH_Ahead16    ; if yes, branch
+        move.w    #16,d0        ; set to 16 if greater
+
+SH_Ahead16:
+        add.w    ($FFFFF700).w,d0
+        cmp.w    ($FFFFF72A).w,d0
+        blt.s    SH_SetScreen
+        move.w    ($FFFFF72A).w,d0
+
+SH_SetScreen:
+        move.w    d0,d1
+        sub.w    ($FFFFF700).w,d1
+        asl.w    #8,d1
+        move.w    d0,($FFFFF700).w ; set new screen position
+        move.w    d1,($FFFFF73A).w ; set distance for screen movement
+        rts
 
 ; ===========================================================================
-		tst.w	d0
-		bpl.s	loc_6610
-		move.w	#-2,d0
-		bra.s	loc_65F6
+
+SH_BehindMid:
+        cmpi.w    #-16,d0        ; is Sonic within 16px of middle area?
+        bge.s    SH_Behind16    ; if no, branch
+        move.w    #-16,d0        ; set to -16 if less
+
+SH_Behind16:
+        add.w    ($FFFFF700).w,d0
+        cmp.w    ($FFFFF728).w,d0
+        bgt.s    SH_SetScreen
+        move.w    ($FFFFF728).w,d0
+        bra.s    SH_SetScreen
+      
+; End of function MoveScreenHoriz
+
+; ===========================================================================
+        tst.w    d0
+        bpl.s    loc_6610
+        move.w    #$FFFE,d0
+        bra.s    SH_Behind16
 ; ===========================================================================
 
 loc_6610:
-		move.w	#2,d0
-		bra.s	loc_65CC
+        move.w    #2,d0
+        bra.s    SH_AheadOfMid
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	scroll the level vertically as Sonic moves
@@ -13375,26 +13363,10 @@ Obj2E_RingSound:
 Obj2E_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'
 		bne.s	Obj2E_ChkEnd
-		addi.w	#50,($FFFFFE20).w ; add	50 rings to the	number of rings	you have
-		tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
-		bne.w	Obj2E_ChkEnd		; if yes, branch
-		tst.b	(Update_HUD_timer).w	; has Sonic reached the end of the act?
-		beq.w	Obj2E_ChkEnd		; if yes, branch
-		move.b	#1,(Super_Sonic_palette).w
-		move.b	#$F,(Palette_frame_count).w
-		move.b	#1,(Super_Sonic_flag).w
-		move.b	#1,($FFFFF7C8).w ; lock	controls
-		move.b	#$21,$1C(a0)			; use transformation animation
-		move.w	#$A00,(Sonic_top_speed).w
-		move.w	#$30,(Sonic_acceleration).w
-		move.w	#$100,(Sonic_deceleration).w
-		move.w	#0,invincibility_time(a0)
-		move.b #1,($FFFFFE2D).w ; make Sonic invincible
-		move.w	#$D4,d0         ; 
-		jsr	(PlaySound_Special).l	; Play special ring sound effect.
-		move.w	#$87,d0
-		jmp	(PlaySound).l	; Play the super theme
-
+		bset.b	#1,($FFFFF601).w ; add	the special stage activation flag
+		move.w	#$D5,d0
+		jsr	(PlaySound_Special).l ;	play rolling sound
+		
 Obj2E_ChkEnd:
 		rts			; the Goggle monitor does nothing
 ; ===========================================================================
@@ -15988,7 +15960,7 @@ Obj3A_NextLevel:			; XREF: Obj3A_Index
 
 Obj3A_ChkSS:				; XREF: Obj3A_NextLevel
 		clr.b	($FFFFFE30).w	; clear	lamppost counter
-		tst.b	($FFFFF7CD).w	; has Sonic jumped into	a giant	ring?
+		btst	#1,($FFFFF601).w	; has Sonic jumped into	a giant	ring?
 		beq.s	loc_C6EA	; if not, branch
 		move.b	#$10,($FFFFF600).w ; set game mode to Special Stage (10)
 		bra.s	Obj3A_Display2
@@ -24666,14 +24638,89 @@ Obj01_Main:				; XREF: Obj01_Index
 		move.b	#5,$FFFFD1C0.w
 		move.b	#0,(Super_Sonic_flag).w
 
-Obj01_Control:				; XREF: Obj01_Index
+Obj01_Control:                ; XREF: Obj01_Index
+        bsr.s   Sonic_PanCamera    ; ++add this++
 		tst.w	($FFFFFFFA).w	; is debug cheat enabled?
 		beq.s	loc_12C58	; if not, branch
 		btst	#4,($FFFFF605).w ; is button C pressed?
 		beq.s	loc_12C58	; if not, branch
 		move.w	#1,($FFFFFE08).w ; change Sonic	into a ring/item
 		clr.b	($FFFFF7CC).w
-		rts	
+		rts
+		
+; ---------------------------------------------------------------------------
+; Subroutine to    horizontally pan the camera view ahead of the player
+; (Ported from the US version of Sonic CD's "R11A__.MMD" by Nat The Porcupine, ported to Hivebrain disasm by DelayHacks)
+; ---------------------------------------------------------------------------
+
+; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
+
+Sonic_PanCamera:
+        move.w    ($FFFFF7A0).w,d1        ; get the current camera pan value
+        move.w    $14(a0),d0        ; get sonic's inertia
+        bpl.s    Sonic_PanCamera_abs_inertia            ; if sonic's inertia is positive, branch ahead
+        neg.w    d0                        ; otherwise, we negate it to get the absolute value
+
+Sonic_PanCamera_abs_inertia:
+
+; These lines were intended to prevent the Camera from panning while
+; going up the very first giant ramp in Palmtree Panic Zone Act 1.
+; However, given that no such object exists in Sonic 1, I just went
+; ahead and commented these out.
+;        btst    #1,$2C(a0)                ; is sonic going up a giant ramp in PPZ?
+;        beq.s    Sonic_PanCamera_skip                    ; if not, branch
+;        cmpi.w    #$1B00,($FFFFD008).w            ; is sonic's x position lower than $1B00?
+;        bcs.s    Sonic_PanCamera_reset_pan                ; if so, branch
+
+; These lines aren't part of the original routine; I added them myself.
+; If you've ported the Spin Dash, uncomment the following lines of code
+; to allow the camera to pan ahead while charging the Spin Dash:
+        tst.b    $39(a0)                    ; is sonic charging up a spin dash?
+        beq.s    Sonic_PanCamera_skip                    ; if not, branch
+        btst    #0,$22(a0)            ; check the direction that sonic is facing
+        bne.s    Sonic_PanCamera_pan_right                ; if he's facing right, pan the camera to the right
+        bra.s    Sonic_PanCamera_pan_left                ; otherwise, pan the camera to the left
+
+Sonic_PanCamera_skip:
+        cmpi.w    #$600,d0                ; is sonic's inertia greater than $600
+        bcs.s    Sonic_PanCamera_reset_pan                ; if not, recenter the screen (if needed)
+        tst.w    $14(a0)            ; otherwise, check the direction of inertia (by subtracting it from 0)
+        bpl.s    Sonic_PanCamera_pan_left                ; if the result was positive, then inertia was negative, so we pan the screen left
+
+Sonic_PanCamera_pan_right:
+        addq.w    #2,d1                    ; add 2 to the pan value
+        cmpi.w    #224,d1                    ; is the pan value greater than 224 pixels?
+        bcs.s    Sonic_PanCamera_update_pan                ; if not, branch
+        move.w    #224,d1                    ; otherwise, cap the value at the maximum of 224 pixels
+        bra.s    Sonic_PanCamera_update_pan                ; branch
+; ---------------------------------------------------------------------------
+
+Sonic_PanCamera_pan_left:
+        subq.w    #2,d1                    ; subtract 2 from the pan value
+        cmpi.w    #96,d1                    ; is the pan value less than 96 pixels?
+        bcc.s    Sonic_PanCamera_update_pan                ; if not, branch
+        move.w    #96,d1                    ; otherwise, cap the value at the minimum of 96 pixels
+        bra.s    Sonic_PanCamera_update_pan                ; branch
+; ---------------------------------------------------------------------------
+
+Sonic_PanCamera_reset_pan:
+        cmpi.w    #160,d1                    ; is the pan value 160 pixels?
+        beq.s    Sonic_PanCamera_update_pan                ; if so, branch
+        bcc.s    Sonic_PanCamera_reset_left                ; otherwise, branch if it greater than 160
+     
+Sonic_PanCamera_reset_right:
+        addq.w    #2,d1                    ; add 2 to the pan value
+        bra.s    Sonic_PanCamera_update_pan                ; branch
+; ---------------------------------------------------------------------------
+
+Sonic_PanCamera_reset_left:
+        subq.w    #2,d1                    ; subtract 2 from the pan value
+
+Sonic_PanCamera_update_pan:
+        move.w    d1,($FFFFF7A0).w        ; update the camera pan value
+        rts                                ; return
+     
+; End of function Sonic_PanCamera
 ; ===========================================================================
 
 loc_12C58:
@@ -42185,7 +42232,7 @@ SoundIndex:	dc.l SoundA0, SoundA1, SoundA2
 		dc.l SoundCA, SoundCB, SoundCC
 		dc.l SoundCD, SoundCE, SoundCF
 		dc.l SoundD1, SoundD2, SoundD3
-		dc.l SoundD4
+		dc.l SoundD4, SoundD5
 SoundD0Index:	dc.l SoundD0
 SoundA0:	incbin	sound\soundA0.bin
 		even
@@ -42292,6 +42339,8 @@ SoundD2:	incbin	sound\soundD2.bin
 SoundD3:	incbin	sound\Peelout_Release.bin
 		even
 SoundD4:	incbin	sound\soundD4.bin
+		even
+SoundD5:	incbin	sound\soundD5.bin
 		even
 Art_Dust	incbin	artunc\spindust.bin
 
