@@ -29,7 +29,7 @@
 Slow_Motion_Flag      equ $FFFFFFE1
 Debug_Mode_Flag       equ $FFFFFFE2
 
-Level_Select_Menu_snd   = $0095
+Level_Select_Menu_snd   = $008C
 Emerald_Snd             = $0093
 Ring_Snd                = $00B5
 Volume_Down             = $00E0
@@ -134,7 +134,7 @@ Menu_Clear_Act_x:						; Limpa os n?meros dos acts n?o usados e carrega o "*" do
 		lea		$0050(a2),a2
 		dbra	d1,Menu_Clear_Act_x
 		lea     $FFFFFF10(a2), a2
-		move.w  #$001A, (a2)          ; Load "*"
+		move.w	#$0000,(a2)	
 ;-------------------------------------------------------------------------------
 ; Carrega o Mapeamento das Asas onde são mostrados os ícones
 ;------------------------------------------------------------------------------- 
@@ -260,27 +260,7 @@ Menu_Level_Select_Array:
                 dc.w    $0502, $4000, $0600	
                 dc.w    $FFFF
 Menu_Load_Level:
-                andi.w  #$3FFF, D0
-                move.w  D0, ($FFFFFE10).w
-                move.b  #$0C, ($FFFFF600).w
-                move.b  #$03, ($FFFFFE12).w
-                move.b  #$03, ($FFFFFEC6).w
-                moveq   #$00, D0
-                move.w  D0, ($FFFFFE20).w
-                move.l  D0, ($FFFFFE22).w
-                move.l  D0, ($FFFFFE26).w
-                move.w  D0, ($FFFFFED0).w
-                move.l  D0, ($FFFFFED2).w
-                move.l  D0, ($FFFFFED6).w
-                nop
-                nop
-                move.l  #$00001388, ($FFFFFFC0).w
-                move.l  #$00001388, ($FFFFFFC4).w
-                move.b  #Volume_Down, D0
-                bsr     Menu_Play_Music     
-                moveq   #$00, D0
-                move.w  D0, ($FFFFFF8A).w
-                move.w  D0, ($FFFFFFDC).w
+                
                 rts
 Offset_0x026DEC:
                 move.b  ($FFFFF605).w, D1
@@ -332,17 +312,7 @@ Offset_0x026E5E:
                 addi.b  #$10, D0
                 andi.b  #$7F, D0
 Offset_0x026E6C:
-                move.w  D0, ($FFFFFF84).w
-                andi.w  #$0030, D1
-                beq.s   Offset_0x026E9A
-                move.w  ($FFFFFF84).w, D0
-                addi.w  #$0080, D0
-                bsr     Menu_Play_Music 
-                lea     (Code_Debug_Mode), A0   
-                lea     (Code_All_Emeralds), A2 
-                lea     ($FFFFFF0A).w, A1
-                moveq   #$01, D2
-                bsr     Menu_Code_Test 
+               
 Offset_0x026E9A:
                 rts
 Offset_0x026E9C:
@@ -411,18 +381,11 @@ Offset_0x026F28:
                 add.w   D3, D0
                 move.w  D0, (A6)
 Offset_0x026F6C:
-                cmpi.w  #$0015, ($FFFFFF82).w  ; Se for igual seleciona o número do Sound Test
-                bne.s   Offset_0x026F78
-                bsr     Offset_0x026F7A
+                
 Offset_0x026F78:
                 rts
 Offset_0x026F7A:
-                move.l  #$49C60003, ($00C00004) ; Posição dos números do Sound Test
-                move.w  ($FFFFFF84).w, D0
-                move.b  D0, D2
-                lsr.b   #$04, D0
-                bsr.s   Offset_0x026F90
-                move.b  D2, D0
+             
 Offset_0x026F90:
                 andi.w  #$000F, D0
                 cmpi.b  #$0A, D0
@@ -435,45 +398,21 @@ Offset_0x026F9E:
                 rts
 ;-------------------------------------------------------------------------------                
 Menu_Code_Test: 
-                move.w  ($FFFFFF0C).w, D0
-                adda.w  D0, A0
-                move.w  ($FFFFFF84).w, D0
-                cmp.b   (A0), D0
-                bne.s   Menu_Reset_Debug_Mode_Code_Counter
-                addq.w  #$01, ($FFFFFF0C).w
-                tst.b   $0001(A0)
-                bpl.s   Menu_All_Emeralds_Code_Test 
-                move.w  #$0101, (A1)
-                bra     Menu_Set_Debug_Flag 
+                
 Menu_Reset_Debug_Mode_Code_Counter: 
-                move.w  #$0000, ($FFFFFF0C).w
+                
 Menu_All_Emeralds_Code_Test: 
-                move.w  ($FFFFFF0E).w, D0
-                adda.w  D0, A2
-                move.w  ($FFFFFF84).w, D0
-                cmp.b   (A2), D0
-                bne.s   Menu_Reset_All_Emerald_Code_Counter 
-                addq.w  #$01, ($FFFFFF0E).w
-                tst.b   $0001(A2)
-                bpl.s   Menu_Code_Not_0xFF 
-                tst.w   D2
-                bne.s   Menu_Set_All_Emeralds 
+               
 Menu_Set_Debug_Flag: 
-                move.b  #$01, (Slow_Motion_Flag).w
-                move.b  #$01, (Debug_Mode_Flag).w
-                move.b  #Ring_Snd, D0
-                bsr     Menu_Play_Music 
-                bra.s   Menu_Reset_All_Emerald_Code_Counter 
+               
 Menu_Set_All_Emeralds: 
-                move.w  #6,($FFFFFE56).w
-                move.b  #Emerald_Snd, D0
-                bsr     Menu_Play_Music 
+                
 Menu_Reset_All_Emerald_Code_Counter: 
-                move.w  #$0000, ($FFFFFF0E).w
+                
 Menu_Code_Not_0xFF: 
                 rts               
 Code_Debug_Mode: 
-                dc.b    $01, $01, $00, $03, $02, $00, $02, $05, $FF ; Sonic Spazdunka V1's Release Date
+                dc.b    $01, $09, $09, $01, $00, $06, $02, $03, $FF ; Sonic 1's Release Date
                 even
 Code_All_Emeralds: 
                 dc.b    $04, $01, $02, $06, $FF ; Same Code as in Sonic 2
@@ -600,22 +539,22 @@ Menu_Text_Highlight:
 ;-------------------------------------------------------------------------------                
 Menu_Text_Positions:                   
                 dc.w    $00F6, $0236, $0376, $04B6, $05F6, $011C, $025C, $039C
-                dc.w    $04DC, $061C
+                dc.w    $04DC, $061C, $FFFF
 ;-------------------------------------------------------------------------------                          
 Menu_Level_Select_Text: 
-                dc.b    $0E, _P, _O, _L, _L, _U, _T, _E, _D, __, _H, _I, _L, _L, __, __
-                dc.b    $0E, _N, _E, _T, _H, _E, _R, _E, _D, __, _M, _A, _R, _B, _L, _E
-                dc.b    $0E, _A, _U, _T, _O, __, _Y, _A, _R, _D, __, __, __, __, __, __
-                dc.b    $0E, _C, _O, _N, _T, _R, _A, _R, _Y, __, _G, _R, _O, _T, _T, _O
-                dc.b    $0E, _F, _A, _C, _T, _O, _R, _Y, __, _L, _I, _G, _H, _T, __, __
-                dc.b    $0E, _S, _C, _R, _A, _P, __, _F, _A, _C, _T, _O, _R, _Y, __, __
-                dc.b    $0E, _F, _I, _N, _A, _L, __, _B, _A, _T, _T, _L, _E, __, __, __   
-                dc.b    $0E, _S, _P, _E, _C, _I, _A, _L, __, _S, _T, _A, _G, _E, __, __
-                dc.b    $0E, _E, _N, _D, _I, _N, _G, __, _S, _E, _Q, _U, _E, _N, _C, _E
-                dc.b    $0E, _S, _O, _U, _N, _D, __, _T, _E, _S, _T, __, __, _st,__, __               
+                dc.b    $0E, _Y, _O, _U, __, _B, _E, _T, _T, _E, _R, __, __, __, __, __
+                dc.b    $0E, _R, _E, _S, _E, _T, __, _T, _H, _E, __, __, __, __, __, __
+                dc.b    $0E, _F, _U, _C, _K, _I, _N, _G, __, _G, _A, _M, _E, __, __, __
+                dc.b    $0E, _A, _N, _D, __, _N, _O, _T, __, _C, _H, _E, _A, _T, __, __
+                dc.b    $0E, _E, _V, _E, _R, __, __, __, __, __, __, __, __, __, __, __
+                dc.b    $0E, _A, _G, _A, _I, _N, __, _Y, _O, _U, __, __, __, __, __, __
+                dc.b    $0E, _P, _I, _E, _C, _E, __, _O, _F, __, __, __, __, __, __, __   
+                dc.b    $0E, _D, _O, _G, __, __, __, __, __, __, __, __, __, __, __, __
+                dc.b    $0E, _S, _H, _I, _T, __, __, __, __, __, __, __, __, __, __, __
+                dc.b    $0E, __, __, __, __, __, __, __, __, __, __, __, __, __,__, __
 ;-------------------------------------------------------------------------------
 Wings_Mappings: 
-                dc.w    $6000, $6000, $6000, $604D, $604E, $684E, $684D, $6000, $6000, $6000   
+                dc.w    $6000, $6000, $6000, $604D, $604E, $684E, $684D, $6000, $6000, $FFFF  
 ;Wings_Line_1:                 
                 dc.w    $604F, $6050, $6051, $6052, $6053, $6853, $6852, $6851, $6850, $684F
 ;Wings_Line_2:

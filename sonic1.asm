@@ -21,6 +21,8 @@ align:	macro
 	dcb.b (\1-(*%\1))%\1,\2
 	endc
 	endm
+	
+	S2MenuNoCheating: = 0
 	FactoryLight: = 0
 	SoundTrack: = 1
 	AntiCheat: = 1
@@ -189,25 +191,8 @@ GameProgram:
 		beq.w	GameInit	; if yes, branch
 
 CheckSumCheck:
-		movea.l	#ErrorTrap,a0	; start	checking bytes after the header	($200)
-		movea.l	#RomEndLoc,a1	; stop at end of ROM
-		move.l	(a1),d0
-		moveq	#0,d1
-
-loc_32C:
-		add.w	(a0)+,d1
-		cmp.l	a0,d0
-		bcc.s	loc_32C
-		movea.l	#Checksum,a1	; read the checksum
-		cmp.w	(a1),d1		; compare correct checksum to the one in ROM
-		bne.w	CheckSumError	; if they don't match, branch
-		lea	($FFFFFE00).w,a6
-		moveq	#0,d7
-		move.w	#$7F,d6
-
-loc_348:
 		move.l	d7,(a6)+
-		dbf	d6,loc_348
+		dbf	d6,CheckSumCheck
 		move.b	($A10001).l,d0
 		andi.b	#$C0,d0
 		move.b	d0,($FFFFFFF8).w
@@ -3049,8 +3034,7 @@ loc_24BC:
                 move.w  ($FFFFF60C).w,d0
                 ori.b   #$40,d0
                 move.w  d0,($C00004).l
-				move.b  #$97,d0
-				bsr.w   PlaySound
+				MPCM_play #dacSpamtom.id
 
 Loc_2528:                               ; CODE XREF: 00002542?j
 				move.b	#2,($FFFFF62A).w
@@ -3183,7 +3167,7 @@ Title_LoadText:
 		moveq	#$15,d2
 		bsr.w	ShowVDPGraphics
 		move.l	#$40000000,($C00004).l
-		lea	(Nem_GHZ_1st).l,a0 ; load GHZ patterns
+		lea	(Nem_Title).l,a0 ; load GHZ patterns
 		bsr.w	NemDec
 		moveq	#1,d0		; load title screen pallet
 		bsr.w	PalLoad1
@@ -3684,7 +3668,7 @@ loc_37B6:
 		bsr.w	ClearPLC
 		bsr.w	Pal_FadeFrom
 		tst.w	($FFFFFFF0).w
-		bmi.s	Level_ClrRam
+		bmi.w	Level_ClrRam
 		move	#$2700,sr
 		move.l	#$70000002,($C00004).l
 		lea	(Nem_TitleCard).l,a0 ; load title card patterns
@@ -3692,6 +3676,33 @@ loc_37B6:
 		move	#$2300,sr
 		moveq	#0,d0
 		move.b	($FFFFFE10).w,d0
+		if	S2MenuNoCheating = 1
+		cmpi.b	#2,($FFFFFE10).w
+		bne.w Level_NotCrash
+		RaiseError 'Sonic got killed by                   "Intetional Game Design"'
+
+Level_NotCrash:
+		cmpi.b	#3,($FFFFFE10).w
+		bne.w Level_NotCrash2
+		RaiseError 'Sonic got killed by                   "Intetional Game Design"'
+
+Level_NotCrash2:
+		cmpi.b	#4,($FFFFFE10).w
+		bne.w Level_NotCrash3
+		RaiseError 'Sonic got killed by                   "Intetional Game Design"'
+
+Level_NotCrash3:
+		cmpi.b	#5,($FFFFFE10).w
+		bne.w Level_NotCrash4
+		RaiseError 'Sonic got killed by                   "Intetional Game Design"'
+
+Level_NotCrash4:
+		cmpi.w	#103,($FFFFFE10).w
+		bne.w Level_NotCrash5
+		RaiseError 'Sonic got killed by                   "Intetional Game Design"'
+
+Level_NotCrash5:
+		endif
 		lsl.w	#4,d0
 		lea	(MainLoadBlocks).l,a2
 		lea	(a2,d0.w),a2
@@ -3823,6 +3834,7 @@ loc_3946:
 		bsr.w	LevelSizeLoad
 		bsr.w	DeformBgLayer
 		bset	#2,($FFFFF754).w
+		jmp	LoadZoneTiles	; load level art
 		bsr.w	MainLoadBlockLoad ; load block mappings	and pallets
 		bsr.w	LoadTilesFromStart
 		jsr	FloorLog_Unk
@@ -5611,6 +5623,7 @@ End_LoadData:
 		bsr.w	LevelSizeLoad
 		bsr.w	DeformBgLayer
 		bset	#2,($FFFFF754).w
+		jsr	LoadZoneTiles	; load level art
 		bsr.w	MainLoadBlockLoad
 		bsr.w	LoadTilesFromStart
 		move.l	#Col_GHZ,($FFFFF796).w ; load collision	index
@@ -13363,6 +13376,8 @@ Obj2E_RingSound:
 Obj2E_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'
 		bne.s	Obj2E_ChkEnd
+	    cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+        beq Obj2E_ChkEnd
 		bset.b	#1,($FFFFF601).w ; add	the special stage activation flag
 		move.w	#$D5,d0
 		jsr	(PlaySound_Special).l ;	play rolling sound
@@ -39550,45 +39565,45 @@ Nem_Squirrel:	incbin	artnem\squirrel.bin	; squirrel
 ; ---------------------------------------------------------------------------
 ; Compressed graphics - primary patterns and block mappings
 ; ---------------------------------------------------------------------------
-Nem_Ending_1st:	incbin	artnem\8x8end.bin	; GHZ primary patterns
+Kos_Ending_1st:	incbin	artkos\8x8end.bin	; GHZ primary patterns
 		even
-Nem_Ending_2nd:	incbin	artnem\8x8end2.bin	; GHZ secondary patterns
+Kos_Ending_2nd:	incbin	artkos\8x8end2.bin	; GHZ secondary patterns
 		even
 Blk16_GHZ:	incbin	map16\ghz.bin
 		even
-Nem_GHZ_1st:	incbin	artnem\8x8ghz1.bin	; GHZ primary patterns
+Nem_Title:	incbin	artnem\8x8title.bin	; GHZ primary patterns
 		even
-Nem_GHZ_2nd:	incbin	artnem\8x8ghz2.bin	; GHZ secondary patterns
+Kos_GHZ:	incbin	artkos\8x8ghz.bin	; GHZ secondary patterns
 		even
 Blk256_GHZ:	incbin	map256\ghz.bin
 		even
 Blk16_LZ:	incbin	map16\lz.bin
 		even
-Nem_LZ:		incbin	artnem\8x8lz.bin	; LZ primary patterns
+Kos_LZ:		incbin	artkos\8x8lz.bin	; LZ primary patterns
 		even
 Blk256_LZ:	incbin	map256\lz.bin
 		even
 Blk16_MZ:	incbin	map16\mz.bin
 		even
-Nem_MZ:		incbin	artnem\8x8mz.bin	; MZ primary patterns
+Kos_MZ:		incbin	artkos\8x8mz.bin	; MZ primary patterns
 		even
 Blk256_MZ:	incbin	map256\mz.bin
 		even
 Blk16_SLZ:	incbin	map16\slz.bin
 		even
-Nem_SLZ:	incbin	artnem\8x8slz.bin	; SLZ primary patterns
+Kos_SLZ:	incbin	artkos\8x8slz.bin	; SLZ primary patterns
 		even
 Blk256_SLZ:	incbin	map256\slz.bin
 		even
 Blk16_SYZ:	incbin	map16\syz.bin
 		even
-Nem_SYZ:	incbin	artnem\8x8syz.bin	; SYZ primary patterns
+Kos_SYZ:	incbin	artkos\8x8syz.bin	; SYZ primary patterns
 		even
 Blk256_SYZ:	incbin	map256\syz.bin
 		even
 Blk16_SBZ:	incbin	map16\sbz.bin
 		even
-Nem_SBZ:	incbin	artnem\8x8sbz.bin	; SBZ primary patterns
+Kos_SBZ:	incbin	artkos\8x8sbz.bin	; SBZ primary patterns
 		even
 Blk256_SBZ:	incbin	map256\sbz.bin
 		even
@@ -42345,7 +42360,11 @@ SoundD5:	incbin	sound\soundD5.bin
 Art_Dust	incbin	artunc\spindust.bin
 
 		
-	include	"s2levelsel_data/s2_menu.asm"	; Sonic 2 level select
+	if	S2MenuNoCheating = 1
+	include	"s2levelsel_data/s2_menu.asm"	; Load the Level Select Anti-Cheat
+	else
+	include	"s2levelsel_data/s2_menucheating.asm"	; Load the Level Select
+	endif
 ; ==============================================================
 ; --------------------------------------------------------------
 ; Debugging modules

@@ -76,6 +76,7 @@ SampleTable:
 	dcSample	TYPE_PCM, EchoedClapHitS3, 6490			; $D8	- Lower Echoed Clap Hit(S3)	; Clownacy | Good golly, we're close to reaching Mega PCM's limit...
 dacRecording:	dcSample	TYPE_PCM, recording,	15000		; $D9	NOTE: sample rate is auto-detected from WAV file
 dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
+dacSpamtom:	dcSample	TYPE_PCM, Spamtom,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
 
 	dc.w	-1	; end marker
 
@@ -132,4 +133,5 @@ dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate 
 	incdac	EchoedClapHitS3, "sound/dac/EchoedClapHitS3.pcm"
 	incdac	recording, "sound/dac/recording.wav"
 	incdac	TakingTLong, "sound/dac/youre-taking-too-long.wav"
+	incdac	Spamtom, "sound/dac/spamtom.wav"
 	even
