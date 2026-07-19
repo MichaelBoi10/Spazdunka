@@ -75,8 +75,9 @@ SampleTable:
 	dcSample	TYPE_PCM, EchoedClapHitS3, 8492			; $D7	- Echoed Clap Hit (S3)
 	dcSample	TYPE_PCM, EchoedClapHitS3, 6490			; $D8	- Lower Echoed Clap Hit(S3)	; Clownacy | Good golly, we're close to reaching Mega PCM's limit...
 dacRecording:	dcSample	TYPE_PCM, recording,	15000		; $D9	NOTE: sample rate is auto-detected from WAV file
-dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
-dacSpamtom:	dcSample	TYPE_PCM, Spamtom,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
+dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $DA	NOTE: sample rate is auto-detected from WAV file
+dacSpamtom:	dcSample	TYPE_PCM, Spamton,	22050		; $DB	NOTE: sample rate is auto-detected from WAV file
+dacTenna:	dcSample	TYPE_PCM, Tenna,	22050		; $DC
 
 	dc.w	-1	; end marker
 
@@ -133,5 +134,6 @@ dacSpamtom:	dcSample	TYPE_PCM, Spamtom,	22050		; $D9	NOTE: sample rate is auto-d
 	incdac	EchoedClapHitS3, "sound/dac/EchoedClapHitS3.pcm"
 	incdac	recording, "sound/dac/recording.wav"
 	incdac	TakingTLong, "sound/dac/youre-taking-too-long.wav"
-	incdac	Spamtom, "sound/dac/spamtom.wav"
+	incdac	Spamton, "sound/dac/spamton.wav"
+	incdac	Tenna, "sound/dac/tenna.wav"
 	even

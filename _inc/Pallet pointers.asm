@@ -70,3 +70,6 @@
 	dc.l Pal_KVW
 	dc.w $FB00
 	dc.w 7
+	dc.l Pal_Splash
+	dc.w $FB00
+	dc.w $F
