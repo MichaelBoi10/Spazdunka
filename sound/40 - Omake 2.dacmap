@@ -1,4 +1,0 @@
-# vgm2smps DAC Studio table
-# Format: SourceValue,PlayAsValue,Name,WAV_PATH
-# Example: 87,BD,DAC 87,C:\Samples\Border_Region_dac_87_as_BD.wav
-# You may leave WAV_PATH empty to remap only.

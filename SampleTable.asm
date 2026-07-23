@@ -5,9 +5,9 @@ SampleTable:
 ;	dcSample
 	dcSample	TYPE_PCM, KickS3, 10360				; $92	- Snare (S3)
 	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
-	dcSample	TYPE_PCM, SnareS3, 10360					; $97	- Kick (S3)
-	dcSample	TYPE_PCM, MetalHit, 9050				; $9B	- Low-Metal Hit
-	dcSample	TYPE_PCM, MetalHit, 7357				; $9C	- Metal Hit
+	dcSample	TYPE_PCM, SnareS3, 9360					; $97	- Kick (S3)
+	dcSample	TYPE_PCM, SnareS3, 8360					; $97	- Kick (S3)
+	dcSample	TYPE_PCM, SnareS3, 7360					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, KickS3, 10090					; $97	- Kick (S3)
 	dcSample	TYPE_PCM, MuffledSnare, 19090			; $98	- Muffled Snare
 	dcSample	TYPE_PCM, CrashCymbal, 16766			; $99	- Crash Cymbal
@@ -31,7 +31,7 @@ SampleTable:
 	dcSample	TYPE_PCM, TimpaniS3, 8492				; $AB	- Mid-Timpani (S3)
 	dcSample	TYPE_PCM, SnareS33, 12279				; $AC	- Quick Loose Snare
 	dcSample	TYPE_PCM, Click, 13482					; $AD	- Click
-	dcSample	TYPE_PCM, PowerKick, 7998				; $AE	- Power Kick
+	dcSample	TYPE_PCM, CrashCymbal, 14766			; $99	- Crash Cymbal
 	dcSample	TYPE_PCM, QuickGlassCrash, 7998			; $AF	- Quick Glass Crash
 	dcSample	TYPE_PCM, GlassCrashSnare, 12279			; $B0	- Glass Crash Snare
 	dcSample	TYPE_PCM, GlassCrash, 12279				; $B1	- Glass Crash

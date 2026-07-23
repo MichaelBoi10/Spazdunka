@@ -15,6 +15,8 @@ SampleTable:
 	dcSample	TYPE_DPCM, 		Timpani, 	7000				; $8B
 	dcSample	TYPE_PCM,		Snare,		17000				; $8C
 dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate is auto-detected from WAV file
+dacSpamtom:	dcSample	TYPE_PCM, Spamton,	22050		; $DB	NOTE: sample rate is auto-detected from WAV file
+dacTenna:	dcSample	TYPE_PCM, Tenna,	22050		; $DC
 	dc.w	-1	; end marker
 
 ; ---------------------------------------------------------------
@@ -22,4 +24,6 @@ dacTakingToLong:	dcSample	TYPE_PCM, TakingTLong,	22050		; $D9	NOTE: sample rate 
 	incdac	Snare, "sound_drivers/MegaPCM2/sound/dac/snare.pcm"
 	incdac	Timpani, "sound_drivers/MegaPCM2/sound/dac/timpani.dpcm"
 	incdac	TakingTLong, "sound/dac/youre-taking-too-long.wav"
+	incdac	Spamton, "sound/dac/spamton.wav"
+	incdac	Tenna, "sound/dac/tenna.wav"
 	even

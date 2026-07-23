@@ -31,7 +31,7 @@ align:	macro
 	include	"Debugger.asm"
 	include "MegaPCM.Macros.asm"
 	include "s2.constants.asm"
-	
+	include    "sound/_smps2asm_inc.asm"    ; definitions for asm files
 StartOfRom:
 Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
 		dc.l IllegalInstr, ZeroDivide, ChkInstr, TrapvInstr
@@ -2246,15 +2246,21 @@ Pal_ToBlack:
 		move.w	d1,(a0)+
 		dbf	d0,Pal_ToBlack	; fill pallet with $000	(black)
 
-		move.w	#$15,d4
+		moveq	#$0F-1,d4				; MJ: prepare maximum colour check
+		moveq	#$00,d6					; MJ: clear d6
 
 loc_1DCE:
+		bsr.w	RunPLC_RAM
 		move.b	#$12,($FFFFF62A).w
 		bsr.w	DelayProgram
+		bchg	#$00,d6					; MJ: change delay counter
+		beq.s	loc_1DCE				; MJ: if null, delay a frame
 		bsr.s	Pal_FadeIn
-		bsr.w	RunPLC_RAM
-		dbf	d4,loc_1DCE
-		rts	
+		subq.b	#$02,d4					; MJ: decrease colour check
+		bne.s	loc_1DCE				; MJ: if it has not reached null, branch
+		move.b	#$12,($FFFFF62A).w			; MJ: wait for V-blank again (so colours transfer)
+		bra.w	DelayProgram				; MJ: ''
+
 ; End of function Pal_FadeTo
 
 ; ---------------------------------------------------------------------------
@@ -2299,35 +2305,30 @@ locret_1E24:
 
 
 Pal_AddColor:				; XREF: Pal_FadeIn
-		move.w	(a1)+,d2
-		move.w	(a0),d3
-		cmp.w	d2,d3
-		beq.s	loc_1E4E
-		move.w	d3,d1
-		addi.w	#$200,d1	; increase blue	value
-		cmp.w	d2,d1		; has blue reached threshold level?
-		bhi.s	Pal_AddGreen	; if yes, branch
-		move.w	d1,(a0)+	; update pallet
-		rts	
-; ===========================================================================
+		move.b	(a1),d5					; MJ: load blue
+		move.w	(a1)+,d1				; MJ: load green and red
+		move.b	d1,d2					; MJ: load red
+		lsr.b	#$04,d1					; MJ: get only green
+		andi.b	#$0E,d2					; MJ: get only red
+		move.w	(a0),d3					; MJ: load current colour in buffer
+		cmp.b	d5,d4					; MJ: is it time for blue to fade?
+		bhi.s	FCI_NoBlue				; MJ: if not, branch
+		addi.w	#$0200,d3				; MJ: increase blue
 
-Pal_AddGreen:				; XREF: Pal_AddColor
-		move.w	d3,d1
-		addi.w	#$20,d1		; increase green value
-		cmp.w	d2,d1
-		bhi.s	Pal_AddRed
-		move.w	d1,(a0)+	; update pallet
-		rts	
-; ===========================================================================
+FCI_NoBlue:
+		cmp.b	d1,d4					; MJ: is it time for green to fade?
+		bhi.s	FCI_NoGreen				; MJ: if not, branch
+		addi.b	#$20,d3					; MJ: increase green
 
-Pal_AddRed:				; XREF: Pal_AddGreen
-		addq.w	#2,(a0)+	; increase red value
-		rts	
-; ===========================================================================
+FCI_NoGreen:
+		cmp.b	d2,d4					; MJ: is it time for red to fade?
+		bhi.s	FCI_NoRed				; MJ: if not, branch
+		addq.b	#$02,d3					; MJ: increase red
 
-loc_1E4E:				; XREF: Pal_AddColor
-		addq.w	#2,a0
-		rts	
+FCI_NoRed:
+		move.w	d3,(a0)+				; MJ: save colour
+		rts						; MJ: return
+
 ; End of function Pal_AddColor
 
 
@@ -2336,13 +2337,17 @@ loc_1E4E:				; XREF: Pal_AddColor
 
 Pal_FadeFrom:
 		move.w	#$3F,($FFFFF626).w
-		move.w	#$15,d4
+
+		moveq	#$08-1,d4				; MJ: set repeat times
+		moveq	#$00,d6					; MJ: clear d6
 
 loc_1E5C:
+		bsr.w	RunPLC_RAM
 		move.b	#$12,($FFFFF62A).w
 		bsr.w	DelayProgram
+		bchg	#$00,d6					; MJ: change delay counter
+		beq.s	loc_1E5C				; MJ: if null, delay a frame
 		bsr.s	Pal_FadeOut
-		bsr.w	RunPLC_RAM
 		dbf	d4,loc_1E5C
 		rts	
 ; End of function Pal_FadeFrom
@@ -2382,34 +2387,27 @@ loc_1E98:
 
 
 Pal_DecColor:				; XREF: Pal_FadeOut
-		move.w	(a0),d2
-		beq.s	loc_1ECC
-		move.w	d2,d1
-		andi.w	#$E,d1
-		beq.s	Pal_DecGreen
-		subq.w	#2,(a0)+	; decrease red value
-		rts	
-; ===========================================================================
+		move.w	(a0),d5					; MJ: load colour
+		move.w	d5,d1					; MJ: copy to d1
+		move.b	d1,d2					; MJ: load green and red
+		move.b	d1,d3					; MJ: load red
+		andi.w	#$0E00,d1				; MJ: get only blue
+		beq.s	FCO_NoBlue				; MJ: if blue is finished, branch
+		subi.w	#$0200,d5				; MJ: decrease blue
 
-Pal_DecGreen:				; XREF: Pal_DecColor
-		move.w	d2,d1
-		andi.w	#$E0,d1
-		beq.s	Pal_DecBlue
-		subi.w	#$20,(a0)+	; decrease green value
-		rts	
-; ===========================================================================
+FCO_NoBlue:
+		andi.w	#$00E0,d2				; MJ: get only green (needs to be word)
+		beq.s	FCO_NoGreen				; MJ: if green is finished, branch
+		subi.b	#$20,d5					; MJ: decrease green
 
-Pal_DecBlue:				; XREF: Pal_DecGreen
-		move.w	d2,d1
-		andi.w	#$E00,d1
-		beq.s	loc_1ECC
-		subi.w	#$200,(a0)+	; decrease blue	value
-		rts	
-; ===========================================================================
+FCO_NoGreen:
+		andi.b	#$0E,d3					; MJ: get only red
+		beq.s	FCO_NoRed				; MJ: if red is finished, branch
+		subq.b	#$02,d5					; MJ: decrease red
 
-loc_1ECC:				; XREF: Pal_DecColor
-		addq.w	#2,a0
-		rts	
+FCO_NoRed:
+		move.w	d5,(a0)+				; MJ: save new colour
+		rts						; MJ: return
 ; End of function Pal_DecColor
 
 ; ---------------------------------------------------------------------------
@@ -2431,15 +2429,21 @@ Pal_MakeWhite:				; XREF: SpecialStage
 PalWhite_Loop:
 		move.w	d1,(a0)+
 		dbf	d0,PalWhite_Loop
-		move.w	#$15,d4
+
+		moveq	#$0F-1,d4				; MJ: prepare maximum colour check
+		moveq	#$00,d6					; MJ: clear d6
 
 loc_1EF4:
+		bsr.w	RunPLC_RAM
 		move.b	#$12,($FFFFF62A).w
 		bsr.w	DelayProgram
+		bchg	#$00,d6					; MJ: change delay counter
+		beq.s	loc_1EF4				; MJ: if null, delay a frame
 		bsr.s	Pal_WhiteToBlack
-		bsr.w	RunPLC_RAM
-		dbf	d4,loc_1EF4
-		rts	
+		subq.b	#$02,d4					; MJ: decrease colour check
+		bne.s	loc_1EF4				; MJ: if it has not reached null, branch
+		move.b	#$12,($FFFFF62A).w			; MJ: wait for V-blank again (so colours transfer)
+		bra.w	DelayProgram				; MJ: ''
 ; End of function Pal_MakeWhite
 
 
@@ -2482,37 +2486,29 @@ locret_1F4A:
 
 
 Pal_DecColor2:				; XREF: Pal_WhiteToBlack
-		move.w	(a1)+,d2
-		move.w	(a0),d3
-		cmp.w	d2,d3
-		beq.s	loc_1F78
-		move.w	d3,d1
-		subi.w	#$200,d1	; decrease blue	value
-		bcs.s	loc_1F64
-		cmp.w	d2,d1
-		bcs.s	loc_1F64
-		move.w	d1,(a0)+
-		rts	
-; ===========================================================================
+		move.b	(a1),d5					; MJ: load blue
+		move.w	(a1)+,d1				; MJ: load green and red
+		move.b	d1,d2					; MJ: load red
+		lsr.b	#$04,d1					; MJ: get only green
+		andi.b	#$0E,d2					; MJ: get only red
+		move.w	(a0),d3					; MJ: load current colour in buffer
+		cmp.b	d5,d4					; MJ: is it time for blue to fade?
+		bls.s	FWI_NoBlue				; MJ: if not, branch
+		subi.w	#$0200,d3				; MJ: decrease blue
 
-loc_1F64:				; XREF: Pal_DecColor2
-		move.w	d3,d1
-		subi.w	#$20,d1		; decrease green value
-		bcs.s	loc_1F74
-		cmp.w	d2,d1
-		bcs.s	loc_1F74
-		move.w	d1,(a0)+
-		rts	
-; ===========================================================================
+FWI_NoBlue:
+		cmp.b	d1,d4					; MJ: is it time for green to fade?
+		bls.s	FWI_NoGreen				; MJ: if not, branch
+		subi.b	#$20,d3					; MJ: decrease green
 
-loc_1F74:				; XREF: loc_1F64
-		subq.w	#2,(a0)+	; decrease red value
-		rts	
-; ===========================================================================
+FWI_NoGreen:
+		cmp.b	d2,d4					; MJ: is it time for red to fade?
+		bls.s	FWI_NoRed				; MJ: if not, branch
+		subq.b	#$02,d3					; MJ: decrease red
 
-loc_1F78:				; XREF: Pal_DecColor2
-		addq.w	#2,a0
-		rts	
+FWI_NoRed:
+		move.w	d3,(a0)+				; MJ: save colour
+		rts						; MJ: return
 ; End of function Pal_DecColor2
 
 ; ---------------------------------------------------------------------------
@@ -2524,13 +2520,17 @@ loc_1F78:				; XREF: Pal_DecColor2
 
 Pal_MakeFlash:				; XREF: SpecialStage
 		move.w	#$3F,($FFFFF626).w
-		move.w	#$15,d4
+
+		moveq	#$08-1,d4				; MJ: set repeat times
+		moveq	#$00,d6					; MJ: clear d6
 
 loc_1F86:
+		bsr.w	RunPLC_RAM
 		move.b	#$12,($FFFFF62A).w
 		bsr.w	DelayProgram
+		bchg	#$00,d6					; MJ: change delay counter
+		beq.s	loc_1F86				; MJ: if null, delay a frame
 		bsr.s	Pal_ToWhite
-		bsr.w	RunPLC_RAM
 		dbf	d4,loc_1F86
 		rts	
 ; End of function Pal_MakeFlash
@@ -2566,37 +2566,29 @@ loc_1FC2:
 
 
 Pal_AddColor2:				; XREF: Pal_ToWhite
-		move.w	(a0),d2
-		cmpi.w	#$EEE,d2
-		beq.s	loc_2006
-		move.w	d2,d1
-		andi.w	#$E,d1
-		cmpi.w	#$E,d1
-		beq.s	loc_1FE2
-		addq.w	#2,(a0)+	; increase red value
-		rts	
-; ===========================================================================
+		move.w	(a0),d5					; MJ: load colour
+		move.w	d5,d1					; MJ: copy to d1
+		move.b	d1,d2					; MJ: load green and red
+		move.b	d1,d3					; MJ: load red
+		andi.w	#$0E00,d1				; MJ: get only blue
+		cmpi.w	#$0E00,d1
+		beq.s	FWO_NoBlue				; MJ: if blue is finished, branch
+		addi.w	#$0200,d5				; MJ: increase blue
 
-loc_1FE2:				; XREF: Pal_AddColor2
-		move.w	d2,d1
-		andi.w	#$E0,d1
-		cmpi.w	#$E0,d1
-		beq.s	loc_1FF4
-		addi.w	#$20,(a0)+	; increase green value
-		rts	
-; ===========================================================================
+FWO_NoBlue:
+		andi.w	#$00E0,d2				; MJ: get only green (needs to be word)
+		cmpi.w	#$00E0,d2
+		beq.s	FWO_NoGreen				; MJ: if green is finished, branch
+		addi.b	#$20,d5					; MJ: increase green
 
-loc_1FF4:				; XREF: loc_1FE2
-		move.w	d2,d1
-		andi.w	#$E00,d1
-		cmpi.w	#$E00,d1
-		beq.s	loc_2006
-		addi.w	#$200,(a0)+	; increase blue	value
-		rts	
-; ===========================================================================
+FWO_NoGreen:
+		andi.b	#$0E,d3					; MJ: get only red
+		cmpi.b	#$0E,d3
+		beq.s	FWO_NoRed				; MJ: if red is finished, branch
+		addq.b	#$02,d5					; MJ: increase red
 
-loc_2006:				; XREF: Pal_AddColor2
-		addq.w	#2,a0
+FWO_NoRed:
+		move.w	d5,(a0)+				; MJ: save new colour
 		rts	
 ; End of function Pal_AddColor2
 
@@ -3000,7 +2992,7 @@ SegaScreen:                                  ; CODE XREF: loc_39C?j
 				move.b  #$E0,d0
 				bsr.w   PlaySound_Special
                 bsr.w   ClearPLC
-                bsr.w   Pal_FadeFrom
+                bsr.w	Pal_FadeFrom
                 lea     ($C00004).l,a6
                 move.w  #$8004,(a6)
                 move.w  #$8230,(a6)
@@ -4946,8 +4938,13 @@ loc_47D4:
 		move.w	($FFFFFE20).w,d0
 		mulu.w	#10,d0		; multiply rings by 10
 		move.w	d0,($FFFFF7D4).w ; set rings bonus
-		move.w	#$8E,d0
+		btst	#0,($FFFFF629).w
+		bne.w	SkipthisBS
+		move.w	#$99,d0
 		jsr	(PlaySound_Special).l ;	play end-of-level music
+SkipthisBS:
+		move.w	#$99,d0
+		jsr	(PlaySound).l ;	play end-of-level music
 		lea	($FFFFD000).w,a1
 		moveq	#0,d0
 		move.w	#$7FF,d1
@@ -12265,7 +12262,7 @@ Obj1F_WaitFire:				; XREF: Obj1F_Index2
 Obj1F_Move:
 		addq.b	#2,routine_secondary(a0)
 		move.w	#127,$30(a0)	; set time delay to approx 2 seconds
-		move.w	#$80,x_vel(a0)	; move Crabmeat	to the right
+		move.w	#$120,x_vel(a0)	; move Crabmeat	to the right
 		bsr.w	Obj1F_SetAni
 		addq.b	#3,d0
 		move.b	d0,anim(a0)
@@ -12287,9 +12284,28 @@ Obj1F_MakeFire:				; XREF: Obj1F_WaitFire
 		move.w	8(a0),8(a1)
 		subi.w	#$10,8(a1)
 		move.w	$C(a0),y_pos(a1)
-		move.w	#-$100,x_vel(a1)
+		move.w	#-$120,x_vel(a1)
 
 Obj1F_MakeFire2:
+		bsr.w	SingleObjLoad
+		bne.s	Obj1F_MakeFire3
+		move.b	#$1F,0(a1)	; load right fireball
+		move.b	#6,routine(a1)
+		move.w	8(a0),8(a1)
+		addi.w	#$10,8(a1)
+		move.w	$C(a0),y_pos(a1)
+		move.w	#$120,x_vel(a1)
+		
+Obj1F_MakeFire3:
+		bsr.w	SingleObjLoad
+		bne.s	Obj1F_MakeFire4
+		move.b	#$1F,0(a1)	; load left fireball
+		move.b	#6,routine(a1)
+		move.w	8(a0),8(a1)
+		subi.w	#$10,8(a1)
+		move.w	$C(a0),y_pos(a1)
+		move.w	#-$270,x_vel(a1)
+Obj1F_MakeFire4:
 		bsr.w	SingleObjLoad
 		bne.s	locret_9618
 		move.b	#$1F,0(a1)	; load right fireball
@@ -12297,7 +12313,7 @@ Obj1F_MakeFire2:
 		move.w	8(a0),8(a1)
 		addi.w	#$10,8(a1)
 		move.w	$C(a0),y_pos(a1)
-		move.w	#$100,x_vel(a1)
+		move.w	#$270,x_vel(a1)
 
 locret_9618:
 		rts	
@@ -13377,7 +13393,7 @@ Obj2E_ChkInvinc:
 		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
         beq Obj2E_NoMusic
 		move.b	#1,($FFFFFE2D).w ; make	Sonic invincible
-		move.w	#28*60,($FFFFD032).w ; time limit for the power-up
+		move.w	#14*60,($FFFFD032).w ; time limit for the power-up
 		move.b	#$38,($FFFFD200).w ; load stars	object ($3801)
 		move.b	#1,($FFFFD21C).w
 		move.b	#$38,($FFFFD240).w ; load stars	object ($3802)
@@ -15774,7 +15790,7 @@ Obj34_ConData:
 		dc.w $0000,$0120, $FF28,$0168, $0440,$0180, $0240,$0180	; CONTRARY GROTTO
 		dc.w $0000,$0120, $FF28,$0168, $0440,$0180, $0240,$0180	; NETHERED MARBLE
 		dc.w 0,	$120, $FEFC, $13C, $414, $154, $214, $154 ; SLZ
-		dc.w 0,	$120, $FF04, $144, $41C, $15C, $21C, $15C ; SYZ
+		dc.w $0000,$0120, $FF24,$0164, $043C,$017C, $023C,$017C	; SLOPE MOUNTAINS
 		dc.w 0,	$120, $FF04, $144, $41C, $15C, $21C, $15C ; SBZ
 		dc.w 0,	$120, $FEE4, $124, $3EC, $3EC, $1EC, $12C ; FZ
 ; ===========================================================================
@@ -16418,18 +16434,23 @@ byte_CA7A:	dc.b 9			; STAR	LIGHT
 		dc.b $F8, 5, 0,	$18, $1C
 		dc.b $F8, 5, 0,	$1C, $2C
 		dc.b $F8, 5, 0,	$42, $3C
-byte_CAA8:	dc.b $A			; SPRING YARD
-		dc.b $F8, 5, 0,	$3E, $AC
-		dc.b $F8, 5, 0,	$36, $BC
-		dc.b $F8, 5, 0,	$3A, $CC
-		dc.b $F8, 1, 0,	$20, $DC
-		dc.b $F8, 5, 0,	$2E, $E4
-		dc.b $F8, 5, 0,	$18, $F4
-		dc.b $F8, 5, 0,	$4A, $14
-		dc.b $F8, 5, 0,	0, $24
-		dc.b $F8, 5, 0,	$3A, $34
-		dc.b $F8, 5, 0,	$C, $44
-		dc.b 0
+byte_CAA8:		dc.b 14	; SLOPE MOUNTAINS
+		dc.b $F8, $05, $00, $3E, $8B	; S
+		dc.b $F8, $05, $00, $26, $9B	; L
+		dc.b $F8, $05, $00, $32, $AB	; O
+		dc.b $F8, $05, $00, $36, $BB	; P
+		dc.b $F8, $05, $00, $10, $CB	; E
+						; space
+		dc.b $F8, $05, $00, $2A, $EB	; M
+		dc.b $F8, $05, $00, $32, $FC	; O
+		dc.b $F8, $05, $00, $46, $0C	; U
+		dc.b $F8, $05, $00, $2E, $1C	; N
+		dc.b $F8, $05, $00, $42, $2C	; T
+		dc.b $F8, $05, $00, $00, $3C	; A
+		dc.b $F8, $01, $00, $20, $4C	; I
+		dc.b $F8, $05, $00, $2E, $54	; N
+		dc.b $F8, $05, $00, $3E, $64	; S
+		even
 byte_CADC:	dc.b $A			; SCRAP BRAIN
 		dc.b $F8, 5, 0,	$3E, $AC
 		dc.b $F8, 5, 0,	8, $BC
@@ -19765,7 +19786,7 @@ Obj40_Move:				; XREF: Obj40_Index2
 		subq.w	#1,$30(a0)	; subtract 1 from pause	time
 		bpl.s	locret_F70A	; if time remains, branch
 		addq.b	#2,routine_secondary(a0)
-		move.w	#-$100,x_vel(a0)	; move object to the left
+		move.w	#-$250,x_vel(a0)	; move object to the left
 		move.b	#1,anim(a0)
 		bchg	#0,status(a0)
 		bne.s	locret_F70A
@@ -25053,7 +25074,20 @@ Obj01_MdJump2:				; XREF: Obj01_Modes
 		jsr	ObjectFall
 		btst	#6,status(a0)
 		beq.s	loc_12EA6
-		subi.w	#$28,y_vel(a0)
+		subi.w	#$28,y_vel(a0)		
+		move.w $10(a0),d0 ; move Sonic's X-velocity to d0
+		tst.w d0 ; is his speed positive? (is he running to the right?)
+		bpl.s Obj01_MdJump2_Abs ; if yes, branch
+		neg.w d0 ; otherwise negate it
+		
+Obj01_MdJump2_Abs:
+		cmpi.w #$250,d0 ; if Sonic speed less than $250?
+		blt.s loc_12EA6 ; if yes, branch
+		move.w $C(a0),d0 ; move sonic's Y-position to d0
+		sub.w ($FFFFF646).w,d0 ; sub the water height from it
+		cmpi.w #$F,d0 ; is Sonic slightly in the water?
+		bgt.s loc_12EA6 ; if not, branch
+		subi.w #$90,$12(a0) ; jump out of water
 
 loc_12EA6:
 		bsr.w	Sonic_JumpAngle
@@ -25897,7 +25931,7 @@ Sonic_CheckGoSuper:
 	move.b #1,($FFFFFE2D).w ; make Sonic invincible
 	move.w	#$D4,d0         ; 
 	jsr	(PlaySound_Special).l	; Play special ring sound effect.
-	move.w	#$87,d0
+	move.w	#$94,d0
 	jmp	(PlaySound).l	; Play the super theme
 ; ---------------------------------------------------------------------------
 return_1ABA4:
@@ -25970,7 +26004,7 @@ Sonic_SpinDash:
 		andi.b	#$70,d0			; pressing A/B/C ?
 		beq.w	locret2_1AC8C		; if not, return
 		move.b	#9,anim(a0)		; set Spin Dash anim
-		move.w	#$D1,d0			; spin sound ($E0 in s2)
+		move.w	#$D2,d0			; spin sound ($E0 in s2)
 		jsr	(PlaySound_Special).l	; play spin sound
 		addq.l	#4,sp			; Add 4 bytes to the stack return address to skip Sonic_Jump on next rts to Obj01_MdNormal, preventing conflicts with button presses.
 		move.b	#1,$39(a0)		; set Spin Dash flag
@@ -26060,7 +26094,7 @@ loc2_1AD48:
 		andi.b	#$70,d0			; pressing A/B/C?
 		beq.w	loc2_1AD78		; if not, branch
 		move.w	#$900,anim(a0)		; reset spdsh animation
-		move.w	#$D1,d0			; was $E0 in sonic 2
+		move.w	#$D2,d0			; was $E0 in sonic 2
 		move.b	#2,($FFFFD1DC).w	; Set the Spin Dash dust animation to $2.
 		jsr	(PlaySound_Special).l	; play charge sound
 		addi.w	#$200,$3A(a0)		; increase charge count
@@ -27088,11 +27122,8 @@ Obj0A_Countdown:			; XREF: Obj0A_Index
 		beq.s	Obj0A_WarnSound
 		cmpi.w	#$C,d0
 		bhi.s	Obj0A_ReduceAir	; if air is above $C, branch
-		bne.s	loc_13F02
-		move.w	#$92,d0
-		jsr	(PlaySound).l	; play countdown music
-
-loc_13F02:
+		move.w	#$AC,d0	; play a simple warning sound every second when low on air
+		jsr	(PlaySound_Special).l	; (inspired by Sonic CD's Tidal Tempest)
 		subq.b	#1,$32(a0)
 		bpl.s	Obj0A_ReduceAir
 		move.b	$33(a0),$32(a0)
@@ -27227,10 +27258,10 @@ locret_1408C:
 ResumeMusic:				; XREF: Obj64_Wobble; Sonic_Water; Obj0A_ReduceAir
 		cmpi.w	#$C,($FFFFFE14).w
 		bhi.s	loc_140AC
-		move.w	#$82,d0		; play LZ music
+		;move.w	#$82,d0		; play LZ music
 		cmpi.w	#$103,($FFFFFE10).w ; check if level is	0103 (SBZ3)
-		bne.s	loc_140A6
-		move.w	#$86,d0		; play SBZ music
+		bne.w	loc_140A6
+		;move.w	#$86,d0		; play SBZ music
 
 loc_140A6:
 		jsr	(PlaySound).l
@@ -36383,7 +36414,7 @@ KillSonic:
 		bsr.w	Sonic_ResetOnFloor
 		bset	#1,status(a0)
 		move.w	#-$700,y_vel(a0)
-		move.w	#0,x_vel(a0)
+		move.w	#$50,x_vel(a0)
 		move.w	#0,$14(a0)
 		move.w	$C(a0),$38(a0)
 		move.b	#$18,anim(a0)
@@ -36471,7 +36502,7 @@ SS_ShowLayout:				; XREF: SpecialStage
 		move.w	d5,-(sp)
 		lea	($FFFF8000).w,a1
 		move.b	($FFFFF780).w,d0
-		andi.b	#$FC,d0
+		;andi.b	#$FC,d0
 		jsr	(CalcSine).l
 		move.w	d0,d4
 		move.w	d1,d5
@@ -37111,10 +37142,11 @@ Obj09_OnWall:				; XREF: Obj09_Modes
 		bsr.w	Obj09_Move
 		bsr.w	Obj09_Fall
 		bra.s	Obj09_Display
+		bclr	#7,$22(a0)	; clear "Sonic has jumped" flag
 ; ===========================================================================
 
 Obj09_InAir:				; XREF: Obj09_Modes
-		bsr.w	nullsub_2
+		bsr.w	Obj09_JumpHeight
 		bsr.w	Obj09_Move
 		bsr.w	Obj09_Fall
 
@@ -37274,6 +37306,7 @@ Obj09_Jump:				; XREF: Obj09_OnWall
 		asr.l	#8,d0
 		move.w	d0,y_vel(a0)
 		bset	#1,status(a0)
+		bset	#7,$22(a0)	; set "Sonic has jumped" flag
 		move.w	#$A0,d0
 		jsr	(PlaySound_Special).l ;	play jumping sound
 
@@ -37285,24 +37318,46 @@ Obj09_NoJump:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-nullsub_2:				; XREF: Obj09_InAir
-		rts	
-; End of function nullsub_2
-
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
-; unused subroutine to limit Sonic's upward vertical speed
+; Subroutine to limit Sonic's upward vertical speed
 ; ---------------------------------------------------------------------------
-		move.w	#-$400,d1
-		cmp.w	$12(a0),d1
-		ble.s	locret_1BBB4
-		move.b	($FFFFF602).w,d0
-		andi.b	#$70,d0
-		bne.s	locret_1BBB4
-		move.w	d1,y_vel(a0)
 
+Obj09_JumpHeight:			; XREF: Obj09_InAir
+		move.b	($FFFFF602).w,d0	; is the jump button up?
+		andi.b	#$70,d0
+		bne.s	locret_1BBB4		; if not, branch to return
+		btst	#7,$22(a0)		; did Sonic jump or is he just falling or hit by a bumper?
+		beq.s	locret_1BBB4		; if not, branch to return
+		move.b	($FFFFF780).w,d0	; get SS angle
+		andi.b	#$FC,d0
+		neg.b	d0
+		subi.b	#$40,d0
+		jsr	(CalcSine).l			
+		move.w	$12(a0),d2		; get Y speed
+		muls.w	d2,d0			; multiply Y speed by sin
+		asr.l	#8,d0			; find the new Y speed
+		move.w	$10(a0),d2		; get X speed
+		muls.w	d2,d1			; multiply X speed by cos
+		asr.l	#8,d1			; find the new X speed
+		add.w	d0,d1			; combine the two speeds
+		cmpi.w	#$400,d1		; compare the combined speed with the jump release speed
+		ble.s	locret_1BBB4		; if it's less, branch to return
+		move.b	($FFFFF780).w,d0
+		andi.b	#$FC,d0
+		neg.b	d0
+		subi.b	#$40,d0
+		jsr	(CalcSine).l
+		muls.w	#$400,d1
+		asr.l	#8,d1
+		move.w	d1,$10(a0)
+		muls.w	#$400,d0
+		asr.l	#8,d0
+		move.w	d0,$12(a0)		; set the speed to the jump release speed
+		bclr	#7,$22(a0)		; clear "Sonic has jumped" flag
+ 
 locret_1BBB4:
-		rts	
+		rts
 ; ---------------------------------------------------------------------------
 ; Subroutine to	fix the	camera on Sonic's position (special stage)
 ; ---------------------------------------------------------------------------
@@ -37333,6 +37388,7 @@ locret_1BBDE:
 ; ===========================================================================
 
 Obj09_ExitStage:			; XREF: Obj09_Index
+		bset	#1,($FFFFF629).w
 		addi.w	#$40,($FFFFF782).w
 		cmpi.w	#$1800,($FFFFF782).w
 		bne.s	loc_1BBF4
@@ -37666,6 +37722,7 @@ Obj09_ChkBumper:
 		asr.l	#8,d0
 		move.w	d0,y_vel(a0)
 		bset	#1,status(a0)
+		bclr	#7,$22(a0)	; clear "Sonic has jumped" flag
 		bsr.w	SS_RemoveCollectedItem
 		bne.s	Obj09_BumpSnd
 		move.b	#2,(a2)
@@ -39984,18 +40041,123 @@ Go_PSGIndex:	dc.l PSG_Index		; XREF: sub_72926
 ; ---------------------------------------------------------------------------
 ; PSG instruments used in music
 ; ---------------------------------------------------------------------------
-PSG_Index:	dc.l PSG1, PSG2, PSG3
-		dc.l PSG4, PSG5, PSG6
-		dc.l PSG7, PSG8, PSG9
-PSG1:		incbin	sound\psg1.bin
-PSG2:		incbin	sound\psg2.bin
-PSG3:		incbin	sound\psg3.bin
-PSG4:		incbin	sound\psg4.bin
-PSG6:		incbin	sound\psg6.bin
-PSG5:		incbin	sound\psg5.bin
-PSG7:		incbin	sound\psg7.bin
-PSG8:		incbin	sound\psg8.bin
-PSG9:		incbin	sound\psg9.bin
+PSG_Index:    dc.l PSG1, S3_PSG2, S3_PSG3
+        dc.l S3_PSG4, S3_PSG5, S3_PSG6
+        dc.l S3_PSG7, S3_PSG8, S3_PSG9
+        dc.l S3_PSGa, S3_PSGb, S3_PSGc
+        dc.l S3_PSGd, S3_PSGe, S3_PSGf
+        dc.l S3_PSG10, S3_PSG11, S3_PSG12
+        dc.l S3_PSG13, S3_PSG14, S3_PSG15
+        dc.l S3_PSG16, S3_PSG17, S3_PSG18
+        dc.l S3_PSG19, S3_PSG1a, S3_PSG1b
+        dc.l S3_PSG1c, S3_PSG1d, S3_PSG1e
+        dc.l S3_PSG1f, S3_PSG20, S3_PSG21
+        dc.l S3_PSG22, S3_PSG23, S3_PSG24
+        dc.l S3_PSG25, S3_PSG26, S3_PSG27
+                dc.l S3_PSG28, S3_PSG29, S3_PSG2A
+                dc.l S3_PSG2B, S3_PSG2C, S3_PSG2D
+                dc.l S3_PSG2E, S3_PSG2F, S3_PSG30
+        dc.l PSG9, PSG8
+PSG1:        incbin    sound\psg1.bin
+            even
+PSG8:        incbin    sound\psg8.bin
+PSG9:        incbin    sound\psg9.bin
+S3_PSG1: incbin sound\S3psg\psg1.bin
+    even
+S3_PSG2: incbin sound\S3psg\psg2.bin
+    even
+S3_PSG3: incbin sound\S3psg\psg3.bin
+    even
+S3_PSG4: incbin sound\S3psg\psg4.bin
+    even
+S3_PSG5: incbin sound\S3psg\psg5.bin
+    even
+S3_PSG6: incbin sound\S3psg\psg6.bin
+    even
+S3_PSG7: incbin sound\S3psg\psg7.bin
+    even
+S3_PSG8: incbin sound\S3psg\psg8.bin
+    even
+S3_PSG9: incbin sound\S3psg\psg9.bin
+    even
+S3_PSGa: incbin sound\S3psg\psga.bin
+    even
+S3_PSGb: incbin sound\S3psg\psgb.bin
+    even
+S3_PSGc: incbin sound\S3psg\psgc.bin
+    even
+S3_PSGd: incbin sound\S3psg\psgd.bin
+    even
+S3_PSGe: incbin sound\S3psg\psge.bin
+    even
+S3_PSGf: incbin sound\S3psg\psgf.bin
+    even
+S3_PSG10: incbin sound\S3psg\psg10.bin
+    even
+S3_PSG11: incbin sound\S3psg\psg11.bin
+    even
+S3_PSG12: incbin sound\S3psg\psg12.bin
+    even
+S3_PSG13: incbin sound\S3psg\psg13.bin
+    even
+S3_PSG14: incbin sound\S3psg\psg14.bin
+    even
+S3_PSG15: incbin sound\S3psg\psg15.bin
+    even
+S3_PSG16: incbin sound\S3psg\psg16.bin
+    even
+S3_PSG17: incbin sound\S3psg\psg17.bin
+    even
+S3_PSG18: incbin sound\S3psg\psg18.bin
+    even
+S3_PSG19: incbin sound\S3psg\psg19.bin
+    even
+S3_PSG1a: incbin sound\S3psg\psg1a.bin
+    even
+S3_PSG1b: incbin sound\S3psg\psg1b.bin
+    even
+S3_PSG1c: incbin sound\S3psg\psg1c.bin
+    even
+S3_PSG1d: incbin sound\S3psg\psg1d.bin
+    even
+S3_PSG1e: incbin sound\S3psg\psg1e.bin
+    even
+S3_PSG1f: incbin sound\S3psg\psg1f.bin
+    even
+S3_PSG20: incbin sound\S3psg\psg20.bin
+    even
+S3_PSG21: incbin sound\S3psg\psg21.bin
+    even
+S3_PSG22: incbin sound\S3psg\psg22.bin
+    even
+S3_PSG23: incbin sound\S3psg\psg23.bin
+    even
+S3_PSG24: incbin sound\S3psg\psg24.bin
+    even
+S3_PSG25: incbin sound\S3psg\psg25.bin
+    even
+S3_PSG26: incbin sound\S3psg\psg26.bin
+    even
+S3_PSG27: incbin sound\S3psg\psg27.bin
+      even
+S3_PSG28: incbin sound\S3psg\psg28.bin
+      even
+S3_PSG29: incbin sound\S3psg\psg29.bin
+      even
+S3_PSG2A: incbin sound\S3psg\psg2A.bin
+      even
+S3_PSG2B: incbin sound\S3psg\psg2B.bin
+      even
+S3_PSG2C: incbin sound\S3psg\psg2C.bin
+      even
+S3_PSG2D: incbin sound\S3psg\psg2D.bin
+      even
+S3_PSG2E: incbin sound\S3psg\psg2E.bin
+      even
+S3_PSG2F: incbin sound\S3psg\psg2F.bin
+      even
+S3_PSG30: incbin sound\S3psg\psg30.bin
+      even
 
 byte_71A94:	dc.b 7,	$72, $73, $26, $15, 8, $FF, 5
 ; ---------------------------------------------------------------------------
@@ -40014,6 +40176,7 @@ MusicIndex:
 		dc.l Music93, Music94
 		dc.l Music95, Music96
 		dc.l Music97, Music98
+		dc.l Music99, Music9A
 ; ---------------------------------------------------------------------------
 ; Type of sound	being played ($90 = music; $70 = normal	sound effect)
 ; ---------------------------------------------------------------------------
@@ -42059,7 +42222,7 @@ sub_72CB4:				; XREF: sub_72504; sub_7267C; loc_72BA4
 		movea.l	$18(a6),a1
 		tst.b	$E(a6)
 		beq.s	loc_72CD8
-		movea.l	$20(a6),a1
+		movea.l	$20(a5),a1
 		tst.b	$E(a6)
 		bmi.s	loc_72CD8
 		movea.l	$20(a5),a1
@@ -42289,7 +42452,7 @@ SoundIndex:	dc.l SoundA0, SoundA1, SoundA2
 		dc.l SoundD1, SoundD2, SoundD3
 		dc.l SoundD4, SoundD5
 SoundD0Index:	dc.l SoundD0
-SoundA0:	incbin	sound\soundA0.bin
+SoundA0:	include	"sound\SndA0 - Jump.asm"
 		even
 SoundA1:	incbin	sound\soundA1.bin
 		even
@@ -42297,7 +42460,7 @@ SoundA2:	incbin	sound\soundA2.bin
 		even
 SoundA3:	incbin	sound\soundA3.bin
 		even
-SoundA4:	incbin	sound\soundA4.bin
+SoundA4:	include	"sound\SndA4 - Skid.asm"
 		even
 SoundA5:	incbin	sound\soundA5.bin
 		even
@@ -42311,7 +42474,7 @@ SoundA9:	incbin	sound\soundA9.bin
 		even
 SoundAA:	incbin	sound\soundAA.bin
 		even
-SoundAB:	incbin	sound\soundAB.bin
+SoundAB:	include	"sound\SndAB.asm"
 		even
 SoundAC:	incbin	sound\soundAC.bin
 		even
@@ -42345,7 +42508,7 @@ SoundBA:	incbin	sound\soundBA.bin
 		even
 SoundBB:	incbin	sound\soundBB.bin
 		even
-SoundBC:	incbin	sound\soundBC.bin
+SoundBC:	incbin	sound\Peelout_Release.bin
 		even
 SoundBD:	incbin	sound\soundBD.bin
 		even
@@ -42377,7 +42540,7 @@ SoundCA:	incbin	sound\soundCA.bin
 		even
 SoundCB:	incbin	sound\soundCB.bin
 		even
-SoundCC:	incbin	sound\soundCC.bin
+SoundCC:	include	"sound\SndCC - Spring.asm"
 		even
 SoundCD:	incbin	sound\soundCD.bin
 		even
@@ -42411,7 +42574,8 @@ Art_Dust	incbin	artunc\spindust.bin
 ; --------------------------------------------------------------
    include   "SampleDebugger.asm"
    include   "ErrorHandler.asm"
-
+VoiceUniBank:
+        include "sound/UniBank.asm"
 ; --------------------------------------------------------------
 ; WARNING!
 ;	DO NOT put any data from now on! DO NOT use ROM padding!

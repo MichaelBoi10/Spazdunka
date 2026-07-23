@@ -6,7 +6,7 @@ Music83:	incbin	sound\music83.bin
 		even
 Music84:	incbin	sound\music84.bin
 		even
-Music85:	incbin	sound\music85.bin
+Music85:	include	"sound\Sound ID 8 (ATP Tour Champions).asm"
 		even
 Music86:	incbin	sound\music86.bin
 		even
@@ -36,7 +36,7 @@ Music92:	incbin	sound\music92.bin
 		even
 Music93:	incbin	sound\music93.bin
 		even
-Music94:	incbin	sound\music87.bin
+Music94:	include	"sound\SceneOfCarnage.asm"
 		even
 Music95:	incbin	sound\music95.bin
 		even
@@ -45,4 +45,8 @@ Music96:	incbin	sound\music96.bin
 Music97:	incbin	sound\music97.bin
 		even
 Music98:	incbin	sound\music98.bin
+		even
+Music99:	incbin	sound\TimeExtend1.bin
+		even
+Music9A:	incbin	sound\TimeExtend2.bin
 		even
