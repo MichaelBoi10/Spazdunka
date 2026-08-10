@@ -43,7 +43,7 @@ SonAni_Run:	dc.b $FF, $1E, $1F, $20, $21, $FF, $FF,	$FF
 SonAni_Roll:	dc.b $FE, $2E, $2F, $30, $31, $32, $FF,	$FF
 SonAni_Roll2:	dc.b $FE, $2E, $2F, $32, $30, $31, $32,	$FF
 SonAni_Push:	dc.b $FD, $45, $46, $47, $48, $FF, $FF,	$FF
-SonAni_Wait:	dc.b $17, 1, 1,	1, 1, 1, 1, 1, 1, 1, 1,	1, 1, 3, 2, 2, 2, 3, 3, $FE, 2, 0
+SonAni_Wait:	dc.b 5, 1, 1,	1, 1, 1, 1, 1, 1, 1, 1,	1, 1, 1, 1,	1, 1, 1, 1, 1, 1, 1, 1,	1, 1, 1, 1,	1, 1, 1, 1, 1, 1, 1, 1,	1, 1, $B7, 3, 3, $FE, 2, 0
 SonAni_Balance:	dc.b $F, $5E, $5F, $60, $61, $FF
 SonAni_LookUp:	dc.b 3, $3B, 5, $FE, 1
 SonAni_Duck:	dc.b 3, $3A, $39, $FE, 1
@@ -54,7 +54,7 @@ SonAni_Warp4:	dc.b $3F, $36, $FF, 0
 SonAni_Stop:	dc.b 2, $43, $43, $44, $44, $37, $38, $38, $FD,   1
 SonAni_Float1:	dc.b 7,	$3C, $3F, $FF
 SonAni_Float2:	dc.b 7,	$3C, $3D, $53, $3E, $54, $FF, 0
-SonAni_Spring:	dc.b $2F, $40, $FD, 0
+SonAni_Spring:	dc.b 5, $B2, $B3, $B4, $B5, $B6, $B2, $B3, $B4, $B5, $B6, $FD, 0
 SonAni_LZHang:	dc.b 4,	$41, $42, $FF
 SonAni_Leap1:	dc.b $F, $43, $43, $43,	$FE, 1
 SonAni_Leap2:	dc.b $F, $43, $44, $FE,	1, 0

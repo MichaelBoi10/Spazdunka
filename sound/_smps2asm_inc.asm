@@ -229,6 +229,8 @@ dFloorTom		EQU	$82
 dHiClap		EQU	$8F
 dMidClap		EQU	$90	 
 dLowClap		EQU	$91
+dMHKick			EQU dacMetalHeadKick.id
+dMHSnare			EQU dacMetalHeadSnare.id
 ; ---------------------------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

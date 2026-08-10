@@ -43,10 +43,12 @@ subtype =		$28
 ; conventions specific to sonic/tails (Obj01, Obj02, and ObjDB):
 ; note: $1F, $20, and $21 are unused and available
 inertia =		$14 ; and $15 ; directionless representation of speed... not updated in the air
+double_jump_property =	$1F
+double_jump_flag =	$21
 flip_angle =		$27 ; angle about the x=0 axis (360 degrees = 256) (twist/tumble)
 air_left =		$28
 flip_turned =		$29 ; 0 for normal, 1 to invert flipping (it's a 180 degree rotation about the axis of Sonic's spine, so he stays in the same position but looks turned around)
-obj_control =		$FFFFF7C8 ; 0 for normal, 1 for hanging or for resting on a flipper, $81 for going through CNZ/OOZ/MTZ tubes or stopped in CNZ cages or stoppers or flying if Tails
+obj_control =		$2A ; 0 for normal, 1 for hanging or for resting on a flipper, $81 for going through CNZ/OOZ/MTZ tubes or stopped in CNZ cages or stoppers or flying if Tails
 status_secondary =	$2B
 flips_remaining =	$2C ; number of flip revolutions remaining
 flip_speed =		$2D ; number of flip revolutions per frame / 256
@@ -210,6 +212,9 @@ Water_flag =			$FFFFF730 ; if the level has water or oil
 Sonic_top_speed =		$FFFFF760
 Sonic_acceleration =		$FFFFF762
 Sonic_deceleration =		$FFFFF764
+Knuckles_top_speed =		$FFFFF690
+Knuckles_acceleration =		$FFFFF692
+Knuckles_deceleration =		$FFFFF694
 Obj_placement_routine =		$FFFFF76C
 Obj_load_addr_0 =		$FFFFF770
 Obj_load_addr_1 =		$FFFFF774
@@ -348,7 +353,7 @@ Options_menu_box =		$FFFFFF8C
 Level_Music =			$FFFFFF90
 Game_Over_2P =			$FFFFFF98
 Got_Emerald =			$FFFFFFB0
-Emerald_count =			$FFFFFE57
+Emerald_count =			$FFFFFFB1
 Got_Emeralds_array =		$FFFFFFB2 ; 7 bytes
 Next_Extra_life_score =		$FFFFFFC0
 Next_Extra_life_score_2P =	$FFFFFFC4
@@ -358,6 +363,9 @@ Level_select_flag =		$FFFFFFD0
 Correct_cheat_entries =		$FFFFFFD4
 Correct_cheat_entries_2 =	$FFFFFFD6 ; for 14 continues or 7 emeralds codes
 Two_player_mode =		$FFFFFFD8 ; flag (0 for main game)
+
+Invincibility_flag equ $FFFFFE2D
+QueueDMATransfer equ DMA_68KtoVRAM
 
 ; Values in these variables are passed to the sound driver during V-INT.
 ; They use a playlist index, not a sound test index.
@@ -416,7 +424,11 @@ star_light_act_3	= $0302
 
 scrap_brain_act_1	= $0500
 scrap_brain_act_2	= $0501
-final_zone		= $0502
+final_zone			= $0502
+
+hub_palace_closed	= $0700
+hub_palace_open		= $0701
+hub_palace_dark		= $0702
 
 ; ---------------------------------------------------------------------------
 ; Sega Mapper
@@ -427,5 +439,73 @@ MB4: = $A130F9 ;$200000-$27FFFF
 MB5: = $A130FB ;$280000-$2FFFFF
 MB6: = $A130FD ;$300000-$37FFFF
 MB7: = $A130FF ;$380000-$3FFFFF
+
+; Joypad input
+btnStart:	equ %10000000 ; Start button	($80)
+btnA:		equ %01000000 ; A		($40)
+btnC:		equ %00100000 ; C		($20)
+btnB:		equ %00010000 ; B		($10)
+btnR:		equ %00001000 ; Right		($08)
+btnL:		equ %00000100 ; Left		($04)
+btnDn:		equ %00000010 ; Down		($02)
+btnUp:		equ %00000001 ; Up		($01)
+btnDir:		equ %00001111 ; Any direction	($0F)
+btnABC:		equ %01110000 ; A, B or C	($70)
+bitStart:	equ 7
+bitA:		equ 6
+bitC:		equ 5
+bitB:		equ 4
+bitR:		equ 3
+bitL:		equ 2
+bitDn:		equ 1
+bitUp:		equ 0
+
+tile_size:	equ 8*8/2
+
+; Tile VRAM Locations
+
+; General Level Art
+ArtTile_Giant_Ring:		equ $400
+ArtTile_Sonic:			equ $780
+ArtTile_Points:			equ ($AEE0/$20)
+ArtTile_SpinDust:		equ $7A0
+ArtTile_Ring:			equ $7B2
+ArtTile_Ring_Loss:		equ ArtTile_Ring+4
+ArtTile_Sparkles:		equ ArtTile_Ring+$A
+
+; Badnik Art
+ArtTile_Splats:            equ $448
+
+; Sub sprites stuff
+mainspr_mapframe    = $B
+mainspr_width        = $E
+mainspr_childsprites     = $F    ; amount of child sprites
+mainspr_height        = $14
+subspr_data		= $0010
+sub2_x_pos        = $10    ;x_vel
+sub2_y_pos        = $12    ;y_vel
+sub2_mapframe        = $15
+sub3_x_pos        = $16    ;y_radius
+sub3_y_pos        = $18    ;priority
+sub3_mapframe        = $1B    ;anim_frame
+sub4_x_pos        = $1C    ;anim
+sub4_y_pos        = $1E    ;anim_frame_duration
+sub4_mapframe        = $21    ;collision_property
+sub5_x_pos        = $22    ;status
+sub5_y_pos        = $24    ;routine
+sub5_mapframe        = $27
+sub6_x_pos        = $28    ;subtype
+sub6_y_pos        = $2A
+sub6_mapframe        = $2D
+sub7_x_pos        = $2E
+sub7_y_pos        = $30
+sub7_mapframe        = $33
+sub8_x_pos        = $34
+sub8_y_pos        = $36
+sub8_mapframe        = $39
+sub9_x_pos        = $3A
+sub9_y_pos        = $3C
+sub9_mapframe        = $3F
+next_subspr       = $6
 
 Security_Addr =			$A14000	

@@ -1,28 +1,107 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - lamppost
-; ---------------------------------------------------------------------------
-		dc.w byte_17100-Map_obj79, byte_1711F-Map_obj79
-		dc.w byte_17134-Map_obj79, byte_1713F-Map_obj79
-byte_17100:	dc.b 6
-		dc.b $E4, 1, 0,	0, $F8
-		dc.b $E4, 1, 8,	0, 0
-		dc.b $F4, 3, $20, 2, $F8
-		dc.b $F4, 3, $28, 2, 0
-		dc.b $D4, 1, 0,	6, $F8
-		dc.b $D4, 1, 8,	6, 0
-byte_1711F:	dc.b 4
-		dc.b $E4, 1, 0,	0, $F8
-		dc.b $E4, 1, 8,	0, 0
-		dc.b $F4, 3, $20, 2, $F8
-		dc.b $F4, 3, $28, 2, 0
-byte_17134:	dc.b 2
-		dc.b $F8, 1, 0,	8, $F8
-		dc.b $F8, 1, 8,	8, 0
-byte_1713F:	dc.b 6
-		dc.b $E4, 1, 0,	0, $F8
-		dc.b $E4, 1, 8,	0, 0
-		dc.b $F4, 3, $20, 2, $F8
-		dc.b $F4, 3, $28, 2, 0
-		dc.b $D4, 1, 0,	8, $F8
-		dc.b $D4, 1, 8,	8, 0
-		even
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from ClownMapEd - Sonic 1/CD format
+; --------------------------------------------------------------------------------
+
+CME_11424D11:
+	dc.w	CME_11424D11_0-CME_11424D11
+	dc.w	CME_11424D11_1-CME_11424D11
+	dc.w	CME_11424D11_2-CME_11424D11
+	dc.w	CME_11424D11_3-CME_11424D11
+	dc.w	CME_11424D11_4-CME_11424D11
+
+CME_11424D11_0:
+	dc.b	5
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0000
+	dc.b	-8
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0800
+	dc.b	0
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2002
+	dc.b	-8
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2802
+	dc.b	0
+
+	dc.b	-44
+	dc.b	$05
+	dc.w	$0006
+	dc.b	-8
+
+CME_11424D11_1:
+	dc.b	4
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0000
+	dc.b	-8
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0800
+	dc.b	0
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2002
+	dc.b	-8
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2802
+	dc.b	0
+
+CME_11424D11_2:
+	dc.b	1
+
+	dc.b	-8
+	dc.b	$05
+	dc.w	$2006
+	dc.b	-8
+
+CME_11424D11_3:
+	dc.b	5
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0000
+	dc.b	-8
+
+	dc.b	-28
+	dc.b	$01
+	dc.w	$0800
+	dc.b	0
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2002
+	dc.b	-8
+
+	dc.b	-12
+	dc.b	$03
+	dc.w	$2802
+	dc.b	0
+
+	dc.b	-44
+	dc.b	$05
+	dc.w	$2006
+	dc.b	-8
+
+CME_11424D11_4:
+	dc.b	1
+
+	dc.b	-8
+	dc.b	$05
+	dc.w	$0006
+	dc.b	-8
+
+	even
