@@ -26142,11 +26142,13 @@ Sonic_CheckGoSuper:
 	bne.s	return_1ABA4		; if not, branch
 	cmpi.w	#50,(Ring_count).w	; does Sonic have at least 50 rings?
 	bcs.s	return_1ABA4		; if not, branch
-	move.b	#1,($FFFFF7C8).w ; freeze Sonic
+	tst.b	($FFFFFE1E).w	; stop time counter
+	beq.s	return_1ABA4
+
 	move.b	#1,(Super_Sonic_palette).w
 	move.b	#$F,(Palette_frame_count).w
 	move.b	#1,(Super_Sonic_flag).w
-;	move.b	#$81,obj_control(a0)
+	move.b	#1,($FFFFF7C8).w ; freeze Sonic
 	move.b	#$21,anim(a0)			; use transformation animation
 	move.b	#$10,($FFFFD200).w ; load Obj10 (super sonic stars object) at $FFFFD200
 	move.w	#$A00,(Sonic_top_speed).w
