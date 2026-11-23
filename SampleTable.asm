@@ -11,7 +11,7 @@ SampleTable:
 	dcSample	TYPE_PCM, KickS3, 5090					; $86	- Kick (S3)
 	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
 	dcSample	TYPE_PCM, CrashCymbal, 16766			; $99	- Crash Cymbal
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
+	dcSample	TYPE_PCM, MetalHit, 10050				; $9B	- Low-Metal Hit
 	dcSample	TYPE_PCM, MetalHit, 9050				; $9B	- Low-Metal Hit
 	dcSample	TYPE_PCM, MetalHit, 7357				; $9C	- Metal Hit
 	dcSample	TYPE_PCM, MetalHit2, 14945				; $9D	- High-Metal Hit
@@ -29,14 +29,14 @@ SampleTable:
 	dcSample	TYPE_PCM, TimpaniS3, 12852				; $A9	- Hi-Timpani (S3)
 	dcSample	TYPE_PCM, TimpaniS3, 9358				; $AA	- Low-Timpani (S3)
 	dcSample	TYPE_PCM, TimpaniS3, 8492				; $AB	- Mid-Timpani (S3)
-	dcSample	TYPE_PCM, SnareS33, 12279				; $AC	- Quick Loose Snare
+	dcSample	TYPE_PCM, TimpaniS3, 7492				; $AB	- Mid-Timpani (S3)
 	dcSample	TYPE_PCM, Click, 13482					; $AD	- Click
 	dcSample	TYPE_PCM, CrashCymbal, 14766			; $99	- Crash Cymbal
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
-	dcSample	TYPE_PCM, SnareS3, 4360					; $82	- Kick (S3)
+	dcSample	TYPE_PCM, TimpaniS3, 6492				; $AB	- Mid-Timpani (S3)
+	dcSample	TYPE_PCM, TimpaniS3, 6492				; $AB	- Mid-Timpani (S3)
+	dcSample	TYPE_PCM, TimpaniS3, 6492				; $AB	- Mid-Timpani (S3)
+	dcSample	TYPE_PCM, TimpaniS3, 6492				; $AB	- Mid-Timpani (S3)
+	dcSample	TYPE_PCM, TimpaniS3, 6492				; $AB	- Mid-Timpani (S3)
 	dcSample	TYPE_PCM, SnareKick, 7998				; $B4	- Snare + Kick
 	dcSample	TYPE_PCM, KickBass, 7998				; $B5	- Bassy Kick
 	dcSample	TYPE_PCM, ComeOn, 12279					; $B6	- "Come On!"
@@ -90,9 +90,4 @@ dacExtraLife:	dcSample    TYPE_PCM, ExtraLifes, 0, FLAGS_SFX   	; $DD    NOTE: s
 	incdac	Spamton, "sound/dac/spamton.wav"
 	incdac	Tenna, "sound/dac/tenna.wav"
 	incdac	ExtraLifes, "sound/dac/yes.wav"
-	; --- vgm2smps Sonic Renovation DAC begin ---
-	
-	; --- vgm2smps Sonic Renovation DAC end ---
-	; --- vgm2smps Sonic Renovation DAC begin ---
-	; --- vgm2smps Sonic Renovation DAC end ---
 	even

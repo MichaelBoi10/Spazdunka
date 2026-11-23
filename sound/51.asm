@@ -1,5 +1,4 @@
 Sound_51_Header:
-;	smpsHeaderStartSong 3
 	smpsHeaderVoice     Sound_51_Voices
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $01

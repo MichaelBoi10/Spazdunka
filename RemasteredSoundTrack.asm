@@ -1,4 +1,4 @@
-Music81:	include	"sound\CylicsStage.asm"
+Music81:	include	"sound\music81.asm"
 		even
 Music82:	incbin	sound\music82.bin
 		even
@@ -6,7 +6,7 @@ Music83:	incbin	sound\music83.bin
 		even
 Music84:	include	"sound\Sound ID 8 (ATP Tour Champions).asm"
 		even
-Music85:	incbin	sound\music84.bin
+Music85:	incbin	sound\music85.bin
 		even
 Music86:	incbin	sound\music86.bin
 		even
@@ -22,7 +22,7 @@ Music8B:	incbin	sound\music8B.bin
 		even
 Music8C:	incbin	sound\music8C.bin
 		even
-Music8D:	incbin	sound\music8D.bin
+Music8D:	incbin	sound\Stage9.bin
 		even
 Music8E:	incbin	sound\music8E.bin
 		even
@@ -36,7 +36,7 @@ Music92:	incbin	sound\music92.bin
 		even
 Music93:	incbin	sound\music93.bin
 		even
-Music94:	include	"sound\SceneOfCarnage.asm"
+Music94:	incbin	sound\music94.bin
 		even
 Music95:	incbin	sound\music95.bin
 		even

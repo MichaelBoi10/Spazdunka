@@ -426,9 +426,9 @@ PLC_SpeStResult:dc.w 1
 		dc.l Nem_MiniSonic	; mini Sonic
 		dc.w $AA20
 ; ---------------------------------------------------------------------------
-; Pattern load cues - ending sequence
+; Pattern load cues - ending sequence, also Hi MDTravis
 ; ---------------------------------------------------------------------------
-PLC_Ending:	dc.w $C
+PLC_Ending:	dc.w $6
 		dc.l Nem_Stalk		; flower stalk
 		dc.w $6B00
 		dc.l Nem_EndFlower	; flowers
@@ -437,24 +437,12 @@ PLC_Ending:	dc.w $C
 		dc.w $78A0
 		dc.l Nem_EndSonic	; Sonic
 		dc.w $7C20
-		dc.l Nem_EndEggman	; Eggman's death (unused)
-		dc.w $A480
-		dc.l Nem_Rabbit		; rabbit
-		dc.w $AA60
-		dc.l Nem_Chicken	; chicken
-		dc.w $ACA0
-		dc.l Nem_BlackBird	; blackbird
-		dc.w $AE60
-		dc.l Nem_Seal		; seal
-		dc.w $B0A0
-		dc.l Nem_Pig		; pig
-		dc.w $B260
-		dc.l Nem_Flicky		; flicky
-		dc.w $B4A0
-		dc.l Nem_Squirrel	; squirrel
-		dc.w $B660
-		dc.l Nem_EndStH		; "SONIC THE HEDGEHOG"
-		dc.w $B8A0
+		dc.l Nem_Motobug	; motobug enemy
+		dc.w $9E00
+		dc.l Nem_Chopper	; chopper enemy
+		dc.w $8F60
+		dc.l Nem_Spikes		; spikes
+		dc.w $A360
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - "TRY AGAIN" and "END" screens
 ; ---------------------------------------------------------------------------

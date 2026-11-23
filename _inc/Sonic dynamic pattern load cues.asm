@@ -1,791 +1,1053 @@
-SpazdunkaDynPLC:
-SpazdunkaDynPLC_0: 	dc.w SpazdunkaDynPLC_16C-SpazdunkaDynPLC
-SpazdunkaDynPLC_2: 	dc.w SpazdunkaDynPLC_16D-SpazdunkaDynPLC
-SpazdunkaDynPLC_4: 	dc.w SpazdunkaDynPLC_176-SpazdunkaDynPLC
-SpazdunkaDynPLC_6: 	dc.w SpazdunkaDynPLC_17D-SpazdunkaDynPLC
-SpazdunkaDynPLC_8: 	dc.w SpazdunkaDynPLC_184-SpazdunkaDynPLC
-SpazdunkaDynPLC_A: 	dc.w SpazdunkaDynPLC_18B-SpazdunkaDynPLC
-SpazdunkaDynPLC_C: 	dc.w SpazdunkaDynPLC_192-SpazdunkaDynPLC
-SpazdunkaDynPLC_E: 	dc.w SpazdunkaDynPLC_19B-SpazdunkaDynPLC
-SpazdunkaDynPLC_10: 	dc.w SpazdunkaDynPLC_1A0-SpazdunkaDynPLC
-SpazdunkaDynPLC_12: 	dc.w SpazdunkaDynPLC_1A5-SpazdunkaDynPLC
-SpazdunkaDynPLC_14: 	dc.w SpazdunkaDynPLC_1AE-SpazdunkaDynPLC
-SpazdunkaDynPLC_16: 	dc.w SpazdunkaDynPLC_1B3-SpazdunkaDynPLC
-SpazdunkaDynPLC_18: 	dc.w SpazdunkaDynPLC_1BA-SpazdunkaDynPLC
-SpazdunkaDynPLC_1A: 	dc.w SpazdunkaDynPLC_1C5-SpazdunkaDynPLC
-SpazdunkaDynPLC_1C: 	dc.w SpazdunkaDynPLC_1D2-SpazdunkaDynPLC
-SpazdunkaDynPLC_1E: 	dc.w SpazdunkaDynPLC_1DB-SpazdunkaDynPLC
-SpazdunkaDynPLC_20: 	dc.w SpazdunkaDynPLC_1E6-SpazdunkaDynPLC
-SpazdunkaDynPLC_22: 	dc.w SpazdunkaDynPLC_1EF-SpazdunkaDynPLC
-SpazdunkaDynPLC_24: 	dc.w SpazdunkaDynPLC_1FA-SpazdunkaDynPLC
-SpazdunkaDynPLC_26: 	dc.w SpazdunkaDynPLC_203-SpazdunkaDynPLC
-SpazdunkaDynPLC_28: 	dc.w SpazdunkaDynPLC_208-SpazdunkaDynPLC
-SpazdunkaDynPLC_2A: 	dc.w SpazdunkaDynPLC_20D-SpazdunkaDynPLC
-SpazdunkaDynPLC_2C: 	dc.w SpazdunkaDynPLC_216-SpazdunkaDynPLC
-SpazdunkaDynPLC_2E: 	dc.w SpazdunkaDynPLC_21B-SpazdunkaDynPLC
-SpazdunkaDynPLC_30: 	dc.w SpazdunkaDynPLC_222-SpazdunkaDynPLC
-SpazdunkaDynPLC_32: 	dc.w SpazdunkaDynPLC_22F-SpazdunkaDynPLC
-SpazdunkaDynPLC_34: 	dc.w SpazdunkaDynPLC_23C-SpazdunkaDynPLC
-SpazdunkaDynPLC_36: 	dc.w SpazdunkaDynPLC_245-SpazdunkaDynPLC
-SpazdunkaDynPLC_38: 	dc.w SpazdunkaDynPLC_250-SpazdunkaDynPLC
-SpazdunkaDynPLC_3A: 	dc.w SpazdunkaDynPLC_259-SpazdunkaDynPLC
-SpazdunkaDynPLC_3C: 	dc.w SpazdunkaDynPLC_264-SpazdunkaDynPLC
-SpazdunkaDynPLC_3E: 	dc.w SpazdunkaDynPLC_269-SpazdunkaDynPLC
-SpazdunkaDynPLC_40: 	dc.w SpazdunkaDynPLC_26E-SpazdunkaDynPLC
-SpazdunkaDynPLC_42: 	dc.w SpazdunkaDynPLC_273-SpazdunkaDynPLC
-SpazdunkaDynPLC_44: 	dc.w SpazdunkaDynPLC_278-SpazdunkaDynPLC
-SpazdunkaDynPLC_46: 	dc.w SpazdunkaDynPLC_281-SpazdunkaDynPLC
-SpazdunkaDynPLC_48: 	dc.w SpazdunkaDynPLC_288-SpazdunkaDynPLC
-SpazdunkaDynPLC_4A: 	dc.w SpazdunkaDynPLC_291-SpazdunkaDynPLC
-SpazdunkaDynPLC_4C: 	dc.w SpazdunkaDynPLC_298-SpazdunkaDynPLC
-SpazdunkaDynPLC_4E: 	dc.w SpazdunkaDynPLC_29D-SpazdunkaDynPLC
-SpazdunkaDynPLC_50: 	dc.w SpazdunkaDynPLC_2A2-SpazdunkaDynPLC
-SpazdunkaDynPLC_52: 	dc.w SpazdunkaDynPLC_2A7-SpazdunkaDynPLC
-SpazdunkaDynPLC_54: 	dc.w SpazdunkaDynPLC_2AC-SpazdunkaDynPLC
-SpazdunkaDynPLC_56: 	dc.w SpazdunkaDynPLC_2B5-SpazdunkaDynPLC
-SpazdunkaDynPLC_58: 	dc.w SpazdunkaDynPLC_2BA-SpazdunkaDynPLC
-SpazdunkaDynPLC_5A: 	dc.w SpazdunkaDynPLC_2C3-SpazdunkaDynPLC
-SpazdunkaDynPLC_5C: 	dc.w SpazdunkaDynPLC_2C8-SpazdunkaDynPLC
-SpazdunkaDynPLC_5E: 	dc.w SpazdunkaDynPLC_2CB-SpazdunkaDynPLC
-SpazdunkaDynPLC_60: 	dc.w SpazdunkaDynPLC_2CE-SpazdunkaDynPLC
-SpazdunkaDynPLC_62: 	dc.w SpazdunkaDynPLC_2D1-SpazdunkaDynPLC
-SpazdunkaDynPLC_64: 	dc.w SpazdunkaDynPLC_2D4-SpazdunkaDynPLC
-SpazdunkaDynPLC_66: 	dc.w SpazdunkaDynPLC_2D7-SpazdunkaDynPLC
-SpazdunkaDynPLC_68: 	dc.w SpazdunkaDynPLC_2DC-SpazdunkaDynPLC
-SpazdunkaDynPLC_6A: 	dc.w SpazdunkaDynPLC_2DF-SpazdunkaDynPLC
-SpazdunkaDynPLC_6C: 	dc.w SpazdunkaDynPLC_2E4-SpazdunkaDynPLC
-SpazdunkaDynPLC_6E: 	dc.w SpazdunkaDynPLC_2E7-SpazdunkaDynPLC
-SpazdunkaDynPLC_70: 	dc.w SpazdunkaDynPLC_2EC-SpazdunkaDynPLC
-SpazdunkaDynPLC_72: 	dc.w SpazdunkaDynPLC_2F5-SpazdunkaDynPLC
-SpazdunkaDynPLC_74: 	dc.w SpazdunkaDynPLC_2FE-SpazdunkaDynPLC
-SpazdunkaDynPLC_76: 	dc.w SpazdunkaDynPLC_301-SpazdunkaDynPLC
-SpazdunkaDynPLC_78: 	dc.w SpazdunkaDynPLC_306-SpazdunkaDynPLC
-SpazdunkaDynPLC_7A: 	dc.w SpazdunkaDynPLC_30D-SpazdunkaDynPLC
-SpazdunkaDynPLC_7C: 	dc.w SpazdunkaDynPLC_310-SpazdunkaDynPLC
-SpazdunkaDynPLC_7E: 	dc.w SpazdunkaDynPLC_317-SpazdunkaDynPLC
-SpazdunkaDynPLC_80: 	dc.w SpazdunkaDynPLC_31E-SpazdunkaDynPLC
-SpazdunkaDynPLC_82: 	dc.w SpazdunkaDynPLC_325-SpazdunkaDynPLC
-SpazdunkaDynPLC_84: 	dc.w SpazdunkaDynPLC_32E-SpazdunkaDynPLC
-SpazdunkaDynPLC_86: 	dc.w SpazdunkaDynPLC_337-SpazdunkaDynPLC
-SpazdunkaDynPLC_88: 	dc.w SpazdunkaDynPLC_33C-SpazdunkaDynPLC
-SpazdunkaDynPLC_8A: 	dc.w SpazdunkaDynPLC_341-SpazdunkaDynPLC
-SpazdunkaDynPLC_8C: 	dc.w SpazdunkaDynPLC_346-SpazdunkaDynPLC
-SpazdunkaDynPLC_8E: 	dc.w SpazdunkaDynPLC_34D-SpazdunkaDynPLC
-SpazdunkaDynPLC_90: 	dc.w SpazdunkaDynPLC_352-SpazdunkaDynPLC
-SpazdunkaDynPLC_92: 	dc.w SpazdunkaDynPLC_359-SpazdunkaDynPLC
-SpazdunkaDynPLC_94: 	dc.w SpazdunkaDynPLC_35E-SpazdunkaDynPLC
-SpazdunkaDynPLC_96: 	dc.w SpazdunkaDynPLC_365-SpazdunkaDynPLC
-SpazdunkaDynPLC_98: 	dc.w SpazdunkaDynPLC_36C-SpazdunkaDynPLC
-SpazdunkaDynPLC_9A: 	dc.w SpazdunkaDynPLC_377-SpazdunkaDynPLC
-SpazdunkaDynPLC_9C: 	dc.w SpazdunkaDynPLC_382-SpazdunkaDynPLC
-SpazdunkaDynPLC_9E: 	dc.w SpazdunkaDynPLC_387-SpazdunkaDynPLC
-SpazdunkaDynPLC_A0: 	dc.w SpazdunkaDynPLC_38E-SpazdunkaDynPLC
-SpazdunkaDynPLC_A2: 	dc.w SpazdunkaDynPLC_391-SpazdunkaDynPLC
-SpazdunkaDynPLC_A4: 	dc.w SpazdunkaDynPLC_394-SpazdunkaDynPLC
-SpazdunkaDynPLC_A6: 	dc.w SpazdunkaDynPLC_397-SpazdunkaDynPLC
-SpazdunkaDynPLC_A8: 	dc.w SpazdunkaDynPLC_39E-SpazdunkaDynPLC
-SpazdunkaDynPLC_AA: 	dc.w SpazdunkaDynPLC_3A5-SpazdunkaDynPLC
-SpazdunkaDynPLC_AC: 	dc.w SpazdunkaDynPLC_3AC-SpazdunkaDynPLC
-SpazdunkaDynPLC_AE: 	dc.w SpazdunkaDynPLC_3B3-SpazdunkaDynPLC
-SpazdunkaDynPLC_B0: 	dc.w SpazdunkaDynPLC_3B8-SpazdunkaDynPLC
-SpazdunkaDynPLC_B2: 	dc.w SpazdunkaDynPLC_3BB-SpazdunkaDynPLC
-SpazdunkaDynPLC_B4: 	dc.w SpazdunkaDynPLC_3BE-SpazdunkaDynPLC
-SpazdunkaDynPLC_B6: 	dc.w SpazdunkaDynPLC_3C1-SpazdunkaDynPLC
-SpazdunkaDynPLC_B8: 	dc.w SpazdunkaDynPLC_3C4-SpazdunkaDynPLC
-SpazdunkaDynPLC_BA: 	dc.w SpazdunkaDynPLC_3C7-SpazdunkaDynPLC
-SpazdunkaDynPLC_BC: 	dc.w SpazdunkaDynPLC_3CA-SpazdunkaDynPLC
-SpazdunkaDynPLC_BE: 	dc.w SpazdunkaDynPLC_3CF-SpazdunkaDynPLC
-SpazdunkaDynPLC_C0: 	dc.w SpazdunkaDynPLC_3D4-SpazdunkaDynPLC
-SpazdunkaDynPLC_C2: 	dc.w SpazdunkaDynPLC_3D9-SpazdunkaDynPLC
-SpazdunkaDynPLC_C4: 	dc.w SpazdunkaDynPLC_3DE-SpazdunkaDynPLC
-SpazdunkaDynPLC_C6: 	dc.w SpazdunkaDynPLC_3E3-SpazdunkaDynPLC
-SpazdunkaDynPLC_C8: 	dc.w SpazdunkaDynPLC_3E8-SpazdunkaDynPLC
-SpazdunkaDynPLC_CA: 	dc.w SpazdunkaDynPLC_3ED-SpazdunkaDynPLC
-SpazdunkaDynPLC_CC: 	dc.w SpazdunkaDynPLC_3F2-SpazdunkaDynPLC
-SpazdunkaDynPLC_CE: 	dc.w SpazdunkaDynPLC_3F7-SpazdunkaDynPLC
-SpazdunkaDynPLC_D0: 	dc.w SpazdunkaDynPLC_3FC-SpazdunkaDynPLC
-SpazdunkaDynPLC_D2: 	dc.w SpazdunkaDynPLC_401-SpazdunkaDynPLC
-SpazdunkaDynPLC_D4: 	dc.w SpazdunkaDynPLC_406-SpazdunkaDynPLC
-SpazdunkaDynPLC_D6: 	dc.w SpazdunkaDynPLC_40B-SpazdunkaDynPLC
-SpazdunkaDynPLC_D8: 	dc.w SpazdunkaDynPLC_410-SpazdunkaDynPLC
-SpazdunkaDynPLC_DA: 	dc.w SpazdunkaDynPLC_415-SpazdunkaDynPLC
-SpazdunkaDynPLC_DC: 	dc.w SpazdunkaDynPLC_41A-SpazdunkaDynPLC
-SpazdunkaDynPLC_DE: 	dc.w SpazdunkaDynPLC_41F-SpazdunkaDynPLC
-SpazdunkaDynPLC_E0: 	dc.w SpazdunkaDynPLC_424-SpazdunkaDynPLC
-SpazdunkaDynPLC_E2: 	dc.w SpazdunkaDynPLC_429-SpazdunkaDynPLC
-SpazdunkaDynPLC_E4: 	dc.w SpazdunkaDynPLC_42E-SpazdunkaDynPLC
-SpazdunkaDynPLC_E6: 	dc.w SpazdunkaDynPLC_433-SpazdunkaDynPLC
-SpazdunkaDynPLC_E8: 	dc.w SpazdunkaDynPLC_438-SpazdunkaDynPLC
-SpazdunkaDynPLC_EA: 	dc.w SpazdunkaDynPLC_43D-SpazdunkaDynPLC
-SpazdunkaDynPLC_EC: 	dc.w SpazdunkaDynPLC_442-SpazdunkaDynPLC
-SpazdunkaDynPLC_EE: 	dc.w SpazdunkaDynPLC_445-SpazdunkaDynPLC
-SpazdunkaDynPLC_F0: 	dc.w SpazdunkaDynPLC_44A-SpazdunkaDynPLC
-SpazdunkaDynPLC_F2: 	dc.w SpazdunkaDynPLC_44F-SpazdunkaDynPLC
-SpazdunkaDynPLC_F4: 	dc.w SpazdunkaDynPLC_454-SpazdunkaDynPLC
-SpazdunkaDynPLC_F6: 	dc.w SpazdunkaDynPLC_459-SpazdunkaDynPLC
-SpazdunkaDynPLC_F8: 	dc.w SpazdunkaDynPLC_45E-SpazdunkaDynPLC
-SpazdunkaDynPLC_FA: 	dc.w SpazdunkaDynPLC_463-SpazdunkaDynPLC
-SpazdunkaDynPLC_FC: 	dc.w SpazdunkaDynPLC_468-SpazdunkaDynPLC
-SpazdunkaDynPLC_FE: 	dc.w SpazdunkaDynPLC_46D-SpazdunkaDynPLC
-SpazdunkaDynPLC_100: 	dc.w SpazdunkaDynPLC_472-SpazdunkaDynPLC
-SpazdunkaDynPLC_102: 	dc.w SpazdunkaDynPLC_477-SpazdunkaDynPLC
-SpazdunkaDynPLC_104: 	dc.w SpazdunkaDynPLC_47C-SpazdunkaDynPLC
-SpazdunkaDynPLC_106: 	dc.w SpazdunkaDynPLC_481-SpazdunkaDynPLC
-SpazdunkaDynPLC_108: 	dc.w SpazdunkaDynPLC_486-SpazdunkaDynPLC
-SpazdunkaDynPLC_10A: 	dc.w SpazdunkaDynPLC_48B-SpazdunkaDynPLC
-SpazdunkaDynPLC_10C: 	dc.w SpazdunkaDynPLC_490-SpazdunkaDynPLC
-SpazdunkaDynPLC_10E: 	dc.w SpazdunkaDynPLC_495-SpazdunkaDynPLC
-SpazdunkaDynPLC_110: 	dc.w SpazdunkaDynPLC_49A-SpazdunkaDynPLC
-SpazdunkaDynPLC_112: 	dc.w SpazdunkaDynPLC_49F-SpazdunkaDynPLC
-SpazdunkaDynPLC_114: 	dc.w SpazdunkaDynPLC_4A4-SpazdunkaDynPLC
-SpazdunkaDynPLC_116: 	dc.w SpazdunkaDynPLC_4A9-SpazdunkaDynPLC
-SpazdunkaDynPLC_118: 	dc.w SpazdunkaDynPLC_4AE-SpazdunkaDynPLC
-SpazdunkaDynPLC_11A: 	dc.w SpazdunkaDynPLC_4B3-SpazdunkaDynPLC
-SpazdunkaDynPLC_11C: 	dc.w SpazdunkaDynPLC_4B8-SpazdunkaDynPLC
-SpazdunkaDynPLC_11E: 	dc.w SpazdunkaDynPLC_4BD-SpazdunkaDynPLC
-SpazdunkaDynPLC_120: 	dc.w SpazdunkaDynPLC_4C2-SpazdunkaDynPLC
-SpazdunkaDynPLC_122: 	dc.w SpazdunkaDynPLC_4C7-SpazdunkaDynPLC
-SpazdunkaDynPLC_124: 	dc.w SpazdunkaDynPLC_4CC-SpazdunkaDynPLC
-SpazdunkaDynPLC_126: 	dc.w SpazdunkaDynPLC_4D1-SpazdunkaDynPLC
-SpazdunkaDynPLC_128: 	dc.w SpazdunkaDynPLC_4D6-SpazdunkaDynPLC
-SpazdunkaDynPLC_12A: 	dc.w SpazdunkaDynPLC_4DB-SpazdunkaDynPLC
-SpazdunkaDynPLC_12C: 	dc.w SpazdunkaDynPLC_4E0-SpazdunkaDynPLC
-SpazdunkaDynPLC_12E: 	dc.w SpazdunkaDynPLC_4E3-SpazdunkaDynPLC
-SpazdunkaDynPLC_130: 	dc.w SpazdunkaDynPLC_4E8-SpazdunkaDynPLC
-SpazdunkaDynPLC_132: 	dc.w SpazdunkaDynPLC_4ED-SpazdunkaDynPLC
-SpazdunkaDynPLC_134: 	dc.w SpazdunkaDynPLC_4F2-SpazdunkaDynPLC
-SpazdunkaDynPLC_136: 	dc.w SpazdunkaDynPLC_4F7-SpazdunkaDynPLC
-SpazdunkaDynPLC_138: 	dc.w SpazdunkaDynPLC_4FA-SpazdunkaDynPLC
-SpazdunkaDynPLC_13A: 	dc.w SpazdunkaDynPLC_4FF-SpazdunkaDynPLC
-SpazdunkaDynPLC_13C: 	dc.w SpazdunkaDynPLC_504-SpazdunkaDynPLC
-SpazdunkaDynPLC_13E: 	dc.w SpazdunkaDynPLC_509-SpazdunkaDynPLC
-SpazdunkaDynPLC_140: 	dc.w SpazdunkaDynPLC_50E-SpazdunkaDynPLC
-SpazdunkaDynPLC_142: 	dc.w SpazdunkaDynPLC_513-SpazdunkaDynPLC
-SpazdunkaDynPLC_144: 	dc.w SpazdunkaDynPLC_518-SpazdunkaDynPLC
-SpazdunkaDynPLC_146: 	dc.w SpazdunkaDynPLC_51B-SpazdunkaDynPLC
-SpazdunkaDynPLC_148: 	dc.w SpazdunkaDynPLC_520-SpazdunkaDynPLC
-SpazdunkaDynPLC_14A: 	dc.w SpazdunkaDynPLC_525-SpazdunkaDynPLC
-SpazdunkaDynPLC_14C: 	dc.w SpazdunkaDynPLC_52A-SpazdunkaDynPLC
-SpazdunkaDynPLC_14E: 	dc.w SpazdunkaDynPLC_52F-SpazdunkaDynPLC
-SpazdunkaDynPLC_150: 	dc.w SpazdunkaDynPLC_534-SpazdunkaDynPLC
-SpazdunkaDynPLC_152: 	dc.w SpazdunkaDynPLC_539-SpazdunkaDynPLC
-SpazdunkaDynPLC_154: 	dc.w SpazdunkaDynPLC_53E-SpazdunkaDynPLC
-SpazdunkaDynPLC_156: 	dc.w SpazdunkaDynPLC_545-SpazdunkaDynPLC
-SpazdunkaDynPLC_158: 	dc.w SpazdunkaDynPLC_54A-SpazdunkaDynPLC
-SpazdunkaDynPLC_15A: 	dc.w SpazdunkaDynPLC_54F-SpazdunkaDynPLC
-SpazdunkaDynPLC_15C: 	dc.w SpazdunkaDynPLC_554-SpazdunkaDynPLC
-SpazdunkaDynPLC_15E: 	dc.w SpazdunkaDynPLC_557-SpazdunkaDynPLC
-SpazdunkaDynPLC_160: 	dc.w SpazdunkaDynPLC_55A-SpazdunkaDynPLC
-SpazdunkaDynPLC_162: 	dc.w SpazdunkaDynPLC_55F-SpazdunkaDynPLC
-SpazdunkaDynPLC_164: 	dc.w SpazdunkaDynPLC_564-SpazdunkaDynPLC
-SpazdunkaDynPLC_166: 	dc.w SpazdunkaDynPLC_567-SpazdunkaDynPLC
-SpazdunkaDynPLC_168: 	dc.w SpazdunkaDynPLC_56A-SpazdunkaDynPLC
-SpazdunkaDynPLC_16A: 	dc.w SpazdunkaDynPLC_56F-SpazdunkaDynPLC
-SpazdunkaDynPLC_16C: 	dc.b $0
-SpazdunkaDynPLC_16D: 	dc.b $4
-	dc.b $20, $0
-	dc.b $70, $3
-	dc.b $20, $B
-	dc.b $20, $E
-SpazdunkaDynPLC_176: 	dc.b $3
-	dc.b $50, $11
-	dc.b $50, $17
-	dc.b $20, $1D
-SpazdunkaDynPLC_17D: 	dc.b $3
-	dc.b $5B, $56
-	dc.b $5B, $5C
-	dc.b $2B, $62
-SpazdunkaDynPLC_184: 	dc.b $3
-	dc.b $50, $20
-	dc.b $50, $17
-	dc.b $20, $26
-SpazdunkaDynPLC_18B: 	dc.b $3
-	dc.b $80, $29
-	dc.b $20, $B
-	dc.b $20, $E
-SpazdunkaDynPLC_192: 	dc.b $4
-	dc.b $70, $32
-	dc.b $50, $3A
-	dc.b $50, $40
-	dc.b $10, $46
-SpazdunkaDynPLC_19B: 	dc.b $2
-	dc.b $70, $32
-	dc.b $B0, $48
-SpazdunkaDynPLC_1A0: 	dc.b $2
-	dc.b $50, $54
-	dc.b $80, $5A
-SpazdunkaDynPLC_1A5: 	dc.b $4
-	dc.b $50, $54
-	dc.b $50, $63
-	dc.b $50, $69
-	dc.b $10, $6F
-SpazdunkaDynPLC_1AE: 	dc.b $2
-	dc.b $50, $54
-	dc.b $B0, $71
-SpazdunkaDynPLC_1B3: 	dc.b $3
-	dc.b $70, $32
-	dc.b $30, $7D
-	dc.b $50, $81
-SpazdunkaDynPLC_1BA: 	dc.b $5
-	dc.b $50, $87
-	dc.b $50, $8D
-	dc.b $20, $93
-	dc.b $50, $96
-	dc.b $0, $9C
-SpazdunkaDynPLC_1C5: 	dc.b $6
-	dc.b $50, $87
-	dc.b $10, $9D
-	dc.b $30, $9F
-	dc.b $50, $A3
-	dc.b $30, $A9
-	dc.b $0, $AD
-SpazdunkaDynPLC_1D2: 	dc.b $4
-	dc.b $50, $AE
-	dc.b $10, $B4
-	dc.b $70, $B6
-	dc.b $20, $BE
-SpazdunkaDynPLC_1DB: 	dc.b $5
-	dc.b $50, $C1
-	dc.b $30, $C7
-	dc.b $70, $CB
-	dc.b $20, $D3
-	dc.b $10, $D6
-SpazdunkaDynPLC_1E6: 	dc.b $4
-	dc.b $50, $C1
-	dc.b $10, $D8
-	dc.b $70, $DA
-	dc.b $20, $E2
-SpazdunkaDynPLC_1EF: 	dc.b $5
-	dc.b $50, $87
-	dc.b $10, $9D
-	dc.b $0, $93
-	dc.b $70, $E5
-	dc.b $20, $ED
-SpazdunkaDynPLC_1FA: 	dc.b $4
-	dc.b $70, $F0
-	dc.b $50, $F8
-	dc.b $10, $FE
-	dc.b $51, $0
-SpazdunkaDynPLC_203: 	dc.b $2
-	dc.b $70, $F0
-	dc.b $B1, $6
-SpazdunkaDynPLC_208: 	dc.b $2
-	dc.b $51, $12
-	dc.b $81, $18
-SpazdunkaDynPLC_20D: 	dc.b $4
-	dc.b $51, $12
-	dc.b $51, $21
-	dc.b $11, $27
-	dc.b $51, $29
-SpazdunkaDynPLC_216: 	dc.b $2
-	dc.b $51, $12
-	dc.b $B1, $2F
-SpazdunkaDynPLC_21B: 	dc.b $3
-	dc.b $70, $F0
-	dc.b $1, $6
-	dc.b $81, $3B
-SpazdunkaDynPLC_222: 	dc.b $6
-	dc.b $51, $44
-	dc.b $11, $4A
-	dc.b $11, $4C
-	dc.b $81, $4E
-	dc.b $1, $57
-	dc.b $1, $58
-SpazdunkaDynPLC_22F: 	dc.b $6
-	dc.b $51, $44
-	dc.b $21, $59
-	dc.b $11, $5C
-	dc.b $11, $5E
-	dc.b $81, $60
-	dc.b $1, $57
-SpazdunkaDynPLC_23C: 	dc.b $4
-	dc.b $51, $69
-	dc.b $11, $6F
-	dc.b $81, $71
-	dc.b $11, $7A
-SpazdunkaDynPLC_245: 	dc.b $5
-	dc.b $51, $7C
-	dc.b $21, $82
-	dc.b $11, $85
-	dc.b $71, $87
-	dc.b $21, $8F
-SpazdunkaDynPLC_250: 	dc.b $4
-	dc.b $51, $7C
-	dc.b $11, $92
-	dc.b $81, $94
-	dc.b $11, $9D
-SpazdunkaDynPLC_259: 	dc.b $5
-	dc.b $51, $44
-	dc.b $81, $9F
-	dc.b $11, $5E
-	dc.b $11, $A8
-	dc.b $1, $57
-SpazdunkaDynPLC_264: 	dc.b $2
-	dc.b $51, $AA
-	dc.b $B1, $B0
-SpazdunkaDynPLC_269: 	dc.b $2
-	dc.b $50, $54
-	dc.b $B1, $BC
-SpazdunkaDynPLC_26E: 	dc.b $2
-	dc.b $51, $AA
-	dc.b $B1, $C8
-SpazdunkaDynPLC_273: 	dc.b $2
-	dc.b $50, $54
-	dc.b $B1, $D4
-SpazdunkaDynPLC_278: 	dc.b $4
-	dc.b $51, $E0
-	dc.b $11, $E6
-	dc.b $B1, $E8
-	dc.b $1, $F4
-SpazdunkaDynPLC_281: 	dc.b $3
-	dc.b $51, $F5
-	dc.b $11, $FB
-	dc.b $B1, $FD
-SpazdunkaDynPLC_288: 	dc.b $4
-	dc.b $51, $E0
-	dc.b $12, $9
-	dc.b $B2, $B
-	dc.b $1, $F4
-SpazdunkaDynPLC_291: 	dc.b $3
-	dc.b $51, $F5
-	dc.b $11, $FB
-	dc.b $B2, $17
-SpazdunkaDynPLC_298: 	dc.b $2
-	dc.b $52, $23
-	dc.b $B2, $29
-SpazdunkaDynPLC_29D: 	dc.b $2
-	dc.b $51, $12
-	dc.b $B2, $35
-SpazdunkaDynPLC_2A2: 	dc.b $2
-	dc.b $52, $23
-	dc.b $B2, $41
-SpazdunkaDynPLC_2A7: 	dc.b $2
-	dc.b $51, $12
-	dc.b $B2, $4D
-SpazdunkaDynPLC_2AC: 	dc.b $4
-	dc.b $52, $59
-	dc.b $12, $5F
-	dc.b $B2, $61
-	dc.b $2, $6D
-SpazdunkaDynPLC_2B5: 	dc.b $2
-	dc.b $72, $6E
-	dc.b $B2, $76
-SpazdunkaDynPLC_2BA: 	dc.b $4
-	dc.b $52, $59
-	dc.b $12, $82
-	dc.b $B2, $84
-	dc.b $2, $6D
-SpazdunkaDynPLC_2C3: 	dc.b $2
-	dc.b $72, $6E
-	dc.b $B2, $90
-SpazdunkaDynPLC_2C8: 	dc.b $1
-	dc.b $F2, $9C
-SpazdunkaDynPLC_2CB: 	dc.b $1
-	dc.b $F2, $AC
-SpazdunkaDynPLC_2CE: 	dc.b $1
-	dc.b $F2, $BC
-SpazdunkaDynPLC_2D1: 	dc.b $1
-	dc.b $F2, $CC
-SpazdunkaDynPLC_2D4: 	dc.b $1
-	dc.b $F2, $DC
-SpazdunkaDynPLC_2D7: 	dc.b $2
-	dc.b $B2, $EC
-	dc.b $22, $F8
-SpazdunkaDynPLC_2DC: 	dc.b $1
-	dc.b $F2, $FB
-SpazdunkaDynPLC_2DF: 	dc.b $2
-	dc.b $B3, $B
-	dc.b $23, $17
-SpazdunkaDynPLC_2E4: 	dc.b $1
-	dc.b $F3, $1A
-SpazdunkaDynPLC_2E7: 	dc.b $2
-	dc.b $53, $2A
-	dc.b $B3, $30
-SpazdunkaDynPLC_2EC: 	dc.b $4
-	dc.b $53, $3C
-	dc.b $73, $42
-	dc.b $13, $4A
-	dc.b $3, $4C
-SpazdunkaDynPLC_2F5: 	dc.b $4
-	dc.b $13, $4D
-	dc.b $73, $4F
-	dc.b $23, $57
-	dc.b $3, $5A
-SpazdunkaDynPLC_2FE: 	dc.b $1
-	dc.b $BB, $0
-SpazdunkaDynPLC_301: 	dc.b $2
-	dc.b $FB, $C
-	dc.b $1B, $1C
-SpazdunkaDynPLC_306: 	dc.b $3
-	dc.b $73, $5B
-	dc.b $33, $63
-	dc.b $23, $67
-SpazdunkaDynPLC_30D: 	dc.b $1
-	dc.b $83, $6A
-SpazdunkaDynPLC_310: 	dc.b $3
-	dc.b $73, $73
-	dc.b $3, $7B
-	dc.b $33, $7C
-SpazdunkaDynPLC_317: 	dc.b $3
-	dc.b $73, $80
-	dc.b $33, $88
-	dc.b $23, $8C
-SpazdunkaDynPLC_31E: 	dc.b $3
-	dc.b $B3, $8F
-	dc.b $13, $9B
-	dc.b $3, $9D
-SpazdunkaDynPLC_325: 	dc.b $4
-	dc.b $B3, $9E
-	dc.b $33, $AA
-	dc.b $3, $AE
-	dc.b $3, $AF
-SpazdunkaDynPLC_32E: 	dc.b $4
-	dc.b $B3, $B0
-	dc.b $33, $BC
-	dc.b $3, $C0
-	dc.b $3, $C1
-SpazdunkaDynPLC_337: 	dc.b $2
-	dc.b $FB, $1E
-	dc.b $1B, $2E
-SpazdunkaDynPLC_33C: 	dc.b $2
-	dc.b $FB, $30
-	dc.b $1B, $40
-SpazdunkaDynPLC_341: 	dc.b $2
-	dc.b $83, $C2
-	dc.b $73, $CB
-SpazdunkaDynPLC_346: 	dc.b $3
-	dc.b $83, $D3
-	dc.b $23, $DC
-	dc.b $13, $DF
-SpazdunkaDynPLC_34D: 	dc.b $2
-	dc.b $83, $E1
-	dc.b $73, $EA
-SpazdunkaDynPLC_352: 	dc.b $3
-	dc.b $83, $D3
-	dc.b $23, $F2
-	dc.b $13, $F5
-SpazdunkaDynPLC_359: 	dc.b $2
-	dc.b $53, $F7
-	dc.b $B3, $FD
-SpazdunkaDynPLC_35E: 	dc.b $3
-	dc.b $84, $9
-	dc.b $34, $12
-	dc.b $4, $16
-SpazdunkaDynPLC_365: 	dc.b $3
-	dc.b $74, $17
-	dc.b $14, $1F
-	dc.b $B4, $21
-SpazdunkaDynPLC_36C: 	dc.b $5
-	dc.b $74, $2D
-	dc.b $14, $35
-	dc.b $54, $37
-	dc.b $34, $3D
-	dc.b $4, $41
-SpazdunkaDynPLC_377: 	dc.b $5
-	dc.b $74, $42
-	dc.b $14, $35
-	dc.b $54, $4A
-	dc.b $34, $3D
-	dc.b $4, $41
-SpazdunkaDynPLC_382: 	dc.b $2
-	dc.b $24, $50
-	dc.b $F4, $53
-SpazdunkaDynPLC_387: 	dc.b $3
-	dc.b $24, $63
-	dc.b $B4, $66
-	dc.b $24, $72
-SpazdunkaDynPLC_38E: 	dc.b $1
-	dc.b $B4, $75
-SpazdunkaDynPLC_391: 	dc.b $1
-	dc.b $54, $81
-SpazdunkaDynPLC_394: 	dc.b $1
-	dc.b $14, $87
-SpazdunkaDynPLC_397: 	dc.b $3
-	dc.b $73, $5B
-	dc.b $33, $63
-	dc.b $23, $67
-SpazdunkaDynPLC_39E: 	dc.b $3
-	dc.b $73, $73
-	dc.b $3, $7B
-	dc.b $33, $7C
-SpazdunkaDynPLC_3A5: 	dc.b $3
-	dc.b $B4, $89
-	dc.b $14, $95
-	dc.b $34, $97
-SpazdunkaDynPLC_3AC: 	dc.b $3
-	dc.b $54, $9B
-	dc.b $B4, $A1
-	dc.b $10, $6D
-SpazdunkaDynPLC_3B3: 	dc.b $2
-	dc.b $F4, $AD
-	dc.b $24, $BD
-SpazdunkaDynPLC_3B8: 	dc.b $1
-	dc.b $E4, $C0
-SpazdunkaDynPLC_3BB: 	dc.b $1
-	dc.b $E4, $CF
-SpazdunkaDynPLC_3BE: 	dc.b $1
-	dc.b $E4, $DE
-SpazdunkaDynPLC_3C1: 	dc.b $1
-	dc.b $E4, $ED
-SpazdunkaDynPLC_3C4: 	dc.b $1
-	dc.b $E4, $FC
-SpazdunkaDynPLC_3C7: 	dc.b $1
-	dc.b $E5, $B
-SpazdunkaDynPLC_3CA: 	dc.b $2
-	dc.b $F5, $1A
-	dc.b $35, $2A
-SpazdunkaDynPLC_3CF: 	dc.b $2
-	dc.b $F5, $2E
-	dc.b $25, $3E
-SpazdunkaDynPLC_3D4: 	dc.b $2
-	dc.b $F5, $41
-	dc.b $15, $51
-SpazdunkaDynPLC_3D9: 	dc.b $2
-	dc.b $F5, $53
-	dc.b $5, $63
-SpazdunkaDynPLC_3DE: 	dc.b $2
-	dc.b $F5, $64
-	dc.b $45, $74
-SpazdunkaDynPLC_3E3: 	dc.b $2
-	dc.b $F5, $79
-	dc.b $15, $89
-SpazdunkaDynPLC_3E8: 	dc.b $2
-	dc.b $F5, $8B
-	dc.b $15, $9B
-SpazdunkaDynPLC_3ED: 	dc.b $2
-	dc.b $F5, $9D
-	dc.b $45, $AD
-SpazdunkaDynPLC_3F2: 	dc.b $2
-	dc.b $F5, $B2
-	dc.b $25, $C2
-SpazdunkaDynPLC_3F7: 	dc.b $2
-	dc.b $F5, $C5
-	dc.b $25, $D5
-SpazdunkaDynPLC_3FC: 	dc.b $2
-	dc.b $F5, $D8
-	dc.b $25, $E8
-SpazdunkaDynPLC_401: 	dc.b $2
-	dc.b $F5, $EB
-	dc.b $15, $FB
-SpazdunkaDynPLC_406: 	dc.b $2
-	dc.b $F5, $FD
-	dc.b $66, $D
-SpazdunkaDynPLC_40B: 	dc.b $2
-	dc.b $F6, $14
-	dc.b $46, $24
-SpazdunkaDynPLC_410: 	dc.b $2
-	dc.b $F6, $29
-	dc.b $66, $39
-SpazdunkaDynPLC_415: 	dc.b $2
-	dc.b $F6, $40
-	dc.b $46, $50
-SpazdunkaDynPLC_41A: 	dc.b $2
-	dc.b $F6, $55
-	dc.b $26, $65
-SpazdunkaDynPLC_41F: 	dc.b $2
-	dc.b $F6, $68
-	dc.b $26, $78
-SpazdunkaDynPLC_424: 	dc.b $2
-	dc.b $F6, $7B
-	dc.b $26, $8B
-SpazdunkaDynPLC_429: 	dc.b $2
-	dc.b $F6, $8E
-	dc.b $16, $9E
-SpazdunkaDynPLC_42E: 	dc.b $2
-	dc.b $F6, $A0
-	dc.b $66, $B0
-SpazdunkaDynPLC_433: 	dc.b $2
-	dc.b $F6, $B7
-	dc.b $46, $C7
-SpazdunkaDynPLC_438: 	dc.b $2
-	dc.b $F6, $CC
-	dc.b $66, $DC
-SpazdunkaDynPLC_43D: 	dc.b $2
-	dc.b $F6, $E3
-	dc.b $46, $F3
-SpazdunkaDynPLC_442: 	dc.b $1
-	dc.b $B6, $F8
-SpazdunkaDynPLC_445: 	dc.b $2
-	dc.b $F7, $4
-	dc.b $47, $14
-SpazdunkaDynPLC_44A: 	dc.b $2
-	dc.b $F7, $19
-	dc.b $57, $29
-SpazdunkaDynPLC_44F: 	dc.b $2
-	dc.b $F7, $2F
-	dc.b $57, $3F
-SpazdunkaDynPLC_454: 	dc.b $2
-	dc.b $F7, $45
-	dc.b $77, $55
-SpazdunkaDynPLC_459: 	dc.b $2
-	dc.b $F7, $5D
-	dc.b $47, $6D
-SpazdunkaDynPLC_45E: 	dc.b $2
-	dc.b $F7, $72
-	dc.b $47, $82
-SpazdunkaDynPLC_463: 	dc.b $2
-	dc.b $F7, $87
-	dc.b $47, $97
-SpazdunkaDynPLC_468: 	dc.b $2
-	dc.b $F7, $9C
-	dc.b $67, $AC
-SpazdunkaDynPLC_46D: 	dc.b $2
-	dc.b $F7, $B3
-	dc.b $57, $C3
-SpazdunkaDynPLC_472: 	dc.b $2
-	dc.b $F7, $C9
-	dc.b $17, $D9
-SpazdunkaDynPLC_477: 	dc.b $2
-	dc.b $F7, $DB
-	dc.b $87, $EB
-SpazdunkaDynPLC_47C: 	dc.b $2
-	dc.b $F7, $F4
-	dc.b $48, $4
-SpazdunkaDynPLC_481: 	dc.b $2
-	dc.b $F8, $9
-	dc.b $78, $19
-SpazdunkaDynPLC_486: 	dc.b $2
-	dc.b $F8, $21
-	dc.b $48, $31
-SpazdunkaDynPLC_48B: 	dc.b $2
-	dc.b $F8, $36
-	dc.b $38, $46
-SpazdunkaDynPLC_490: 	dc.b $2
-	dc.b $F8, $4A
-	dc.b $28, $5A
-SpazdunkaDynPLC_495: 	dc.b $2
-	dc.b $F8, $5D
-	dc.b $48, $6D
-SpazdunkaDynPLC_49A: 	dc.b $2
-	dc.b $F8, $72
-	dc.b $68, $82
-SpazdunkaDynPLC_49F: 	dc.b $2
-	dc.b $F8, $89
-	dc.b $38, $99
-SpazdunkaDynPLC_4A4: 	dc.b $2
-	dc.b $F8, $9D
-	dc.b $68, $AD
-SpazdunkaDynPLC_4A9: 	dc.b $2
-	dc.b $F8, $B4
-	dc.b $58, $C4
-SpazdunkaDynPLC_4AE: 	dc.b $2
-	dc.b $F8, $CA
-	dc.b $18, $DA
-SpazdunkaDynPLC_4B3: 	dc.b $2
-	dc.b $F8, $DC
-	dc.b $88, $EC
-SpazdunkaDynPLC_4B8: 	dc.b $2
-	dc.b $F8, $F5
-	dc.b $79, $5
-SpazdunkaDynPLC_4BD: 	dc.b $2
-	dc.b $F9, $D
-	dc.b $79, $1D
-SpazdunkaDynPLC_4C2: 	dc.b $2
-	dc.b $F9, $25
-	dc.b $49, $35
-SpazdunkaDynPLC_4C7: 	dc.b $2
-	dc.b $F9, $3A
-	dc.b $39, $4A
-SpazdunkaDynPLC_4CC: 	dc.b $2
-	dc.b $F9, $4E
-	dc.b $29, $5E
-SpazdunkaDynPLC_4D1: 	dc.b $2
-	dc.b $F9, $61
-	dc.b $49, $71
-SpazdunkaDynPLC_4D6: 	dc.b $2
-	dc.b $F9, $76
-	dc.b $49, $86
-SpazdunkaDynPLC_4DB: 	dc.b $2
-	dc.b $F9, $8B
-	dc.b $39, $9B
-SpazdunkaDynPLC_4E0: 	dc.b $1
-	dc.b $D9, $9F
-SpazdunkaDynPLC_4E3: 	dc.b $2
-	dc.b $F9, $AD
-	dc.b $9, $BD
-SpazdunkaDynPLC_4E8: 	dc.b $2
-	dc.b $F9, $BE
-	dc.b $29, $CE
-SpazdunkaDynPLC_4ED: 	dc.b $2
-	dc.b $F9, $D1
-	dc.b $29, $E1
-SpazdunkaDynPLC_4F2: 	dc.b $2
-	dc.b $F9, $E4
-	dc.b $29, $F4
-SpazdunkaDynPLC_4F7: 	dc.b $1
-	dc.b $D9, $F7
-SpazdunkaDynPLC_4FA: 	dc.b $2
-	dc.b $FA, $5
-	dc.b $2A, $15
-SpazdunkaDynPLC_4FF: 	dc.b $2
-	dc.b $FA, $18
-	dc.b $2A, $28
-SpazdunkaDynPLC_504: 	dc.b $2
-	dc.b $FA, $2B
-	dc.b $6A, $3B
-SpazdunkaDynPLC_509: 	dc.b $2
-	dc.b $FA, $42
-	dc.b $5A, $52
-SpazdunkaDynPLC_50E: 	dc.b $2
-	dc.b $FA, $58
-	dc.b $6A, $68
-SpazdunkaDynPLC_513: 	dc.b $2
-	dc.b $FA, $6F
-	dc.b $5A, $7F
-SpazdunkaDynPLC_518: 	dc.b $1
-	dc.b $EA, $85
-SpazdunkaDynPLC_51B: 	dc.b $2
-	dc.b $FA, $94
-	dc.b $1A, $A4
-SpazdunkaDynPLC_520: 	dc.b $2
-	dc.b $FA, $A6
-	dc.b $1A, $B6
-SpazdunkaDynPLC_525: 	dc.b $2
-	dc.b $FA, $B8
-	dc.b $1A, $C8
-SpazdunkaDynPLC_52A: 	dc.b $2
-	dc.b $FA, $CA
-	dc.b $1A, $DA
-SpazdunkaDynPLC_52F: 	dc.b $2
-	dc.b $FA, $DC
-	dc.b $1A, $EC
-SpazdunkaDynPLC_534: 	dc.b $2
-	dc.b $FA, $EE
-	dc.b $1A, $FE
-SpazdunkaDynPLC_539: 	dc.b $2
-	dc.b $FB, $42
-	dc.b $3B, $52
-SpazdunkaDynPLC_53E: 	dc.b $3
-	dc.b $50, $20
-	dc.b $50, $17
-	dc.b $20, $1D
-SpazdunkaDynPLC_545: 	dc.b $2
-	dc.b $FB, $65
-	dc.b $B, $75
-SpazdunkaDynPLC_54A: 	dc.b $2
-	dc.b $FB, $76
-	dc.b $B, $86
-SpazdunkaDynPLC_54F: 	dc.b $2
-	dc.b $FB, $87
-	dc.b $B, $97
-SpazdunkaDynPLC_554: 	dc.b $1
-	dc.b $FB, $98
-SpazdunkaDynPLC_557: 	dc.b $1
-	dc.b $EB, $A8
-SpazdunkaDynPLC_55A: 	dc.b $2
-	dc.b $FB, $B7
-	dc.b $3B, $C7
-SpazdunkaDynPLC_55F: 	dc.b $2
-	dc.b $FB, $CB
-	dc.b $3B, $DB
-SpazdunkaDynPLC_564: 	dc.b $1
-	dc.b $EB, $DF
-SpazdunkaDynPLC_567: 	dc.b $1
-	dc.b $EB, $EE
-SpazdunkaDynPLC_56A: 	dc.b $2
-	dc.b $FC, $10
-	dc.b $2C, $20
-SpazdunkaDynPLC_56F: 	dc.b $2
-	dc.b $FC, $23
-	dc.b $2C, $33
+; --------------------------------------------------------------------------------
+; Dynamic Pattern Loading Cues - output from ClownMapEd - Sonic 1 format
+; --------------------------------------------------------------------------------
+
+CME_4F999898:
+	dc.w	CME_4F999898_0-CME_4F999898
+	dc.w	CME_4F999898_1-CME_4F999898
+	dc.w	CME_4F999898_2-CME_4F999898
+	dc.w	CME_4F999898_3-CME_4F999898
+	dc.w	CME_4F999898_4-CME_4F999898
+	dc.w	CME_4F999898_5-CME_4F999898
+	dc.w	CME_4F999898_6-CME_4F999898
+	dc.w	CME_4F999898_7-CME_4F999898
+	dc.w	CME_4F999898_8-CME_4F999898
+	dc.w	CME_4F999898_9-CME_4F999898
+	dc.w	CME_4F999898_A-CME_4F999898
+	dc.w	CME_4F999898_B-CME_4F999898
+	dc.w	CME_4F999898_C-CME_4F999898
+	dc.w	CME_4F999898_D-CME_4F999898
+	dc.w	CME_4F999898_E-CME_4F999898
+	dc.w	CME_4F999898_F-CME_4F999898
+	dc.w	CME_4F999898_10-CME_4F999898
+	dc.w	CME_4F999898_11-CME_4F999898
+	dc.w	CME_4F999898_12-CME_4F999898
+	dc.w	CME_4F999898_13-CME_4F999898
+	dc.w	CME_4F999898_14-CME_4F999898
+	dc.w	CME_4F999898_15-CME_4F999898
+	dc.w	CME_4F999898_16-CME_4F999898
+	dc.w	CME_4F999898_17-CME_4F999898
+	dc.w	CME_4F999898_18-CME_4F999898
+	dc.w	CME_4F999898_19-CME_4F999898
+	dc.w	CME_4F999898_1A-CME_4F999898
+	dc.w	CME_4F999898_1B-CME_4F999898
+	dc.w	CME_4F999898_1C-CME_4F999898
+	dc.w	CME_4F999898_1D-CME_4F999898
+	dc.w	CME_4F999898_1E-CME_4F999898
+	dc.w	CME_4F999898_1F-CME_4F999898
+	dc.w	CME_4F999898_20-CME_4F999898
+	dc.w	CME_4F999898_21-CME_4F999898
+	dc.w	CME_4F999898_22-CME_4F999898
+	dc.w	CME_4F999898_23-CME_4F999898
+	dc.w	CME_4F999898_24-CME_4F999898
+	dc.w	CME_4F999898_25-CME_4F999898
+	dc.w	CME_4F999898_26-CME_4F999898
+	dc.w	CME_4F999898_27-CME_4F999898
+	dc.w	CME_4F999898_28-CME_4F999898
+	dc.w	CME_4F999898_29-CME_4F999898
+	dc.w	CME_4F999898_2A-CME_4F999898
+	dc.w	CME_4F999898_2B-CME_4F999898
+	dc.w	CME_4F999898_2C-CME_4F999898
+	dc.w	CME_4F999898_2D-CME_4F999898
+	dc.w	CME_4F999898_2E-CME_4F999898
+	dc.w	CME_4F999898_2F-CME_4F999898
+	dc.w	CME_4F999898_30-CME_4F999898
+	dc.w	CME_4F999898_31-CME_4F999898
+	dc.w	CME_4F999898_32-CME_4F999898
+	dc.w	CME_4F999898_33-CME_4F999898
+	dc.w	CME_4F999898_34-CME_4F999898
+	dc.w	CME_4F999898_35-CME_4F999898
+	dc.w	CME_4F999898_36-CME_4F999898
+	dc.w	CME_4F999898_37-CME_4F999898
+	dc.w	CME_4F999898_38-CME_4F999898
+	dc.w	CME_4F999898_39-CME_4F999898
+	dc.w	CME_4F999898_3A-CME_4F999898
+	dc.w	CME_4F999898_3B-CME_4F999898
+	dc.w	CME_4F999898_3C-CME_4F999898
+	dc.w	CME_4F999898_3D-CME_4F999898
+	dc.w	CME_4F999898_3E-CME_4F999898
+	dc.w	CME_4F999898_3F-CME_4F999898
+	dc.w	CME_4F999898_40-CME_4F999898
+	dc.w	CME_4F999898_41-CME_4F999898
+	dc.w	CME_4F999898_42-CME_4F999898
+	dc.w	CME_4F999898_43-CME_4F999898
+	dc.w	CME_4F999898_44-CME_4F999898
+	dc.w	CME_4F999898_45-CME_4F999898
+	dc.w	CME_4F999898_46-CME_4F999898
+	dc.w	CME_4F999898_47-CME_4F999898
+	dc.w	CME_4F999898_48-CME_4F999898
+	dc.w	CME_4F999898_49-CME_4F999898
+	dc.w	CME_4F999898_4A-CME_4F999898
+	dc.w	CME_4F999898_4B-CME_4F999898
+	dc.w	CME_4F999898_4C-CME_4F999898
+	dc.w	CME_4F999898_4D-CME_4F999898
+	dc.w	CME_4F999898_4E-CME_4F999898
+	dc.w	CME_4F999898_4F-CME_4F999898
+	dc.w	CME_4F999898_50-CME_4F999898
+	dc.w	CME_4F999898_51-CME_4F999898
+	dc.w	CME_4F999898_52-CME_4F999898
+	dc.w	CME_4F999898_53-CME_4F999898
+	dc.w	CME_4F999898_54-CME_4F999898
+	dc.w	CME_4F999898_55-CME_4F999898
+	dc.w	CME_4F999898_56-CME_4F999898
+	dc.w	CME_4F999898_57-CME_4F999898
+	dc.w	CME_4F999898_58-CME_4F999898
+	dc.w	CME_4F999898_59-CME_4F999898
+	dc.w	CME_4F999898_5A-CME_4F999898
+	dc.w	CME_4F999898_5B-CME_4F999898
+	dc.w	CME_4F999898_5C-CME_4F999898
+	dc.w	CME_4F999898_5D-CME_4F999898
+	dc.w	CME_4F999898_5E-CME_4F999898
+	dc.w	CME_4F999898_5F-CME_4F999898
+	dc.w	CME_4F999898_60-CME_4F999898
+	dc.w	CME_4F999898_61-CME_4F999898
+	dc.w	CME_4F999898_62-CME_4F999898
+	dc.w	CME_4F999898_63-CME_4F999898
+	dc.w	CME_4F999898_64-CME_4F999898
+	dc.w	CME_4F999898_65-CME_4F999898
+	dc.w	CME_4F999898_66-CME_4F999898
+	dc.w	CME_4F999898_67-CME_4F999898
+	dc.w	CME_4F999898_68-CME_4F999898
+	dc.w	CME_4F999898_69-CME_4F999898
+	dc.w	CME_4F999898_6A-CME_4F999898
+	dc.w	CME_4F999898_6B-CME_4F999898
+	dc.w	CME_4F999898_6C-CME_4F999898
+	dc.w	CME_4F999898_6D-CME_4F999898
+	dc.w	CME_4F999898_6E-CME_4F999898
+	dc.w	CME_4F999898_6F-CME_4F999898
+	dc.w	CME_4F999898_70-CME_4F999898
+	dc.w	CME_4F999898_71-CME_4F999898
+	dc.w	CME_4F999898_72-CME_4F999898
+	dc.w	CME_4F999898_73-CME_4F999898
+	dc.w	CME_4F999898_74-CME_4F999898
+	dc.w	CME_4F999898_75-CME_4F999898
+	dc.w	CME_4F999898_76-CME_4F999898
+	dc.w	CME_4F999898_77-CME_4F999898
+	dc.w	CME_4F999898_78-CME_4F999898
+	dc.w	CME_4F999898_79-CME_4F999898
+	dc.w	CME_4F999898_7A-CME_4F999898
+	dc.w	CME_4F999898_7B-CME_4F999898
+	dc.w	CME_4F999898_7C-CME_4F999898
+	dc.w	CME_4F999898_7D-CME_4F999898
+	dc.w	CME_4F999898_7E-CME_4F999898
+	dc.w	CME_4F999898_7F-CME_4F999898
+	dc.w	CME_4F999898_80-CME_4F999898
+	dc.w	CME_4F999898_81-CME_4F999898
+	dc.w	CME_4F999898_82-CME_4F999898
+	dc.w	CME_4F999898_83-CME_4F999898
+	dc.w	CME_4F999898_84-CME_4F999898
+	dc.w	CME_4F999898_85-CME_4F999898
+	dc.w	CME_4F999898_86-CME_4F999898
+	dc.w	CME_4F999898_87-CME_4F999898
+	dc.w	CME_4F999898_88-CME_4F999898
+	dc.w	CME_4F999898_89-CME_4F999898
+	dc.w	CME_4F999898_8A-CME_4F999898
+	dc.w	CME_4F999898_8B-CME_4F999898
+	dc.w	CME_4F999898_8C-CME_4F999898
+	dc.w	CME_4F999898_8D-CME_4F999898
+	dc.w	CME_4F999898_8E-CME_4F999898
+	dc.w	CME_4F999898_8F-CME_4F999898
+	dc.w	CME_4F999898_90-CME_4F999898
+	dc.w	CME_4F999898_91-CME_4F999898
+	dc.w	CME_4F999898_92-CME_4F999898
+	dc.w	CME_4F999898_93-CME_4F999898
+	dc.w	CME_4F999898_94-CME_4F999898
+	dc.w	CME_4F999898_95-CME_4F999898
+	dc.w	CME_4F999898_96-CME_4F999898
+	dc.w	CME_4F999898_97-CME_4F999898
+	dc.w	CME_4F999898_98-CME_4F999898
+	dc.w	CME_4F999898_99-CME_4F999898
+	dc.w	CME_4F999898_9A-CME_4F999898
+	dc.w	CME_4F999898_9B-CME_4F999898
+	dc.w	CME_4F999898_9C-CME_4F999898
+	dc.w	CME_4F999898_9D-CME_4F999898
+	dc.w	CME_4F999898_9E-CME_4F999898
+	dc.w	CME_4F999898_9F-CME_4F999898
+	dc.w	CME_4F999898_A0-CME_4F999898
+	dc.w	CME_4F999898_A1-CME_4F999898
+	dc.w	CME_4F999898_A2-CME_4F999898
+	dc.w	CME_4F999898_A3-CME_4F999898
+	dc.w	CME_4F999898_A4-CME_4F999898
+	dc.w	CME_4F999898_A5-CME_4F999898
+	dc.w	CME_4F999898_A6-CME_4F999898
+	dc.w	CME_4F999898_A7-CME_4F999898
+	dc.w	CME_4F999898_A8-CME_4F999898
+	dc.w	CME_4F999898_A9-CME_4F999898
+	dc.w	CME_4F999898_AA-CME_4F999898
+	dc.w	CME_4F999898_AB-CME_4F999898
+	dc.w	CME_4F999898_AC-CME_4F999898
+	dc.w	CME_4F999898_AD-CME_4F999898
+	dc.w	CME_4F999898_AE-CME_4F999898
+	dc.w	CME_4F999898_AF-CME_4F999898
+	dc.w	CME_4F999898_B0-CME_4F999898
+	dc.w	CME_4F999898_B1-CME_4F999898
+	dc.w	CME_4F999898_B2-CME_4F999898
+	dc.w	CME_4F999898_B3-CME_4F999898
+
+CME_4F999898_0:
+	dc.b	0
+
+CME_4F999898_1:
+	dc.b	2
+	dc.w	$F000
+	dc.w	$0010
+
+CME_4F999898_2:
+	dc.b	1
+	dc.w	$E011
+
+CME_4F999898_3:
+	dc.b	1
+	dc.w	$EB56
+
+CME_4F999898_4:
+	dc.b	2
+	dc.w	$5017
+	dc.w	$8020
+
+CME_4F999898_5:
+	dc.b	2
+	dc.w	$500B
+	dc.w	$8029
+
+CME_4F999898_6:
+	dc.b	2
+	dc.w	$F032
+	dc.w	$5042
+
+CME_4F999898_7:
+	dc.b	2
+	dc.w	$7032
+	dc.w	$B048
+
+CME_4F999898_8:
+	dc.b	1
+	dc.w	$E054
+
+CME_4F999898_9:
+	dc.b	2
+	dc.w	$5054
+	dc.w	$D063
+
+CME_4F999898_A:
+	dc.b	2
+	dc.w	$5054
+	dc.w	$B071
+
+CME_4F999898_B:
+	dc.b	2
+	dc.w	$7032
+	dc.w	$907D
+
+CME_4F999898_C:
+	dc.b	2
+	dc.w	$F087
+	dc.w	$5097
+
+CME_4F999898_D:
+	dc.b	3
+	dc.w	$5087
+	dc.w	$F09D
+	dc.w	$00AD
+
+CME_4F999898_E:
+	dc.b	2
+	dc.w	$F0AE
+	dc.w	$20BE
+
+CME_4F999898_F:
+	dc.b	2
+	dc.w	$F0C1
+	dc.w	$60D1
+
+CME_4F999898_10:
+	dc.b	2
+	dc.w	$50C1
+	dc.w	$C0D8
+
+CME_4F999898_11:
+	dc.b	4
+	dc.w	$5087
+	dc.w	$0093
+	dc.w	$109D
+	dc.w	$A0E5
+
+CME_4F999898_12:
+	dc.b	2
+	dc.w	$F0F0
+	dc.w	$5100
+
+CME_4F999898_13:
+	dc.b	2
+	dc.w	$70F0
+	dc.w	$B106
+
+CME_4F999898_14:
+	dc.b	1
+	dc.w	$E112
+
+CME_4F999898_15:
+	dc.b	2
+	dc.w	$5112
+	dc.w	$D121
+
+CME_4F999898_16:
+	dc.b	2
+	dc.w	$5112
+	dc.w	$B12F
+
+CME_4F999898_17:
+	dc.b	3
+	dc.w	$70F0
+	dc.w	$0106
+	dc.w	$813B
+
+CME_4F999898_18:
+	dc.b	2
+	dc.w	$F144
+	dc.w	$4154
+
+CME_4F999898_19:
+	dc.b	3
+	dc.w	$5144
+	dc.w	$0157
+	dc.w	$F159
+
+CME_4F999898_1A:
+	dc.b	2
+	dc.w	$F169
+	dc.w	$2179
+
+CME_4F999898_1B:
+	dc.b	2
+	dc.w	$F17C
+	dc.w	$518C
+
+CME_4F999898_1C:
+	dc.b	2
+	dc.w	$517C
+	dc.w	$C192
+
+CME_4F999898_1D:
+	dc.b	4
+	dc.w	$5144
+	dc.w	$0157
+	dc.w	$115E
+	dc.w	$A19F
+
+CME_4F999898_1E:
+	dc.b	2
+	dc.w	$F1AA
+	dc.w	$11BA
+
+CME_4F999898_1F:
+	dc.b	2
+	dc.w	$5054
+	dc.w	$B1BC
+
+CME_4F999898_20:
+	dc.b	2
+	dc.w	$51AA
+	dc.w	$B1C8
+
+CME_4F999898_21:
+	dc.b	2
+	dc.w	$5054
+	dc.w	$B1D4
+
+CME_4F999898_22:
+	dc.b	2
+	dc.w	$F1E0
+	dc.w	$41F0
+
+CME_4F999898_23:
+	dc.b	2
+	dc.w	$F1F5
+	dc.w	$3205
+
+CME_4F999898_24:
+	dc.b	3
+	dc.w	$51E0
+	dc.w	$01F4
+	dc.w	$D209
+
+CME_4F999898_25:
+	dc.b	2
+	dc.w	$71F5
+	dc.w	$B217
+
+CME_4F999898_26:
+	dc.b	2
+	dc.w	$F223
+	dc.w	$1233
+
+CME_4F999898_27:
+	dc.b	2
+	dc.w	$5112
+	dc.w	$B235
+
+CME_4F999898_28:
+	dc.b	2
+	dc.w	$5223
+	dc.w	$B241
+
+CME_4F999898_29:
+	dc.b	2
+	dc.w	$5112
+	dc.w	$B24D
+
+CME_4F999898_2A:
+	dc.b	2
+	dc.w	$F259
+	dc.w	$4269
+
+CME_4F999898_2B:
+	dc.b	2
+	dc.w	$F26E
+	dc.w	$327E
+
+CME_4F999898_2C:
+	dc.b	3
+	dc.w	$5259
+	dc.w	$026D
+	dc.w	$D282
+
+CME_4F999898_2D:
+	dc.b	2
+	dc.w	$726E
+	dc.w	$B290
+
+CME_4F999898_2E:
+	dc.b	1
+	dc.w	$F29C
+
+CME_4F999898_2F:
+	dc.b	1
+	dc.w	$F2AC
+
+CME_4F999898_30:
+	dc.b	1
+	dc.w	$F2BC
+
+CME_4F999898_31:
+	dc.b	1
+	dc.w	$F2CC
+
+CME_4F999898_32:
+	dc.b	1
+	dc.w	$F2DC
+
+CME_4F999898_33:
+	dc.b	1
+	dc.w	$E2EC
+
+CME_4F999898_34:
+	dc.b	1
+	dc.w	$F2FB
+
+CME_4F999898_35:
+	dc.b	1
+	dc.w	$E30B
+
+CME_4F999898_36:
+	dc.b	1
+	dc.w	$F31A
+
+CME_4F999898_37:
+	dc.b	2
+	dc.w	$F32A
+	dc.w	$133A
+
+CME_4F999898_38:
+	dc.b	2
+	dc.w	$F33C
+	dc.w	$034C
+
+CME_4F999898_39:
+	dc.b	1
+	dc.w	$D34D
+
+CME_4F999898_3A:
+	dc.b	1
+	dc.w	$BB00
+
+CME_4F999898_3B:
+	dc.b	2
+	dc.w	$FB0C
+	dc.w	$1B1C
+
+CME_4F999898_3C:
+	dc.b	1
+	dc.w	$E35B
+
+CME_4F999898_3D:
+	dc.b	1
+	dc.w	$836A
+
+CME_4F999898_3E:
+	dc.b	1
+	dc.w	$C373
+
+CME_4F999898_3F:
+	dc.b	1
+	dc.w	$E380
+
+CME_4F999898_40:
+	dc.b	1
+	dc.w	$E38F
+
+CME_4F999898_41:
+	dc.b	2
+	dc.w	$F39E
+	dc.w	$13AE
+
+CME_4F999898_42:
+	dc.b	2
+	dc.w	$F3B0
+	dc.w	$13C0
+
+CME_4F999898_43:
+	dc.b	2
+	dc.w	$FB1E
+	dc.w	$1B2E
+
+CME_4F999898_44:
+	dc.b	2
+	dc.w	$FB30
+	dc.w	$1B40
+
+CME_4F999898_45:
+	dc.b	2
+	dc.w	$F3C2
+	dc.w	$03D2
+
+CME_4F999898_46:
+	dc.b	1
+	dc.w	$D3D3
+
+CME_4F999898_47:
+	dc.b	2
+	dc.w	$F3E1
+	dc.w	$03F1
+
+CME_4F999898_48:
+	dc.b	2
+	dc.w	$83D3
+	dc.w	$43F2
+
+CME_4F999898_49:
+	dc.b	2
+	dc.w	$F3F7
+	dc.w	$1407
+
+CME_4F999898_4A:
+	dc.b	1
+	dc.w	$D409
+
+CME_4F999898_4B:
+	dc.b	2
+	dc.w	$F417
+	dc.w	$5427
+
+CME_4F999898_4C:
+	dc.b	2
+	dc.w	$F42D
+	dc.w	$443D
+
+CME_4F999898_4D:
+	dc.b	3
+	dc.w	$1435
+	dc.w	$F43D
+	dc.w	$244D
+
+CME_4F999898_4E:
+	dc.b	2
+	dc.w	$F450
+	dc.w	$2460
+
+CME_4F999898_4F:
+	dc.b	2
+	dc.w	$F463
+	dc.w	$1473
+
+CME_4F999898_50:
+	dc.b	1
+	dc.w	$B475
+
+CME_4F999898_51:
+	dc.b	1
+	dc.w	$5481
+
+CME_4F999898_52:
+	dc.b	1
+	dc.w	$1487
+
+CME_4F999898_53:
+	dc.b	1
+	dc.w	$E35B
+
+CME_4F999898_54:
+	dc.b	1
+	dc.w	$C373
+
+CME_4F999898_55:
+	dc.b	2
+	dc.w	$F489
+	dc.w	$1499
+
+CME_4F999898_56:
+	dc.b	3
+	dc.w	$106D
+	dc.w	$F49B
+	dc.w	$14AB
+
+CME_4F999898_57:
+	dc.b	2
+	dc.w	$F4AD
+	dc.w	$24BD
+
+CME_4F999898_58:
+	dc.b	1
+	dc.w	$E4C0
+
+CME_4F999898_59:
+	dc.b	1
+	dc.w	$E4CF
+
+CME_4F999898_5A:
+	dc.b	1
+	dc.w	$E4DE
+
+CME_4F999898_5B:
+	dc.b	1
+	dc.w	$E4ED
+
+CME_4F999898_5C:
+	dc.b	1
+	dc.w	$E4FC
+
+CME_4F999898_5D:
+	dc.b	1
+	dc.w	$E50B
+
+CME_4F999898_5E:
+	dc.b	2
+	dc.w	$F51A
+	dc.w	$352A
+
+CME_4F999898_5F:
+	dc.b	2
+	dc.w	$F52E
+	dc.w	$253E
+
+CME_4F999898_60:
+	dc.b	2
+	dc.w	$F541
+	dc.w	$1551
+
+CME_4F999898_61:
+	dc.b	2
+	dc.w	$F553
+	dc.w	$0563
+
+CME_4F999898_62:
+	dc.b	2
+	dc.w	$F564
+	dc.w	$4574
+
+CME_4F999898_63:
+	dc.b	2
+	dc.w	$F579
+	dc.w	$1589
+
+CME_4F999898_64:
+	dc.b	2
+	dc.w	$F58B
+	dc.w	$159B
+
+CME_4F999898_65:
+	dc.b	2
+	dc.w	$F59D
+	dc.w	$45AD
+
+CME_4F999898_66:
+	dc.b	2
+	dc.w	$F5B2
+	dc.w	$25C2
+
+CME_4F999898_67:
+	dc.b	2
+	dc.w	$F5C5
+	dc.w	$25D5
+
+CME_4F999898_68:
+	dc.b	2
+	dc.w	$F5D8
+	dc.w	$25E8
+
+CME_4F999898_69:
+	dc.b	2
+	dc.w	$F5EB
+	dc.w	$15FB
+
+CME_4F999898_6A:
+	dc.b	2
+	dc.w	$F5FD
+	dc.w	$660D
+
+CME_4F999898_6B:
+	dc.b	2
+	dc.w	$F614
+	dc.w	$4624
+
+CME_4F999898_6C:
+	dc.b	2
+	dc.w	$F629
+	dc.w	$6639
+
+CME_4F999898_6D:
+	dc.b	2
+	dc.w	$F640
+	dc.w	$4650
+
+CME_4F999898_6E:
+	dc.b	2
+	dc.w	$F655
+	dc.w	$2665
+
+CME_4F999898_6F:
+	dc.b	2
+	dc.w	$F668
+	dc.w	$2678
+
+CME_4F999898_70:
+	dc.b	2
+	dc.w	$F67B
+	dc.w	$268B
+
+CME_4F999898_71:
+	dc.b	2
+	dc.w	$F68E
+	dc.w	$169E
+
+CME_4F999898_72:
+	dc.b	2
+	dc.w	$F6A0
+	dc.w	$66B0
+
+CME_4F999898_73:
+	dc.b	2
+	dc.w	$F6B7
+	dc.w	$46C7
+
+CME_4F999898_74:
+	dc.b	2
+	dc.w	$F6CC
+	dc.w	$66DC
+
+CME_4F999898_75:
+	dc.b	2
+	dc.w	$F6E3
+	dc.w	$46F3
+
+CME_4F999898_76:
+	dc.b	1
+	dc.w	$B6F8
+
+CME_4F999898_77:
+	dc.b	2
+	dc.w	$F704
+	dc.w	$4714
+
+CME_4F999898_78:
+	dc.b	2
+	dc.w	$F719
+	dc.w	$5729
+
+CME_4F999898_79:
+	dc.b	2
+	dc.w	$F72F
+	dc.w	$573F
+
+CME_4F999898_7A:
+	dc.b	2
+	dc.w	$F745
+	dc.w	$7755
+
+CME_4F999898_7B:
+	dc.b	2
+	dc.w	$F75D
+	dc.w	$476D
+
+CME_4F999898_7C:
+	dc.b	2
+	dc.w	$F772
+	dc.w	$4782
+
+CME_4F999898_7D:
+	dc.b	2
+	dc.w	$F787
+	dc.w	$4797
+
+CME_4F999898_7E:
+	dc.b	2
+	dc.w	$F79C
+	dc.w	$67AC
+
+CME_4F999898_7F:
+	dc.b	2
+	dc.w	$F7B3
+	dc.w	$57C3
+
+CME_4F999898_80:
+	dc.b	2
+	dc.w	$F7C9
+	dc.w	$17D9
+
+CME_4F999898_81:
+	dc.b	2
+	dc.w	$F7DB
+	dc.w	$87EB
+
+CME_4F999898_82:
+	dc.b	2
+	dc.w	$F7F4
+	dc.w	$4804
+
+CME_4F999898_83:
+	dc.b	2
+	dc.w	$F809
+	dc.w	$7819
+
+CME_4F999898_84:
+	dc.b	2
+	dc.w	$F821
+	dc.w	$4831
+
+CME_4F999898_85:
+	dc.b	2
+	dc.w	$F836
+	dc.w	$3846
+
+CME_4F999898_86:
+	dc.b	2
+	dc.w	$F84A
+	dc.w	$285A
+
+CME_4F999898_87:
+	dc.b	2
+	dc.w	$F85D
+	dc.w	$486D
+
+CME_4F999898_88:
+	dc.b	2
+	dc.w	$F872
+	dc.w	$6882
+
+CME_4F999898_89:
+	dc.b	2
+	dc.w	$F889
+	dc.w	$3899
+
+CME_4F999898_8A:
+	dc.b	2
+	dc.w	$F89D
+	dc.w	$68AD
+
+CME_4F999898_8B:
+	dc.b	2
+	dc.w	$F8B4
+	dc.w	$58C4
+
+CME_4F999898_8C:
+	dc.b	2
+	dc.w	$F8CA
+	dc.w	$18DA
+
+CME_4F999898_8D:
+	dc.b	2
+	dc.w	$F8DC
+	dc.w	$88EC
+
+CME_4F999898_8E:
+	dc.b	2
+	dc.w	$F8F5
+	dc.w	$7905
+
+CME_4F999898_8F:
+	dc.b	2
+	dc.w	$F90D
+	dc.w	$791D
+
+CME_4F999898_90:
+	dc.b	2
+	dc.w	$F925
+	dc.w	$4935
+
+CME_4F999898_91:
+	dc.b	2
+	dc.w	$F93A
+	dc.w	$394A
+
+CME_4F999898_92:
+	dc.b	2
+	dc.w	$F94E
+	dc.w	$295E
+
+CME_4F999898_93:
+	dc.b	2
+	dc.w	$F961
+	dc.w	$4971
+
+CME_4F999898_94:
+	dc.b	2
+	dc.w	$F976
+	dc.w	$4986
+
+CME_4F999898_95:
+	dc.b	2
+	dc.w	$F98B
+	dc.w	$399B
+
+CME_4F999898_96:
+	dc.b	1
+	dc.w	$D99F
+
+CME_4F999898_97:
+	dc.b	2
+	dc.w	$F9AD
+	dc.w	$09BD
+
+CME_4F999898_98:
+	dc.b	2
+	dc.w	$F9BE
+	dc.w	$29CE
+
+CME_4F999898_99:
+	dc.b	2
+	dc.w	$F9D1
+	dc.w	$29E1
+
+CME_4F999898_9A:
+	dc.b	2
+	dc.w	$F9E4
+	dc.w	$29F4
+
+CME_4F999898_9B:
+	dc.b	1
+	dc.w	$D9F7
+
+CME_4F999898_9C:
+	dc.b	2
+	dc.w	$FA05
+	dc.w	$2A15
+
+CME_4F999898_9D:
+	dc.b	2
+	dc.w	$FA18
+	dc.w	$2A28
+
+CME_4F999898_9E:
+	dc.b	2
+	dc.w	$FA2B
+	dc.w	$6A3B
+
+CME_4F999898_9F:
+	dc.b	2
+	dc.w	$FA42
+	dc.w	$5A52
+
+CME_4F999898_A0:
+	dc.b	2
+	dc.w	$FA58
+	dc.w	$6A68
+
+CME_4F999898_A1:
+	dc.b	2
+	dc.w	$FA6F
+	dc.w	$5A7F
+
+CME_4F999898_A2:
+	dc.b	1
+	dc.w	$EA85
+
+CME_4F999898_A3:
+	dc.b	2
+	dc.w	$FA94
+	dc.w	$1AA4
+
+CME_4F999898_A4:
+	dc.b	2
+	dc.w	$FAA6
+	dc.w	$1AB6
+
+CME_4F999898_A5:
+	dc.b	2
+	dc.w	$FAB8
+	dc.w	$1AC8
+
+CME_4F999898_A6:
+	dc.b	2
+	dc.w	$FACA
+	dc.w	$1ADA
+
+CME_4F999898_A7:
+	dc.b	2
+	dc.w	$FADC
+	dc.w	$1AEC
+
+CME_4F999898_A8:
+	dc.b	2
+	dc.w	$FAEE
+	dc.w	$1AFE
+
+CME_4F999898_A9:
+	dc.b	2
+	dc.w	$FB42
+	dc.w	$3B52
+
+CME_4F999898_AA:
+	dc.b	1
+	dc.w	$E017
+
+CME_4F999898_AB:
+	dc.b	1
+	dc.w	$EBF2
+
+CME_4F999898_AC:
+	dc.b	1
+	dc.w	$FB65
+
+CME_4F999898_AD:
+	dc.b	1
+	dc.w	$EB75
+
+CME_4F999898_AE:
+	dc.b	2
+	dc.w	$FB84
+	dc.w	$3B94
+
+CME_4F999898_AF:
+	dc.b	2
+	dc.w	$FB98
+	dc.w	$3BA8
+
+CME_4F999898_B0:
+	dc.b	1
+	dc.w	$EBAC
+
+CME_4F999898_B1:
+	dc.b	1
+	dc.w	$EBBB
+
+CME_4F999898_B2:
+	dc.b	2
+	dc.w	$FBCA
+	dc.w	$3BDA
+
+CME_4F999898_B3:
+	dc.b	2
+	dc.w	$FBDE
+	dc.w	$3BEE
+
 	even

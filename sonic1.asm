@@ -39,7 +39,7 @@ align:	macro
 	
 	Spindash: = 1 ; Why tf does ts exist? Scrapped.
 	
-	;OGSpazdunka: = 0  Scrapped, fully scrapped.
+	OGSpazdunka: = 1 ;  Scrapped, fully scrapped.
 	
 	Michael: = 0 ; Made so Sonic's palette is replaced with the recolor of them
 				 ; creator of this hack, Scrapped.
@@ -69,8 +69,8 @@ Vectors:	dc.l $FFFE00, EntryPoint, BusError, AddressError
 	dc.b 'SEGA MEGA DRIVE ' ; Hardware system ID						
 																	  ;
 Date:			dc.b '(C)KVW  2025.FEB'									; Official Development Month
-Title_Local:	dc.b 'SONIC SPAZDUNKA REMASTER (BY THE CEDARWOODS)    ' ; Domestic name
-Title_Int:		dc.b 'SONIC SPAZDUNKA REMASTER (BY THE CEDARWOODS)    ' ; International name
+Title_Local:	dc.b "STH 1: Project Spazdunka (BY THE CEDARWOODS)    "
+Title_Int:		dc.b "STH 1: Project Spazdunka (BY THE CEDARWOODS)    "
 Serial:		dc.b 'GM 03112025-02'   ; Serial/version number, fun fact, the serial number is actually
 									; Sonic Spazdunka's birthday, March 11th 2025.
 Checksum:	dc.w 0
@@ -2810,11 +2810,10 @@ PalPointers:
 ; ---------------------------------------------------------------------------
 ; Pallet data
 ; ---------------------------------------------------------------------------
-Pal_SegaBG:     dc.w 0, $EEE, $EC0, $EA0, $E80, $E60, $E40, $E20, $E00
-                dc.w $C00, $A00, $800, $600, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.w 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.w 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-                dc.w 0, 0, 0, 0, 0, 0, 0, 0    
+Pal_SegaBG:     dc.w $0000,$0EEE,$0CCC,$0AAA,$0888,$0666,$0444,$0222,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+	dc.w $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+	dc.w $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000
+	dc.w $0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000,$0000  
 Pal_Title:	incbin	pallet\titleson.bin
 Pal_TitleDuo:	incbin	pallet\titleboth.bin
 Pal_LevelSel:	incbin	pallet\levelsel.bin
@@ -3305,8 +3304,12 @@ Title_ChkLevSel:
 		;tst.b	($FFFFFFE0).w		; check	if level select	code is	on
 		;bne.w	PlayLevel		; if not, play level
 		;btst	#6,($FFFFF604).w ; check if A is pressed
-		;bra.w	PlayLevel		; if not, play level
-		jmp	Level_Select_Menu	; if yes, goto Sonic 2 level select	
+		if OGSpazdunka = 0
+		bra.w	PlayLevel		; if not, play level
+		endif
+		if OGSpazdunka = 1
+		jmp	Level_Select_Menu	; if yes, goto Sonic 2 level select
+		endif
 		;moveq	#$23,d0		; load Sonic's pallet
 		;bsr.w	PalLoad2
 		;lea	($FFFFCC00).w,a1
@@ -3764,7 +3767,13 @@ MusicList:	incbin	misc\muslist1.bin
 ; ---------------------------------------------------------------------------
 Level:					; XREF: GameModeArray
 		bset	#7,($FFFFF600).w ; add $80 to screen mode (for pre level sequence)
+		cmpi.b	#99,($FFFFFE12).w ; subtract 1 from number of lives
+		bls.w	sorry
+FUCKYOU:
+		RaiseError 'What the FUCK do you think            YOU are doing'
+sorry:
 		;move.b	#0,($FFFFFFD0).w
+		move.b  #0,($FFFFF5C0).w ; Set victory animation flag
 		tst.w	($FFFFFFF0).w
 		bmi.w	loc_37B6
 		move.b	#$E0,d0
@@ -5453,7 +5462,6 @@ loc_4DF2:
 		bcc.s	Cont_GotoLevel	; if yes, branch
 		cmpi.b	#6,($FFFFD024).w
 		bcc.s	Cont_MainLoop
-		tst.w	($FFFFF614).w
 		bne.w	Cont_MainLoop
 		bsr.w	ILLEGALCONTINUE
 		
@@ -5473,7 +5481,6 @@ Cont_GotoLevel:				; XREF: Cont_MainLoop
 		move.l	d0,($FFFFFE22).w ; clear time
 		move.l	d0,($FFFFFE26).w ; clear score
 		move.b	d0,($FFFFFE30).w ; clear lamppost count
-		subq.b	#1,($FFFFFE18).w ; subtract 1 from continues
 		rts	
 ; ===========================================================================
 
@@ -5604,11 +5611,11 @@ Obj81_Main:				; XREF: Obj81_Index
 		move.b	#4,render_flags(a0)
 		move.b	#2,priority(a0)
 		move.b	#$F,anim(a0)	; use "floating" animation
-		move.w	#$400,y_vel(a0)	; make Sonic fall from above
+		move.w  #$F0,y_pos(a0)
 
 Obj81_ChkLand:				; XREF: Obj81_Index
 		cmpi.w	#$1A0,y_pos(a0)	; has Sonic landed yet?
-		bne.s	Obj81_ShowFall	; if not, branch
+		bcs.s   Obj81_ShowFall
 		addq.b	#2,routine(a0)
 		clr.w	$12(a0)		; stop Sonic falling
 		move.l	#Map_obj80,mappings(a0)
@@ -5618,7 +5625,7 @@ Obj81_ChkLand:				; XREF: Obj81_Index
 ; ===========================================================================
 
 Obj81_ShowFall:				; XREF: Obj81_ChkLand
-		jsr	SpeedToPos
+		jsr	ObjectFall
 		jsr	Sonic_Animate
 		jmp	LoadSonicDynPLC
 ; ===========================================================================
@@ -5640,20 +5647,20 @@ Obj81_GetUp:				; XREF: Obj81_Animate
 		move.b	#$E0,d0
 		bsr.w	PlaySound_Special ; fade out music
 
-Obj81_Run:				; XREF: Obj81_Index
-		cmpi.w	#$800,$14(a0)	; check	Sonic's "run speed" (not moving)
-		bne.s	Obj81_AddSpeed	; if too low, branch
-		move.w	#$1000,x_vel(a0)	; move Sonic to	the right
-		bra.s	Obj81_ShowRun
-; ===========================================================================
+Obj81_Run:
+        cmpi.w  #$300,x_vel(a0)
+        bcc.s   Obj81_ShowRun
 
-Obj81_AddSpeed:				; XREF: Obj81_Run
-		addi.w	#$20,$14(a0)	; increase "run	speed"
+        addi.w  #$10,x_vel(a0)
+        cmpi.w  #$300,x_vel(a0)
+        bcs.s   Obj81_ShowRun
 
-Obj81_ShowRun:				; XREF: Obj81_Run
-		jsr	SpeedToPos
-		jsr	Sonic_Animate
-		jmp	LoadSonicDynPLC
+        move.w  #$300,x_vel(a0)
+
+Obj81_ShowRun:
+        jsr     SpeedToPos
+        jsr     Sonic_Animate
+        jmp     LoadSonicDynPLC
 ; ===========================================================================
 Ani_obj81:
 	include "_anim\obj81.asm"
@@ -5672,6 +5679,7 @@ Map_obj80:
 EndingSequence:				; XREF: GameModeArray
 		move.b	#$E4,d0
 		bsr.w	PlaySound_Special ; stop music
+		move.b	#3,($FFFFFE12).w ; set lives to	3
 		bsr.w	Pal_FadeFrom
 		lea	($FFFFD000).w,a1
 		moveq	#0,d0
@@ -5753,9 +5761,6 @@ End_LoadData:
 End_LoadSonic:
 		move.b	#1,($FFFFD000).w ; load	Sonic object
 		bset	#0,($FFFFD022).w ; make	Sonic face left
-		move.b	#1,($FFFFF7CC).w ; lock	controls
-		move.w	#$400,($FFFFF602).w ; move Sonic to the	left
-		move.w	#$FFF0,($FFFFD014).w ; set Sonic's speed
 		;move.b	#0,($FFFFFFD0).w
 		jsr	ObjPosLoad
 		jsr	ObjectsLoad
@@ -5792,6 +5797,7 @@ End_MainLoop:
 		bsr.w	PauseGame
 		move.b	#$18,($FFFFF62A).w
 		bsr.w	DelayProgram
+		move.b	#1,($FFFFFE2C).w ; FORCE SHIELD EVERY FRAME
 		addq.w	#1,($FFFFFE04).w
 		bsr.w	End_MoveSonic
 		jsr	ObjectsLoad
@@ -5834,23 +5840,10 @@ End_AllEmlds:				; XREF: loc_5334
 		subq.w	#1,($FFFFF794).w
 		bpl.s	loc_5334
 		move.w	#2,($FFFFF794).w
-		bsr.w	Pal_ToWhite
+		bsr.w	Pal_FadeFrom
 
 loc_5334:
-		tst.w	($FFFFFE02).w
-		beq.w	End_AllEmlds
-		clr.w	($FFFFFE02).w
-		move.w	#$2E2F,($FFFFA480).w ; modify level layout
-		lea	($C00004).l,a5
-		lea	($C00000).l,a6
-		lea	($FFFFF700).w,a3
-		lea	($FFFFA400).w,a4
-		move.w	#$4000,d2
-		bsr.w	LoadTilesFromStart2
-		moveq	#$13,d0
-		bsr.w	PalLoad1	; load ending pallet
-		bsr.w	Pal_MakeWhite
-		bra.w	End_MainLoop
+		move.w	#1,($FFFFFE02).w ; restart level
 
 ; ---------------------------------------------------------------------------
 ; Subroutine controlling Sonic on the ending sequence
@@ -5867,6 +5860,8 @@ End_MoveSonic:				; XREF: End_MainLoop
 		addq.b	#2,($FFFFF7D7).w
 		move.b	#1,($FFFFF7CC).w ; lock	player's controls
 		move.w	#$800,($FFFFF602).w ; move Sonic to the	right
+		move.w	#$E0,d0
+		bsr.w	PlaySound	; play ending sequence music
 		rts	
 ; ===========================================================================
 
@@ -6579,11 +6574,58 @@ LevelSizeLoad:				; XREF: TitleScreen; Level; EndingSequence
 		move.w	d0,($FFFFF73E).w
 		move.w  #160,($FFFFF7A0).w    ; reset the horizontal camera pan value to 160 pixels
 		bra.w	LevSz_ChkLamp
-; ===========================================================================
 ; ---------------------------------------------------------------------------
-; Level size array and ending start location array
+; Level size array
 ; ---------------------------------------------------------------------------
-LevelSizeArray:	incbin	misc\lvl_size.bin
+
+lvlsize macro left,right,top,bottom
+	; $0004 is an unused value, $0060 is the default vertical screen shift.
+	; Both are always the same and redundant.
+	dc.w $0004, left, right, top, bottom, $0060
+	endm
+
+; ---------------------------------------------------------------------------
+
+LevelSizeArray:
+		;           |---------------------------------Left boundary
+		;           |      |--------------------------Right boundary
+		;           |      |      |-------------------Top boundary
+		;           |      |      |      |------------Bottom boundary
+		; GHZ       |      |      |      |
+		lvlsize     0, $32BF,     0,  $349 ; GHZ1
+		lvlsize     0, $1EBF,     0,  $300 ; GHZ2
+		lvlsize     0, $2960,     0,  $300 ; GHZ3
+		lvlsize     0, $2ABF,     0,  $300 ; GHZ4 (unused)
+		; LZ                          
+		lvlsize     0, $19BF,     0,  $530 ; LZ1
+		lvlsize     0, $10AF,     0,  $720 ; LZ2
+		lvlsize     0, $202F, -$100,  $800 ; LZ3 (level wrapping)
+		lvlsize     0, $20BF,     0,  $720 ; LZ4 (SBZ3)
+		; MZ                          
+		lvlsize     0, $17BF,     0,  $1D0 ; MZ1
+		lvlsize     0, $17BF,     0,  $520 ; MZ2
+		lvlsize     0, $1800,     0,  $720 ; MZ3
+		lvlsize     0, $16BF,     0,  $720 ; MZ4 (unused)
+		; SLZ                         
+		lvlsize     0, $1FBF,     0,  $640 ; SLZ1
+		lvlsize     0, $1FBF,     0,  $640 ; SLZ2
+		lvlsize     0, $2000,     0,  $6C0 ; SLZ3
+		lvlsize     0, $3EC0,     0,  $720 ; SLZ4 (unused)
+		; SYZ                         
+		lvlsize     0, $22C0,     0,  $420 ; SYZ1
+		lvlsize     0, $28C0,     0,  $520 ; SYZ2
+		lvlsize     0, $2C00,     0,  $620 ; SYZ3
+		lvlsize     0, $2EC0,     0,  $620 ; SYZ4 (unused)
+		; SBZ                         
+		lvlsize     0, $21C0,     0,  $720 ; SBZ1
+		lvlsize     0, $1E40, -$100,  $800 ; SBZ2 (level wrapping)
+		lvlsize $2080, $2460,  $510,  $510 ; SBZ3 (FZ)
+		lvlsize     0, $3EC0,     0,  $720 ; SBZ4 (unused)
+		; Ending
+		lvlsize     0,  $1A00,  $110,  $120 ; good ending
+		lvlsize     0,  $1A00,  $110,  $120 ; bad ending
+		lvlsize     0, $2FFF,     0,  $320 ; (unused)
+		lvlsize     0, $2FFF,     0,  $320 ; (unused)
 		even
 
 EndingStLocArray:
@@ -6855,7 +6897,7 @@ Deform_Index:	dc.w Deform_GHZ-Deform_Index, Deform_LZ-Deform_Index
 Deform_GHZ:
 		move.w	($FFFFF73A).w,d4
 		ext.l	d4
-		asl.l	#5,d4
+		asl.l	#4,d4
 		move.l	d4,d1
 		asl.l	#1,d4
 		add.l	d1,d4
@@ -6863,7 +6905,7 @@ Deform_GHZ:
 		bsr.w	ScrollBlock6
 		move.w	($FFFFF73A).w,d4
 		ext.l	d4
-		asl.l	#7,d4
+		asl.l	#6,d4
 		moveq	#0,d6
 		bsr.w	ScrollBlock5
 		lea	($FFFFCC00).w,a1
@@ -6887,9 +6929,9 @@ Deform_GHZ_2:				; XREF: Deform_GHZ
 		neg.w	d0
 		swap	d0
 		lea	($FFFFA800).w,a2
-		addi.l	#$10000,(a2)+
-		addi.l	#$C000,(a2)+
-		addi.l	#$8000,(a2)+
+		addi.l	#$4000,(a2)+
+		addi.l	#$1000,(a2)+
+		addi.l	#$D00,(a2)+
 		move.w	($FFFFA800).w,d0
 		add.w	($FFFFF718).w,d0
 		neg.w	d0
@@ -9002,9 +9044,18 @@ Resize_GHZx:	dc.w Resize_GHZ1-Resize_GHZx
 
 Resize_GHZ1:
 		move.w	#$300,($FFFFF726).w ; set lower	y-boundary
-		cmpi.w	#$1780,($FFFFF700).w ; has the camera reached $1780 on x-axis?
+		cmpi.w	#$380,($FFFFF700).w ; has the camera reached $1780 on x-axis?
+		bcs.s	locret_6E08	; if not, branch
+		move.w	#$320,($FFFFF726).w ; set lower	y-boundary
+		cmpi.w	#$1270,($FFFFF700).w ; has the camera reached $1780 on x-axis?
+		bcs.s	locret_6E08	; if not, branch
+		move.w	#$200,($FFFFF726).w ; set lower	y-boundary
+		cmpi.w	#$15A0,($FFFFF700).w ; has the camera reached $1780 on x-axis?
 		bcs.s	locret_6E08	; if not, branch
 		move.w	#$400,($FFFFF726).w ; set lower	y-boundary
+		cmpi.w	#$1D70,($FFFFF700).w ; has the camera reached $1780 on x-axis?
+		bcs.s	locret_6E08	; if not, branch
+		move.w	#$300,($FFFFF726).w ; set lower	y-boundary
 
 locret_6E08:
 		rts	
@@ -15897,12 +15948,12 @@ Obj34_ItemData:	dc.w $D0	; y-axis position
 ; ---------------------------------------------------------------------------
 Obj34_ConData:	
 		dc.w $0000,$0120, $FF14,$0154, $042C,$016C, $022C,$016C	; POLLUTED HILL
-		dc.w $0000,$0120, $FF28,$0168, $0440,$0180, $0240,$0180	; CONTRARY GROTTO
+		dc.w $0000,$0120, $FF0C,$014C, $0424,$0164, $03EC,$03EC	; GROTTO RUINS (hide Oval)
 		dc.w $0000,$0120, $FF28,$0168, $0440,$0180, $0240,$0180	; NETHERED MARBLE
 		dc.w 0,	$120, $FEFC, $13C, $414, $154, $214, $154 ; SLZ
 		dc.w $0000,$0120, $FF24,$0164, $043C,$017C, $023C,$017C	; SLOPE MOUNTAINS
 		dc.w 0,	$120, $FF04, $144, $41C, $15C, $21C, $15C ; SBZ
-		dc.w 0,	$120, $FEE4, $124, $3EC, $3EC, $1EC, $12C ; FZ
+		dc.w $0000,$0120, $03EC,$03EC, $03EC,$03EC, $03EC,$03EC	; FINAL DEMISE (hide Act, Zone, Oval)
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 39 - "GAME OVER" and "TIME OVER"
@@ -16112,6 +16163,8 @@ Obj3A_ChkBonus:
 		bne.s	Obj3A_AddBonus	; if yes, branch
 		move.w	#$C5,d0
 		jsr	(PlaySound_Special).l ;	play "ker-ching" sound
+		move.b  #0,($FFFFF7AA).w ; Lock the screen
+		move.w	#$800,($FFFFF602).w ; make Sonic run to	the right
 		addq.b	#2,routine(a0)
 		cmpi.w	#$501,($FFFFFE10).w
 		bne.s	Obj3A_SetDelay
@@ -16231,6 +16284,7 @@ Obj3A_SBZ2:				; XREF: Obj3A_ChkPos2
 		cmpi.b	#4,mapping_frame(a0)
 		bne.w	DeleteObject
 		addq.b	#2,routine(a0)
+		clr.b	($FFFFF5C0).w ; Set victory animation flag
 		clr.b	($FFFFF7CC).w	; unlock controls
 		move.w	#$8D,d0
 		jmp	(PlaySound).l	; play FZ music
@@ -16508,22 +16562,19 @@ byte_C9FE:		dc.b 12	; POLLUTED HILL
 		dc.b $F8, $01, $00, $20, $3C	; I
 		dc.b $F8, $05, $00, $26, $44	; L
 		dc.b $F8, $05, $00, $26, $54	; L
-byte_CA2C:	dc.b 14	; CONTRARY GROTTO
-		dc.b $F8, $05, $00, $08, $88	; C
-		dc.b $F8, $05, $00, $32, $98	; O
-		dc.b $F8, $05, $00, $2E, $A8	; N
-		dc.b $F8, $05, $00, $42, $B8	; T
-		dc.b $F8, $05, $00, $3A, $C8	; R
-		dc.b $F8, $05, $00, $00, $D8	; A
-		dc.b $F8, $05, $00, $3A, $E8	; R
-		dc.b $F8, $05, $00, $4A, $F8	; Y
+byte_CA2C:	dc.b 11	; GROTTO RUINS
+		dc.b $F8, $05, $00, $18, $A4	; G
+		dc.b $F8, $05, $00, $3A, $B4	; R
+		dc.b $F8, $05, $00, $32, $C4	; O
+		dc.b $F8, $05, $00, $42, $D4	; T
+		dc.b $F8, $05, $00, $42, $E4	; T
+		dc.b $F8, $05, $00, $32, $F4	; O
 						; space
-		dc.b $F8, $05, $00, $18, $18	; G
-		dc.b $F8, $05, $00, $3A, $28	; R
-		dc.b $F8, $05, $00, $32, $38	; O
-		dc.b $F8, $05, $00, $42, $48	; T
-		dc.b $F8, $05, $00, $42, $58	; T
-		dc.b $F8, $05, $00, $32, $68	; O
+		dc.b $F8, $05, $00, $3A, $14	; R
+		dc.b $F8, $05, $00, $46, $24	; U
+		dc.b $F8, $01, $00, $20, $34	; I
+		dc.b $F8, $05, $00, $2E, $3C	; N
+		dc.b $F8, $05, $00, $3E, $4C	; S
 		even
 byte_CA5A:	dc.b 14	; NETHERED MARBLE
 		dc.b $F8, $05, $00, $2E, $87	; N
@@ -16542,45 +16593,57 @@ byte_CA5A:	dc.b 14	; NETHERED MARBLE
 		dc.b $F8, $05, $00, $26, $58	; L
 		dc.b $F8, $05, $00, $10, $68	; E
 		even
-byte_CA7A:	dc.b 9			; STAR	LIGHT
-		dc.b $F8, 5, 0,	$3E, $B4
-		dc.b $F8, 5, 0,	$42, $C4
-		dc.b $F8, 5, 0,	0, $D4
-		dc.b $F8, 5, 0,	$3A, $E4
-		dc.b $F8, 5, 0,	$26, 4
-		dc.b $F8, 1, 0,	$20, $14
-		dc.b $F8, 5, 0,	$18, $1C
-		dc.b $F8, 5, 0,	$1C, $2C
-		dc.b $F8, 5, 0,	$42, $3C
-byte_CAA8:		dc.b 14	; SLOPE MOUNTAINS
-		dc.b $F8, $05, $00, $3E, $8B	; S
-		dc.b $F8, $05, $00, $26, $9B	; L
-		dc.b $F8, $05, $00, $32, $AB	; O
-		dc.b $F8, $05, $00, $36, $BB	; P
-		dc.b $F8, $05, $00, $10, $CB	; E
+byte_CA7A:	dc.b 15	; ROTTEN LIGHTCITY
+		dc.b $F8, $05, $00, $3A, $88	; R
+		dc.b $F8, $05, $00, $32, $98	; O
+		dc.b $F8, $05, $00, $42, $A8	; T
+		dc.b $F8, $05, $00, $42, $B8	; T
+		dc.b $F8, $05, $00, $10, $C8	; E
+		dc.b $F8, $05, $00, $2E, $D8	; N
 						; space
-		dc.b $F8, $05, $00, $2A, $EB	; M
-		dc.b $F8, $05, $00, $32, $FC	; O
-		dc.b $F8, $05, $00, $46, $0C	; U
-		dc.b $F8, $05, $00, $2E, $1C	; N
-		dc.b $F8, $05, $00, $42, $2C	; T
-		dc.b $F8, $05, $00, $00, $3C	; A
-		dc.b $F8, $01, $00, $20, $4C	; I
-		dc.b $F8, $05, $00, $2E, $54	; N
-		dc.b $F8, $05, $00, $3E, $64	; S
+		dc.b $F8, $05, $00, $26, $F8	; L
+		dc.b $F8, $01, $00, $20, $08	; I
+		dc.b $F8, $05, $00, $18, $10	; G
+		dc.b $F8, $05, $00, $1C, $20	; H
+		dc.b $F8, $05, $00, $42, $30	; T
+		dc.b $F8, $05, $00, $08, $40	; C
+		dc.b $F8, $01, $00, $20, $50	; I
+		dc.b $F8, $05, $00, $42, $58	; T
+		dc.b $F8, $05, $00, $4A, $68	; Y
 		even
-byte_CADC:	dc.b $A			; SCRAP BRAIN
-		dc.b $F8, 5, 0,	$3E, $AC
-		dc.b $F8, 5, 0,	8, $BC
-		dc.b $F8, 5, 0,	$3A, $CC
-		dc.b $F8, 5, 0,	0, $DC
-		dc.b $F8, 5, 0,	$36, $EC
-		dc.b $F8, 5, 0,	4, $C
-		dc.b $F8, 5, 0,	$3A, $1C
-		dc.b $F8, 5, 0,	0, $2C
-		dc.b $F8, 1, 0,	$20, $3C
-		dc.b $F8, 5, 0,	$2E, $44
-		dc.b 0
+byte_CAA8:	dc.b 15	; FOULED MOUNTAINS
+		dc.b $F8, $05, $00, $14, $83	; F
+		dc.b $F8, $05, $00, $32, $93	; O
+		dc.b $F8, $05, $00, $46, $A3	; U
+		dc.b $F8, $05, $00, $26, $B3	; L
+		dc.b $F8, $05, $00, $10, $C3	; E
+		dc.b $F8, $05, $00, $0C, $D3	; D
+						; space
+		dc.b $F8, $05, $00, $2A, $F3	; M
+		dc.b $F8, $05, $00, $32, $04	; O
+		dc.b $F8, $05, $00, $46, $14	; U
+		dc.b $F8, $05, $00, $2E, $24	; N
+		dc.b $F8, $05, $00, $42, $34	; T
+		dc.b $F8, $05, $00, $00, $44	; A
+		dc.b $F8, $01, $00, $20, $54	; I
+		dc.b $F8, $05, $00, $2E, $5C	; N
+		dc.b $F8, $05, $00, $3E, $6C	; S
+		even
+byte_CADC:	dc.b 12	; SCRAP FACTORY
+		dc.b $F8, $05, $00, $3E, $98	; S
+		dc.b $F8, $05, $00, $08, $A8	; C
+		dc.b $F8, $05, $00, $3A, $B8	; R
+		dc.b $F8, $05, $00, $00, $C8	; A
+		dc.b $F8, $05, $00, $36, $D8	; P
+						; space
+		dc.b $F8, $05, $00, $14, $F8	; F
+		dc.b $F8, $05, $00, $00, $08	; A
+		dc.b $F8, $05, $00, $08, $18	; C
+		dc.b $F8, $05, $00, $42, $28	; T
+		dc.b $F8, $05, $00, $32, $38	; O
+		dc.b $F8, $05, $00, $3A, $48	; R
+		dc.b $F8, $05, $00, $4A, $58	; Y
+		even
 byte_CB10:	dc.b 4	; AREA
 		dc.b $F8, $05, $00, $00, $E0	; A
 		dc.b $F8, $05, $00, $3A, $F0	; R
@@ -16610,12 +16673,19 @@ byte_CB47:	dc.b $D			; Oval
 		dc.b 4,	$C, 0, $7C, $EC
 		dc.b $C, 8, 0, $7C, $EC
 		dc.b 0
-byte_CB8A:	dc.b 5			; FINAL
-		dc.b $F8, 5, 0,	$14, $DC
-		dc.b $F8, 1, 0,	$20, $EC
-		dc.b $F8, 5, 0,	$2E, $F4
-		dc.b $F8, 5, 0,	0, 4
-		dc.b $F8, 5, 0,	$26, $14
+byte_CB8A:	dc.b 11	; FINAL DEMISE
+		dc.b $F8, $05, $00, $14, $A7	; F
+		dc.b $F8, $01, $00, $20, $B7	; I
+		dc.b $F8, $05, $00, $2E, $BF	; N
+		dc.b $F8, $05, $00, $00, $CF	; A
+		dc.b $F8, $05, $00, $26, $DF	; L
+						; space
+		dc.b $F8, $05, $00, $0C, $FF	; D
+		dc.b $F8, $05, $00, $10, $0F	; E
+		dc.b $F8, $05, $00, $2A, $1F	; M
+		dc.b $F8, $01, $00, $20, $30	; I
+		dc.b $F8, $05, $00, $3E, $38	; S
+		dc.b $F8, $05, $00, $10, $48	; E
 		even
 ; ---------------------------------------------------------------------------
 ; Sprite mappings - "GAME OVER"	and "TIME OVER"
@@ -19324,7 +19394,7 @@ Obj0D:					; XREF: Obj_Index
 Obj0D_Index:	dc.w Obj0D_Main-Obj0D_Index
 		dc.w Obj0D_Touch-Obj0D_Index
 		dc.w Obj0D_Spin-Obj0D_Index
-		dc.w Obj0D_SonicRun-Obj0D_Index
+		dc.w loc_EC86-Obj0D_Index
 		dc.w locret_ED1A-Obj0D_Index
 ; ===========================================================================
 
@@ -19342,6 +19412,7 @@ Obj0D_Touch:				; XREF: Obj0D_Index
 		bcs.s	locret_EBBA
 		cmpi.w	#$20,d0		; is Sonic within $20 pixels of	the signpost?
 		bcc.s	locret_EBBA	; if not, branch
+		move.b  #1,($FFFFF7AA).w ; Lock the screen
 		move.w	#$CF,d0
 		jsr	(PlaySound).l	; play signpost	sound
 		clr.b	($FFFFFE1E).w	; stop time counter
@@ -19412,9 +19483,12 @@ Obj0D_SonicRun:				; XREF: Obj0D_Index
 		move.w	($FFFFF72A).w,d1
 		addi.w	#$128,d1
 		cmp.w	d1,d0
-		bcs.s	locret_ECEE
+		bcs.w	locret_ECEE
 
 loc_EC86:
+		move.b  #1,($FFFFF5C0).w ; Set victory animation flag
+		move.b	#1,($FFFFF7CC).w ; lock	controls
+		move.b	#0,($FFFFF602).w ; move Sonic to the	left (force left press)
 		addq.b	#2,routine(a0)
 
 ; ---------------------------------------------------------------------------
@@ -19427,8 +19501,6 @@ loc_EC86:
 GotThroughAct:				; XREF: Obj3E_EndAct
 		tst.b	($FFFFD5C0).w
 		bne.s	locret_ECEE
-		move.b	#1,($FFFFF7CC).w ; lock	controls
-		move.w	#$800,($FFFFF602).w ; make Sonic run to	the right
 		move.w	($FFFFF72A).w,($FFFFF728).w
 		clr.b	($FFFFFE2D).w	; disable invincibility
 		clr.b	($FFFFFE1E).w	; stop time counter
@@ -25350,7 +25422,14 @@ Obj01_NotRight:
 		tst.w	$14(a0)		; is Sonic moving?
 		bne.w	Obj01_ResetScr	; if yes, branch
 		bclr	#5,status(a0)
-		move.b	#5,anim(a0)	; use "standing" animation
+Result_Check:
+        tst.b   ($FFFFF5C0).w ; Has the victory animation flag been set?
+        beq.s   NormalJump ; If not, branch
+        move.b  #$25,$1C(a0) ; Play the victory animation
+        bra.s   cont ; Continue
+NormalJump:
+        move.b  #5,$1C(a0)    ; use "jumping"    animation
+cont:
 		btst	#3,status(a0)
 		beq.s	Sonic_Balance
 		moveq	#0,d0
@@ -31790,7 +31869,7 @@ loc_17772:
 		move.w	8(a0),$30(a0)
 		move.w	$C(a0),$38(a0)
 		move.b	#$F,collision_flags(a0)
-		move.b	#16,collision_property(a0)	; set number of	hits to	8
+		move.b	#2,collision_property(a0)	; set number of	hits to	8
 
 Obj3D_ShipMain:				; XREF: Obj3D_Index
 		moveq	#0,d0
@@ -31862,7 +31941,7 @@ locret_1784A:
 loc_1784C:				; XREF: loc_177E6
 		moveq	#100,d0
 		bsr.w	AddPoints
-		move.b	#8,routine_secondary(a0)
+		move.b	#8,$25(a0)
 		move.w	#$B3,$3C(a0)
 		rts	
 
@@ -31875,13 +31954,13 @@ loc_1784C:				; XREF: loc_177E6
 
 BossDefeated:
 		move.b	($FFFFFE0F).w,d0
-		andi.b	#7,d0
+		andi.b	#6,d0
 		bne.s	locret_178A2
 		jsr	SingleObjLoad
 		bne.s	locret_178A2
 		move.b	#$3F,0(a1)	; load explosion object
 		move.w	8(a0),8(a1)
-		move.w	$C(a0),y_pos(a1)
+		move.w	$C(a0),$C(a1)
 		jsr	(RandomNumber).l
 		move.w	d0,d1
 		moveq	#0,d1
@@ -31891,12 +31970,11 @@ BossDefeated:
 		add.w	d1,8(a1)
 		lsr.w	#8,d0
 		lsr.b	#3,d0
-		add.w	d0,y_pos(a1)
-
+		add.w	d0,$C(a1)
+		
 locret_178A2:
 		rts	
 ; End of function BossDefeated
-
 ; ---------------------------------------------------------------------------
 ; Subroutine to	move a boss
 ; ---------------------------------------------------------------------------
@@ -31983,7 +32061,7 @@ loc_17976:
 ; ===========================================================================
 
 loc_1797A:				; XREF: Obj3D_ShipIndex
-		subq.w	#1,$3C(a0)
+		subq.w	#3,$3C(a0)
 		bmi.s	loc_17984
 		bra.w	BossDefeated
 ; ===========================================================================
@@ -32034,6 +32112,8 @@ loc_179E0:
 		clr.w	$12(a0)
 		move.w	#$81,d0
 		jsr	(PlaySound).l	; play GHZ music
+		move.w	#$D7,d0			; spin sound ($E0 in s2)
+		jsr	(PlaySound_Special).l	; play spin sound
 
 loc_179EE:
 		bsr.w	BossMove
@@ -32041,8 +32121,7 @@ loc_179EE:
 ; ===========================================================================
 
 loc_179F6:				; XREF: Obj3D_ShipIndex
-		move.w	#$500,x_vel(a0)
-		move.w	#-$30,y_vel(a0)
+		jsr ObjectFall
 		cmpi.w	#$2AC0,($FFFFF72A).w
 		beq.s	loc_17A10
 		addq.w	#2,($FFFFF72A).w
@@ -32096,7 +32175,6 @@ loc_17A5A:
 		move.b	d1,anim(a0)
 		subq.b	#2,d0
 		bne.s	Obj3D_FaceDisp
-		move.b	#6,anim(a0)
 		tst.b	1(a0)
 		bpl.s	Obj3D_FaceDel
 
@@ -38375,7 +38453,7 @@ loc_1C078:
 loc_1C08A:
 		subq.b	#1,($FFFFF7B3).w
 		bpl.s	loc_1C0C0
-		move.b	#$F,($FFFFF7B3).w
+		move.b	#$3F,($FFFFF7B3).w
 		lea	(Art_GhzFlower1).l,a1 ;	load big flower	patterns
 		move.b	($FFFFF7B2).w,d0
 		addq.b	#1,($FFFFF7B2).w
@@ -38424,7 +38502,7 @@ byte_1C10E:	dc.b 0,	1, 2, 1
 AniArt_MZ:				; XREF: AniArt_Index
 		subq.b	#1,($FFFFF7B1).w
 		bpl.s	loc_1C150
-		move.b	#$13,($FFFFF7B1).w
+		move.b	#$23,($FFFFF7B1).w
 		lea	(Art_MzLava1).l,a1 ; load lava surface patterns
 		moveq	#0,d0
 		move.b	($FFFFF7B0).w,d0
@@ -38852,24 +38930,23 @@ loc_1C518:
 		bra.w	LoadTiles
 ; End of function AniArt_GiantRing
 
-; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 21 - SCORE, TIME, RINGS
 ; ---------------------------------------------------------------------------
 
-Obj21:					; XREF: Obj_Index
-		moveq	#0,d0
-		move.b	$24(a0),d0
-		move.w	Obj21_Index(pc,d0.w),d1
-		jmp	Obj21_Index(pc,d1.w)
+Obj21:; XREF: Obj_Index
+        moveq    #0,d0
+        move.b    $24(a0),d0
+        move.w    HUD_Index(pc,d0.w),d1
+        jmp    HUD_Index(pc,d1.w)
 ; ===========================================================================
-Obj21_Index:    dc.w Obj21_Main-Obj21_Index
-        dc.w Obj21_MoveOnScreen-Obj21_Index
-        dc.w Obj21_Flash-Obj21_Index
-        dc.w Obj21_MoveOffScreen-Obj21_Index
+HUD_Index:    dc.w HUD_Main-HUD_Index
+        dc.w HUD_Show-HUD_Index
+        dc.w HUD_Flash-HUD_Index
+        dc.w HUD_Leave-HUD_Index
 ; ===========================================================================
 
-Obj21_Main:                ; XREF: Obj21_Main
+HUD_Main:    ; Routine 0
         addq.b    #2,$24(a0)
         move.w    #$0,8(a0)
         move.w    #$108,$A(a0)
@@ -38878,41 +38955,47 @@ Obj21_Main:                ; XREF: Obj21_Main
         move.b    #0,1(a0)
         move.b    #0,$18(a0)
 
-Obj21_MoveOnScreen:
-        addq.w    #$3,8(a0)                ; decrease delay timer
-        cmpi.w  #$90,8(a0)
-        bne.s   Obj21_Flash
-        addq.b  #2,$24(a0)
-        jmp Obj21_Flash
+HUD_Show:                        ; Routine 2
 
-Obj21_MoveOffScreen:
-        subq.w    #$3,8(a0)
-        cmpi.w    #$0,8(a0)
-        bne.w   Obj21_Flash
-        jmp     DeleteObject
+            cmpi.w  #$90,8(a0)    ; has HUD reached $90 x-position?
+            bcc.s   HUD_Flash        ; go to HUD_Flash if x-pos is higher or equal
+            addq.w  #6,8(a0)        ; move HUD to the right
+            jmp    (DisplaySprite).l
 
-Obj21_Flash:				; XREF: Obj21_Main
-		tst.w	($FFFFFE20).w	; do you have any rings?
-		beq.s	Obj21_Flash2	; if not, branch
-		clr.b	$1A(a0)		; make all counters yellow
-		jmp	DisplaySprite
+HUD_Flash:    ; Routine 2
+        tst.b  ($FFFFFE1E).w  ; Is the timer active?
+        bne.s  HUD_Display      ; If so, branch
+        addq.b #2,$24(a0) ; Go to HUD move routine
+
+HUD_Display:
+        tst.w    ($FFFFFE20).w    ; do you have any rings?
+        beq.s    @norings    ; if not, branch
+        clr.b	$1A(a0)		; make all counters yellow
+		jmp	(DisplaySprite).l
 ; ===========================================================================
 
-
-Obj21_Flash2:
-		moveq	#0,d0
+@norings:
+        moveq	#0,d0
 		btst	#3,($FFFFFE05).w
-		bne.s	Obj21_Display
+		bne.s	@display
 		addq.w	#1,d0		; make ring counter flash red
 		cmpi.b	#9,($FFFFFE23).w ; have	9 minutes elapsed?
-		bne.s	Obj21_Display	; if not, branch
-        addq.w	#2,d0		; make time counter flash red
+		bne.s	@display	; if not, branch
+                addq.w	#2,d0		; make time counter flash red
 
+    @display:
+        move.b	d0,$1A(a0)
+		jmp	(DisplaySprite).l
+; ===========================================================================
 
-Obj21_Display:
-		move.b	d0,$1A(a0)
-		jmp	DisplaySprite
+HUD_Leave:        ; Routine 6
+        tst.w   8(a0)         ; has the HUD reached $0 by X-pos?
+        beq.s @byebye             ; if yes, branch
+        subi.w  #6,8(a0)         ; move HUD to the left
+        jmp    (DisplaySprite).l
 
+    @byebye:    
+            jmp DeleteObject
 ; ===========================================================================
 
 ; ---------------------------------------------------------------------------
@@ -40737,7 +40820,7 @@ S3PSG2F: incbin sound\S3psg\psg2f.bin
 S3PSG30: incbin sound\S3psg\psg30.bin
 	even
 
-byte_71A94:	dc.b 7,	$72, $73, $26, $15, 8, $FF, 5
+byte_71A94:	dc.b $C4,	$72, $73, $26, $15, 8, $FF, 5
 ; ---------------------------------------------------------------------------
 ; Music	Pointers
 ; ---------------------------------------------------------------------------
@@ -43153,6 +43236,7 @@ SoundD6:	include	"sound\4D.asm"
 SoundD7:	include	"sound\51.asm"
 		even		
 		
+		align $200
 Art_Dust	incbin	artunc\spindust.bin ; Art for the Spin Dust, wonder why is it here.
 
 		
