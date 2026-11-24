@@ -428,7 +428,7 @@ PLC_SpeStResult:dc.w 1
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - ending sequence, also Hi MDTravis
 ; ---------------------------------------------------------------------------
-PLC_Ending:	dc.w $6
+PLC_Ending:	dc.w $8
 		dc.l Nem_Stalk		; flower stalk
 		dc.w $6B00
 		dc.l Nem_EndFlower	; flowers
@@ -441,8 +441,12 @@ PLC_Ending:	dc.w $6
 		dc.w $9E00
 		dc.l Nem_Chopper	; chopper enemy
 		dc.w $8F60
-		dc.l Nem_Spikes		; spikes
-		dc.w $A360
+		dc.l Nem_HSpring	; vertical spring
+		dc.w $A460
+		dc.l Nem_VSpring	; vertical spring
+		dc.w $A660
+		dc.l Nem_Monitors	; monitors
+		dc.w $D000
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - "TRY AGAIN" and "END" screens
 ; ---------------------------------------------------------------------------

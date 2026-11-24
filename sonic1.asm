@@ -6623,7 +6623,7 @@ LevelSizeArray:
 		lvlsize     0, $3EC0,     0,  $720 ; SBZ4 (unused)
 		; Ending
 		lvlsize     0,  $1A00,  $110,  $120 ; good ending
-		lvlsize     0,  $1A00,  $110,  $120 ; bad ending
+		lvlsize     0,  $DC0,  $110,  $120 ; bad ending
 		lvlsize     0, $2FFF,     0,  $320 ; (unused)
 		lvlsize     0, $2FFF,     0,  $320 ; (unused)
 		even
@@ -6714,8 +6714,16 @@ StartLocArray:	incbin	misc\sloc_lev.bin
 ; Format - 4 bytes per zone, referring to which 256x256 evoke special events:
 ; loop,	loop, tunnel, tunnel
 ; ---------------------------------------------------------------------------
-LoopTileNums:	incbin	misc\loopnums.bin
-		even
+LoopTileNums:
+;  byte data | Loop 1, Loop 2, S-Tube 1, S-Tube 2
+        dc.b     $B5, $7F, $1F, $20 ; Green Hill Zone
+        dc.b     $7F, $7F, $7F, $7F  ; Labyrinth Zone
+        dc.b     $7F, $7F, $7F, $7F ; Marble Zone
+        dc.b     $AA, $B4, $7F, $7F ; Star Light Zone
+        dc.b     $7F, $7F, $7F, $7F ; Spring Yard Zone
+        dc.b     $7F, $7F, $7F, $7F ;Scrap Brain Zone
+        dc.b     $B5, $7F, $1F, $20 ;Ending Sequence
+        even 
 
 ; ===========================================================================
 

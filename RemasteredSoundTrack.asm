@@ -14,7 +14,7 @@ Music87:	incbin	sound\music87.bin
 		even
 Music88:	incbin	sound\music88.bin
 		even
-Music89:	incbin	sound\music89.bin
+Music89:	include	"sound\music89.asm"
 		even
 Music8A:	incbin	sound\music8A.bin
 		even
@@ -44,7 +44,7 @@ Music96:	incbin	sound\music96.bin
 		even
 Music97:	incbin	sound\music9C.bin
 		even
-Music98:	incbin	sound\music98.bin
+Music98:	incbin	sound\0C.bin
 		even
 Music99:	incbin	sound\TimeExtend1.bin
 		even
